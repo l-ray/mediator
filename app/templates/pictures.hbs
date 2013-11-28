@@ -1,0 +1,9 @@
+<h1>Pictures</h1>
+
+<ul>
+ {{#each model}}
+ <li>{{#linkTo 'picture' this}}{{this.id}}{{/linkTo}}</li>
+  {{/each}}
+</ul>
+
+{{outlet}}
