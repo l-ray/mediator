@@ -1,0 +1,9 @@
+<h1>Connections</h1>
+
+<ul>
+ {{#each model}}
+ <li>{{#linkTo 'connection' this}}{{this.id}}{{/linkTo}}</li>
+  {{/each}}
+</ul>
+
+{{outlet}}
