@@ -1,5 +1,6 @@
 /*global Ember*/
 Mediator.Picture = DS.Model.extend({
+
     name: DS.attr('string'),
 
     url: DS.attr('string'),
@@ -10,7 +11,7 @@ Mediator.Picture = DS.Model.extend({
 
     priority: DS.attr('number'),
 
-    source: DS.belongsTo('source')
+    result: DS.belongsTo('result')
 });
 
 // probably should be mixed-in...
@@ -35,28 +36,28 @@ Mediator.Picture.FIXTURES = [
     
     name: 'foo',
     
-    url: 'foo',
+    url: 'http://nichtlustig.de/comics/full/081028.jpg',
     
-    thumbnailUrl: 'foo',
+    thumbnailUrl: 'http://nichtlustig.de/comics/full/081028.jpg',
     
     description: 'foo',
     
-    priority: 'foo'
+    priority: 12
     
   },
   
   {
     id: 1,
     
-    name: 'foo',
+    name: 'bar',
     
-    url: 'foo',
+    url: 'http://static.nichtlustig.de/comics/full/130925.jpg',
     
-    thumbnailUrl: 'foo',
+    thumbnailUrl: 'http://static.nichtlustig.de/comics/full/130925.jpg',
     
-    description: 'foo',
+    description: 'bar',
     
-    priority: 'foo'
+    priority: 12
     
   }
   

@@ -1,7 +1,12 @@
 {
   "name": "mediator",
-  "version": "0.0.0",
-  "dependencies": {},
+  "version": "0.0.1",
+  "dependencies": {
+    "simmetrix_levenshtein":"git+https://github.com/l-ray/simmetrix_levenshtein.git",
+    "simmetrix_longestsubstring":"git+https://github.com/l-ray/simmetrix_longestsubstring.git",
+    "simmetrix_smithwaterman":"git+https://github.com/l-ray/simmetrix_smithwaterman.git",
+    "simmetrix_gram":"git+https://github.com/l-ray/simmetrix_qgram.git"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
@@ -26,8 +31,13 @@
     "connect-livereload": "~0.2.0",
     "grunt-ember-templates": "0.4.14",
     "time-grunt": "~0.1.1",
-    "grunt-neuter": "~0.5.0"
+    "grunt-neuter": "~0.5.0",
+    "mocha": "~1.9.0",
+    "expect.js": "~0.2.0"
 
+  },
+  "scripts": {
+    "test": "mocha --recursive test/spec/*.js"
   },
   "engines": {
     "node": ">=0.8.0"

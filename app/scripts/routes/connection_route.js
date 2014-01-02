@@ -1,6 +1,10 @@
 Mediator.ConnectionRoute = Ember.Route.extend({
   model: function(model) {
-    return this.get('store').find('connection', model.connection_id);
+      if (typeof model.connection_id === 'undefined') {
+          return this.get('store').find('connection', {source : model.source, startDate: model.startDate});
+      }   else {
+        return this.get('store').find('connection', model.connection_id);
+      }
   }
 });
 

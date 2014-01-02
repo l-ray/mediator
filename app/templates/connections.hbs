@@ -2,7 +2,26 @@
 
 <ul>
  {{#each model}}
- <li>{{#linkTo 'connection' this}}{{this.id}}{{/linkTo}}</li>
+   <li>
+     {{input type="checkbox" checked=active}}
+     <img {{bindAttr src=source.icon}} class="connectionSource_Icon" />
+     <span class="connectionSource">
+         {{#linkTo 'source' this.source}}
+             {{source.name}}
+         {{/linkTo}}
+     </span>
+     <span class="connectionStatus">{{this.status}}</span>
+     <span class="connectionResults">Size: {{this.length}}</span>
+
+     {{ render 'connection' this }}
+
+     {{#if this.editMode}}
+         <button {{action 'doneEditing' this}}>Done</button>
+         {{render 'source_edit' source}}
+     {{else}}
+         <button {{action 'edit' this}}>edit</button>
+     {{/if}}
+   </li>
   {{/each}}
 </ul>
 

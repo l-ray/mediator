@@ -1,12 +1,38 @@
 /*global Ember*/
-Mediator.Connection = DS.Model.extend({
+
+Mediator.ConnectionStatus = {
+    IDLE: "idle",
+    WAITING: "waiting",
+    RECEIVING: "receiving"
+}
+
+Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
+
     startDate: DS.attr('date'),
 
     endDate: DS.attr('date'),
 
-    status: DS.attr('string')
+    status: DS.attr('string', {defaultValue: Mediator.ConnectionStatus.IDLE}),
 
-    //source: DS.belongsTo('source')
+    editMode: Boolean(false),
+
+    active: DS.attr('boolean', {defaultValue: true}),
+
+    source: DS.belongsTo('source'),
+
+    results: DS.hasMany('result', { async: true }),
+
+    disabled: function() {
+        return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
+    },
+
+    length: function(){return this.get('results').get('length');}.property('results'),
+
+    nextObject: function(index) {
+        console.log("in next object"+index);
+        return this.results[index];
+    },
+
 });
 
 // probably should be mixed-in...
@@ -29,27 +55,36 @@ Mediator.Connection.FIXTURES = [
   {
     id: 0,
     
-    startDate: 'foo',
+    startDate: new Date(),
     
-    endDate: 'foo',
-    
-    status: 'foo',
+    endDate: new Date(),
 
-    source: undefined
+    active: true,
+    
+    status: Mediator.ConnectionStatus.WAITING,
+
+    source: 0,
+
+    results: [0]
     
   },
   
   {
     id: 1,
     
-    startDate: 'foo',
+    startDate: new Date(),
     
-    endDate: 'foo',
-    
-    status: 'foo',
+    endDate: new Date(),
 
-    source: undefined
+    active: false,
+    
+    status: Mediator.ConnectionStatus.IDLE,
+
+    source: 1,
+
+    results: [1, 2]
     
   }
   
 ];
+

@@ -1,22 +1,25 @@
 /*global Ember*/
+
 Mediator.Source = DS.Model.extend({
+
     name: DS.attr('string'),
 
     url: DS.attr('string'),
 
     icon: DS.attr('string'),
 
-    active: DS.attr('boolean'),
-
     additional: DS.attr('boolean'),
 
     priority: DS.attr('number'),
 
-    connections: DS.hasMany('connection')
+    connections: DS.hasMany('connection') ,
+
+    lastMoved: DS.attr('number',0)
 });
 
 // probably should be mixed-in...
 Mediator.Source.reopen({
+    // certainly I'm duplicating something that exists elsewhere...
   // certainly I'm duplicating something that exists elsewhere...
   attributes: function(){
     var attrs = [];
@@ -30,6 +33,7 @@ Mediator.Source.reopen({
 });
 
 // delete below here if you do not want fixtures
+
 Mediator.Source.FIXTURES = [
   
   {
@@ -37,36 +41,28 @@ Mediator.Source.FIXTURES = [
     
     name: 'foo',
     
-    url: 'foo',
+    url: 'http://www.groovestation.de/',
     
-    icon: 'foo',
-    
-    active: 'foo',
-    
-    additional: 'foo',
-    
-    priority: 'foo',
+    icon: 'http://www.groovestation.de/favicon.ico',
 
-    connections: undefined
+    additional: false,
+    
+    priority: 50
     
   },
   
   {
     id: 1,
     
-    name: 'foo',
+    name: 'bar',
     
-    url: 'foo',
+    url: 'http://www.banq.de/',
     
-    icon: 'foo',
+    icon: 'http://www.banq.de/ico/favicon.ico',
     
-    active: 'foo',
+    additional: true,
     
-    additional: 'foo',
-    
-    priority: 'foo',
-
-    connections: undefined
+    priority: 100
   }
   
 ];

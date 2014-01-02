@@ -1,18 +1,6 @@
-<h1>Source</h1>
-
-<table>
-  {{#each model.attributes}}
-  <tr>
-    <td>
-      <strong>{{this.key}}:</strong>
-    </td>
-    <td>
-      {{view Mediator.BoundTextFieldView contentBinding="this"}}
-    </td>
-  </tr>
-  {{/each}}
-</table>
-
-<button {{action 'save'}}>Update</button>
-
+<fieldset>
+    <legend>settings</legend>
+    priority: {{input value=priority name="the priority" }} <br />
+    additional({{this.additional}}): {{input type=checkbox checked=additional}}
+</fieldset>
 {{outlet}}

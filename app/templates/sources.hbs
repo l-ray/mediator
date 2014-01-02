@@ -2,7 +2,17 @@
 
 <ul>
  {{#each model}}
- <li>{{#linkTo 'source' this}}{{this.id}}{{/linkTo}}</li>
+ <li id="source_{{this.id}}">
+     <img {{bind-attr src=icon}} class="connectionSource_Icon" />
+     <span class="connectionSource">{{#linkTo 'source' this}}{{this.name}}{{/linkTo}}</span>
+     <span class="connectionStatus">no status yet</span>
+
+     {{#if this.editMode}}
+         <button {{action 'doneEditing' this}}>Done</button>
+         {{partial 'source_edit'}}
+     {{else}}
+         <button {{action 'edit' this}}>edit</button>
+     {{/if}}
   {{/each}}
 </ul>
 

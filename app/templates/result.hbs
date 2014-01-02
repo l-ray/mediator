@@ -11,8 +11,14 @@
     </td>
   </tr>
   {{/each}}
+    <tr>
+        <td>
+            <strong>Priority:</strong>
+        </td>
+        <td>
+            {{model.priority}}
+        </td>
+    </tr>
 </table>
-
-{{#linkTo 'result.edit' model}}Change{{/linkTo}}
 
 {{outlet}}
