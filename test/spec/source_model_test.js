@@ -5,33 +5,38 @@
 
     describe('Mediator.Source (Model)', function () {
 
-      beforeEach(function() {
-        Ember.run(function () { Mediator.reset(); });
-        Ember.testing = true;
-      });
+        var store = null;
 
-        afterEach(function () {
-          Ember.testing = false;
+        beforeEach(function() {
+            Mediator.Store = DS.Store.extend({
+                adapter: Mediator.ApplicationAdapter
+            });
+            var container = new Ember.Container();
+            container.register('model:source', Mediator.Source);
+            container.register('model:connection', Mediator.Connection);
+            store = Mediator.Store.create({
+                container: container
+            });
         });
 
+        after(function () {
+            store = null;
+        });
 
-      describe('initialize like expected', function () {
+        describe('initialize like expected', function () {
           it('should return the given parameters correctly', function(){
-            var oItem;
-            Ember.run(function () {
-              // Won't actually load until the end of the run-block.
-              oItem = Mediator.Source.find(1);
-            });
-              expect(oItem.get("id")).to.be.equal("myId");
-              expect(oItem.get("name")).to.be.equal("myName");
-              expect(oItem.get("URL")).to.be.equal("http://www.de");
-              expect(oItem.get("icon")).to.be.equal("http://www.de/favicon.ico");
-              expect(oItem.isActive()).to.be.true();
-              expect(oItem.get("priority")).to.be.equal(100);
-              expect(oItem.additional).to.be.false();
-              expect(true).to.be.false();
+              Ember.run( function() {
+
+                  var oItem = store.createRecord('source',{name:"myName"});
+
+                  expect(oItem.get("name")).to.be.equal("myName");
+                  expect(oItem.get("priority")).to.be.equal(0);
+                  expect(oItem.get("lastMoved")).to.be.equal(0);
+                  // expect(oItem.get("additional")).to.be.false();
+
+              })
           })
-        })
+           })
     });
 })();
 

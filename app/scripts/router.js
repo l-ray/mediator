@@ -1,14 +1,5 @@
 Mediator.Router.map(function () {
   
-  this.resource('connection_edit');
-  this.resource('connection_edit', { path: '/connection_edit/:connection_edit_id' });
-  this.resource('connection_edit.edit', { path: '/connection_edit/:connection_edit_id/edit' });
-  
-  this.resource('connections');
-  this.resource('connection', { path: '/connection/:connection_id' });
-
-  this.resource('connection', { path: '/connection/:source_id/:startDate' });
-
     /*
   this.resource('group_edit');
   this.resource('group_edit', { path: '/group_edit/:group_edit_id' });
@@ -46,4 +37,11 @@ Mediator.Router.map(function () {
   this.resource('source', { path: '/source/:source_id' });
   this.resource('source.edit', { path: '/source/:source_id/edit' });
 
+  this.resource('connections', function(){
+    this.resource('connection', { path: '/:connection_id' }, function(){
+        this.route('edit');
+    });
+    /* this.resource('connection', { path: '/connection/:source_id/:startDate' }); */
+    this.route('create');
+  });
 });

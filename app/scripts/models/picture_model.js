@@ -16,15 +16,11 @@ Mediator.Picture = DS.Model.extend({
 
 // probably should be mixed-in...
 Mediator.Picture.reopen({
-  // certainly I'm duplicating something that exists elsewhere...
   attributes: function(){
-    var attrs = [];
     var model = this;
-    Ember.$.each(Ember.A(Ember.keys(this.get('data'))), function(idx, key){
-      var pair = { key: key, value: model.get(key) };
-      attrs.push(pair);
+    return Ember.keys(this.get('data')).map(function(key){
+      return Em.Object.create({ model: model, key: key, valueBinding: 'model.' + key });
     });
-    return attrs;
   }.property()
 });
 

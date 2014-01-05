@@ -1,4 +1,4 @@
-// Generated on 2013-12-11 using generator-ember 0.7.1
+// Generated on 2014-01-04 using generator-ember 0.8.0
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
@@ -108,7 +108,8 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: '.jshintrc'
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
             },
             all: [
                 'Gruntfile.js',
@@ -170,7 +171,7 @@ module.exports = function (grunt) {
             }
         },
         useminPrepare: {
-            html: '<%= yeoman.app %>/index.html',
+            html: '.tmp/index.html',
             options: {
                 dest: '<%= yeoman.dist %>'
             }
@@ -233,6 +234,30 @@ module.exports = function (grunt) {
                 }]
             }
         },
+        replace: {
+          app: {
+            options: {
+              variables: {
+                ember: 'bower_components/ember/ember.js',
+                ember_data: 'bower_components/ember-data-shim/ember-data.js'
+              }
+            },
+            files: [
+              {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
+            ]
+          },
+          dist: {
+            options: {
+              variables: {
+                ember: 'bower_components/ember/ember.prod.js',
+                ember_data: 'bower_components/ember-data-shim/ember-data.prod.js'
+              }
+            },
+            files: [
+              {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
+            ]
+          }
+        },
         // Put files not handled in other tasks here
         copy: {
             dist: {
@@ -267,6 +292,11 @@ module.exports = function (grunt) {
                 'htmlmin'
             ]
         },
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js'
+            }
+        },
         emberTemplates: {
             options: {
                 templateName: function (sourceFile) {
@@ -300,6 +330,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'replace:app',
             'concurrent:server',
             'neuter:app',
             'connect:livereload',
@@ -310,14 +341,16 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'replace:app',
         'concurrent:test',
         'connect:test',
         'neuter:app',
-        'mocha'
+        'karma'
     ]);
 
     grunt.registerTask('build', [
         'clean:dist',
+        'replace:dist',
         'useminPrepare',
         'concurrent:dist',
         'neuter:app',

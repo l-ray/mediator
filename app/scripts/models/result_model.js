@@ -45,15 +45,12 @@ Mediator.Result = DS.Model.extend({
 // probably should be mixed-in...
 Mediator.Result.reopen({
     // certainly I'm duplicating something that exists elsewhere...
-    attributes: function () {
-        var attrs = [];
-        var model = this;
-        Ember.$.each(Ember.A(Ember.keys(this.get('data'))), function (idx, key) {
-            var pair = { key: key, value: model.get(key) };
-            attrs.push(pair);
-        });
-        return attrs;
-    }.property()
+	attributes: function(){
+    var model = this;
+    return Ember.keys(this.get('data')).map(function(key){
+      return Em.Object.create({ model: model, key: key, valueBinding: 'model.' + key });
+    });
+  }.property()
 });
 
 // delete below here if you do not want fixtures
