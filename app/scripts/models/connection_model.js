@@ -31,7 +31,7 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
     nextObject: function(index) {
         console.log("in next object"+index);
         return this.results[index];
-    },
+    }
 
 });
 
@@ -62,7 +62,7 @@ Mediator.Connection.FIXTURES = [
 
     source: 0,
 
-    results: [0]
+    results: ['0']
     
   },
   
@@ -79,7 +79,7 @@ Mediator.Connection.FIXTURES = [
 
     source: 1,
 
-    results: [1, 2]
+    results: ['1', '2']
     
   }
   

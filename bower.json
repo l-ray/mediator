@@ -1,14 +1,10 @@
 {
   "name": "mediator",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "ember": "1.2.0",
-    "ember-data-shim": "1.0.0-beta.2",
+    "ember-data-shim": "~1.0.0-beta.2",
     "bootstrap-sass": "~3.0.0"
-    
-  },
-  "resolutions": {
-    "ember": "1.0.0"
   },
   "devDependencies": {
     "ember-mocha-adapter": "0.1.2"

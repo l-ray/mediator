@@ -19,11 +19,14 @@ Mediator.Result = DS.Model.extend({
 
     connection: DS.belongsTo('connection'),
 
-    group: undefined, //DS.belongsTo('group'),
+    group: undefined, /* DS.belongsTo('group'), */
 
-    pictures: DS.hasMany('picture',{async:true}),
+    pictures: DS.hasMany('picture'),
 
-    categories: undefined, //DS.hasMany('category'),
+    categories: undefined, /* DS.hasMany('category'), */
+
+    links: undefined, /*DS.hasMany('link'),*/
+
 
     priority: function() {
         var tmpPriority = 0;
@@ -43,7 +46,7 @@ Mediator.Result = DS.Model.extend({
 });
 
 // probably should be mixed-in...
-Mediator.Result.reopen({
+/*Mediator.Result.reopen({
     // certainly I'm duplicating something that exists elsewhere...
 	attributes: function(){
     var model = this;
@@ -51,7 +54,7 @@ Mediator.Result.reopen({
       return Em.Object.create({ model: model, key: key, valueBinding: 'model.' + key });
     });
   }.property()
-});
+});*/
 
 // delete below here if you do not want fixtures
 Mediator.Result.FIXTURES = [

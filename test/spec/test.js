@@ -9,3 +9,16 @@
         });
     });
 })();
+
+
+/*
+ describe('Enumeration of results correctly', function () {
+ it('should add a new connection correctly', function(){
+ Ember.run( function() {
+ var item = store.createRecord('result',{});
+ expect(item.get("priority")).to.be.equal(0);
+ })
+ });
+ });
+
+ */

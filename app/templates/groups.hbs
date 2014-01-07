@@ -1,0 +1,9 @@
+<h1>ResultGroups</h1>
+
+<ul>
+ {{#each model}}
+     <li>{{#linkTo 'group' this}}{{this.id}}{{this.priority}}  {{/linkTo}}</li>
+  {{/each}}
+</ul>
+
+{{outlet}}
