@@ -1,8 +1,6 @@
 /*global Ember*/
-Mediator.Group = DS.Model.extend( //Ember.Enumerable,
+Mediator.Group = DS.Model.extend( Ember.Enumerable,
     {
-
-    title: DS.attr('string'),
 
     recycled: DS.attr('boolean', {defaultValue:false}),
 
@@ -21,31 +19,44 @@ Mediator.Group = DS.Model.extend( //Ember.Enumerable,
     _SourceNotSetException: { name: 'PatternSourceNotSetException', message: 'PatternSource Not Set in Connection.' },
     _InvalidArgumentException: { name: 'InvalidArgumentException', message: 'Argument is not from the correct type.' },
 
-    title: function() {
-        var elementsLength = this.get('results') ? this.get('results').get('length'):0;
-        switch (elementsLength) {
-              case 0: return "";
-              default: for (var i=0; i< elementsLength;i++) {
-                  if (this.results[i].get('title')
-                      && this.results[i].get('title') != "")
-                      return this.results[i].get('title');
-              };
-          }
-          return "";
-    }.property('results'),
-/*
-    getSubTitle: function() {
-        switch (this.elements.length) {
-            case 0: return "";
-            default: for (var i=0; i< this.elements.length;i++) {
-                if (this.elements[i].getSubTitle() !== undefined
-                    && this.elements[i].getSubTitle() != "")
-                    return this.elements[i].getSubTitle();
-            };
-        }
-        return "";
+    length: function(){return this.get('results').get('length');}.property('results'),
+
+    nextObject: function(index) {
+        return this.get('results').nextObject(index);
     },
 
+    title: function() {
+        var selected = this.get('results').filter(
+                            function(item, index, self){
+                                if (item && item.get('title') && item.get('title').trim()) { return true; }
+                            }).get('firstObject');
+        return selected ? selected.get('title') : "";
+    }.property('results','length'),
+
+    subtitle: function() {
+        var selected = this.get('results').filter(
+            function(item, index, self){
+                if (item && item.get('subtitle') && item.get('subtitle').trim()) { return true; }
+            }).get('firstObject');
+        return selected ? selected.get('subtitle') : "";
+    }.property('results','length'),
+
+    price: function() {
+        var selected = this.get('results').filter(
+            function(item, index, self){
+                if (item && item.get('price') && item.get('price').trim()) { return true; }
+            }).get('firstObject');
+        return selected ? selected.get('price') : "";
+    }.property('results','length'),
+
+    location: function() {
+        var selected = this.get('results').filter(
+            function(item, index, self){
+                if (item && item.get('location') && item.get('location').trim()) { return true; }
+            }).get('firstObject');
+        return selected ? selected.get('location') : "";
+    }.property('results','length'),
+/*
     getStartDate: function() {
         switch (this.elements.length) {
             case 0: return "";
