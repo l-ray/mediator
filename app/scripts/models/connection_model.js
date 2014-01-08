@@ -20,31 +20,18 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     source: DS.belongsTo('source'),
 
-    results: DS.hasMany('result', { async: true }),
-
-    disabled: function() {
-        return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
-    },
+    results: DS.hasMany('result'),
 
     length: function(){return this.get('results').get('length');}.property('results'),
 
     nextObject: function(index) {
-        console.log("in next object"+index);
-        return this.results[index];
+        return this.get('results').nextObject(index);
+    },
+
+    disabled: function() {
+        return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
     }
-
 });
-
-// probably should be mixed-in...
-/*Mediator.Connection.reopen({
-  // certainly I'm duplicating something that exists elsewhere...
-  attributes: function(){
-    var model = this;
-    return Ember.keys(this.get('data')).map(function(key){
-      return Em.Object.create({ model: model, key: key, valueBinding: 'model.' + key });
-    });
-  }.property()
-});*/
 
 // delete below here if you do not want fixtures
 Mediator.Connection.FIXTURES = [

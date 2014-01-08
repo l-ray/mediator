@@ -24,12 +24,22 @@
         });
 
         describe('calculate group priority dependent from properties', function () {
-            it('should on standard return', function(){
+            it('should on standard return 0', function(){
               Ember.run( function() {
                   var item = store.createRecord('group',{});
                   expect(item.get("priority")).to.be.equal(0);
               })
             });
-         })
+         });
+
+        describe('return optimal title', function () {
+            it('should on standard be empty', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    expect(item.get("title")).to.be.equal("");
+                })
+            });
+        })
+
     });
 })();

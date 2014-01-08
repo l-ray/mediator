@@ -20,7 +20,7 @@ Mediator.Group = DS.Model.extend( //Ember.Enumerable,
 
     _SourceNotSetException: { name: 'PatternSourceNotSetException', message: 'PatternSource Not Set in Connection.' },
     _InvalidArgumentException: { name: 'InvalidArgumentException', message: 'Argument is not from the correct type.' },
-        /*
+
     title: function() {
         var elementsLength = this.get('results') ? this.get('results').get('length'):0;
         switch (elementsLength) {
@@ -33,7 +33,7 @@ Mediator.Group = DS.Model.extend( //Ember.Enumerable,
           }
           return "";
     }.property('results'),
-
+/*
     getSubTitle: function() {
         switch (this.elements.length) {
             case 0: return "";
@@ -179,9 +179,6 @@ Mediator.Group = DS.Model.extend( //Ember.Enumerable,
     },
 */
     priority: function() {
-        console.log("ruleSet"+this.get('priorityByRuleSet'));
-        console.log("system"+this.get('priorityBySystem'));
-        console.log("user"+this.get('priorityByUser'));
         return this.get('priorityByRuleSet') + this.get('priorityBySystem') + this.get('priorityByUser');
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser')
 
