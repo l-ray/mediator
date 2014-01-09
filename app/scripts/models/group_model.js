@@ -56,66 +56,38 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
             }).get('firstObject');
         return selected ? selected.get('location') : "";
     }.property('results','length'),
-/*
-    getStartDate: function() {
-        switch (this.elements.length) {
-            case 0: return "";
-            case 1: return this.elements[0].getStartDate();
-            default: return this.elements[0].getStartDate();
-        }
-        return this.elements[0].getStartDate();
-    },
 
-    getPrice: function() {
-        switch (this.elements.length) {
-            case 0: return "";
-            case 1: return this.elements[0].getPrice();
-            default: return this.elements[0].getPrice();
-        }
-        return this.elements[0].getPrice();
-    },
-    getLocation: function() {
-        switch (this.elements.length) {
-            case 0: return "";
-            default: for (var i=0; i< this.elements.length;i++) {
-                if (this.elements[i].getLocation() !== undefined
-                    &&this.elements[i].getLocation() != "")
-                    return this.elements[i].getLocation();
-            };
-        }
-        return "";
-    },
+    startDate: function() {
+        var selected = this.get('results').filter(
+            function(item, index, self){
+                if (item && item.get('startDate') && item.get('startDate').trim()) { return true; }
+            }).get('firstObject');
+        return selected ? selected.get('startDate') : "";
+    }.property('results','length'),
 
     _returnCompareString: function(myString) {
         return $.trim(myString.toLowerCase().replace(/[^a-zäöü0-9]+/g," "));
     },
 
-    getLocationCompareString: function() {
-        return this._returnCompareString(this.getLocation());
-    },
+    reducedLocation: function() {
+        return this._returnCompareString(this.get('location'));
+    }.property('location'),
 
-    getTitleCompareString: function() {
-        return this._returnCompareString(this.getTitle());
-    },
+    reducedTitle: function() {
+        return this._returnCompareString(this.get('title'));
+    }.property('title'),
 
-    getCompleteCompareString: function() {
-        return this._returnCompareString(this.getTitle()+" "+this.getLocation())
-            .split(" ").uniq()
-            .findAll(function(s) {return s.length > 1;})
+    reducedSummary: function() {
+        return new Ember.Set(this._returnCompareString(this.get('title')+" "+this.get('location'))
+            .split(" ")).filter(function(s) {return s.length > 1;})
             .join(" ");
-    },
+    }.property('title','location'),
 
-    getSources: function() {
-        var localSources = new Ember.Set();
-        for (var i=0; i < this.elements.length; i++) {
-            if (this.elements[i].source instanceof Mediator.Source
-                // || this.elements[i].source instanceof Mediator.SourceLinkDecorator
-                )
-                localSources.push(this.elements[i].source);
-        }
-        return localSources;
-    },
+    sources: function() {
+        return this.get('results').map(function(n){return n.get('source');}).filter(function(n) {return n instanceof Mediator.Source});
+    }.property('results'),
 
+        /*)
     getCategories: function() {
         var localCategories = new Ember.Set();
         for (var i=0; i < this.elements.length; i++) {
