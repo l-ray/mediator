@@ -19,7 +19,7 @@ Mediator.Result = DS.Model.extend({
 
     connection: DS.belongsTo('connection'),
 
-    group: undefined, /* DS.belongsTo('group'), */
+    group: DS.belongsTo('group'),
 
     pictures: DS.hasMany('picture'),
 

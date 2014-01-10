@@ -15,6 +15,7 @@
             container.register('model:group', Mediator.Group);
             container.register('model:result', Mediator.Result);
             container.register('model:connection', Mediator.Connection);
+            container.register('model:picture', Mediator.Picture);
             store = Mediator.Store.create({
                 container: container
             });
@@ -28,7 +29,7 @@
             it('should allow to add results', function(){
                 Ember.run( function() {
 
-                    var item = store.createRecord('connection',{});
+                    var item = store.createRecord('group',{});
                     expect(item.get("lastObject")).to.be.undefined;
                     expect(item.get("firstObject")).to.be.undefined;
 
@@ -41,10 +42,10 @@
             it('should give correct result set size', function(){
                 Ember.run( function() {
 
-                    var item = store.createRecord('connection',{});
+                    var item = store.createRecord('group',{});
                     expect(item.get("length")).to.be.zero;
 
-                    var firstResult = store.createRecord('result',{connection:item});
+                    var firstResult = store.createRecord('result',{});
                     item.get('results').pushObject(firstResult);
                     item.enumerableContentDidChange();
 
@@ -242,49 +243,49 @@
 
         }),
 
-            describe('return summary string', function () {
+        describe('return summary string', function () {
 
-                it('should on standard have an empty summary', function(){
-                    Ember.run( function() {
-                        var item = store.createRecord('group',{});
-                        expect(item.get("reducedSummary")).to.be.empty;
-                    })
-                });
+            it('should on standard have an empty summary', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    expect(item.get("reducedSummary")).to.be.empty;
+                })
+            });
 
-                it('should show nothing double)', function(){
-                    Ember.run( function() {
-                        var title ="bro coOl bro yeah cool";
-                        var location ="cool what yeah-";
-                        var item = store.createRecord('group',{});
+            it('should show nothing double)', function(){
+                Ember.run( function() {
+                    var title ="bro coOl bro yeah cool";
+                    var location ="cool what yeah-";
+                    var item = store.createRecord('group',{});
 
-                        item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
-                        item.enumerableContentDidChange();
+                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
+                    item.enumerableContentDidChange();
 
-                        expect(item.get('reducedSummary').split(" ").length).to.be.four;
-                        expect(item.get('reducedSummary').split(" ")).to.contain("bro");
-                        expect(item.get('reducedSummary').split(" ")).to.contain("cool");
-                        expect(item.get('reducedSummary').split(" ")).to.contain("yeah");
-                        expect(item.get('reducedSummary').split(" ")).to.contain("what");
-                    })
-                });
+                    expect(item.get('reducedSummary').split(" ").length).to.be.four;
+                    expect(item.get('reducedSummary').split(" ")).to.contain("bro");
+                    expect(item.get('reducedSummary').split(" ")).to.contain("cool");
+                    expect(item.get('reducedSummary').split(" ")).to.contain("yeah");
+                    expect(item.get('reducedSummary').split(" ")).to.contain("what");
+                })
+            });
 
-                it('should be lower case letter/numbers only)', function(){
-                    Ember.run( function() {
-                        var title ="mQGiyQFsPJHwpPprgv7DWW3lxFC!%$&%$§´é´qôb";
-                        var location ="vvueBBZK7QqoBlF2txZXtqMNF";
-                        var item = store.createRecord('group',{});
+            it('should be lower case letter/numbers only)', function(){
+                Ember.run( function() {
+                    var title ="mQGiyQFsPJHwpPprgv7DWW3lxFC!%$&%$§´é´qôb";
+                    var location ="vvueBBZK7QqoBlF2txZXtqMNF";
+                    var item = store.createRecord('group',{});
 
-                        item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
-                        item.enumerableContentDidChange();
+                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
+                    item.enumerableContentDidChange();
 
-                        expect(item.get('reducedSummary').length).to.be.gt.zero;
-                        expect(item.get('reducedSummary').length).to.be.lt(title.length + location.length);
-                        expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
-                        expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
-                    })
-                });
+                    expect(item.get('reducedSummary').length).to.be.gt.zero;
+                    expect(item.get('reducedSummary').length).to.be.lt(title.length + location.length);
+                    expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
+                    expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
+                })
+            });
 
-            })
+        })
 
     });
 })();

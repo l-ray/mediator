@@ -12,7 +12,7 @@ Mediator.Source = DS.Model.extend({
 
     priority: DS.attr('number',{defaultValue: 0 }),
 
-    connections: DS.hasMany('connection'),
+    connections: DS.hasMany('connection', {'async':true}),
 
     lastMoved: DS.attr('number',{defaultValue: 0 })
 });

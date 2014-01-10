@@ -20,9 +20,9 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     source: DS.belongsTo('source'),
 
-    results: DS.hasMany('result'),
+    results: DS.hasMany('result', {'async':true}),
 
-    length: function(){return this.get('results').get('length');}.property('results'),
+    length: function(){return this.get('results.length');}.property('results.length'),
 
     nextObject: function(index) {
         return this.get('results').nextObject(index);

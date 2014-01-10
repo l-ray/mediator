@@ -16,6 +16,7 @@
             container.register('model:connection', Mediator.Connection);
             container.register('model:result', Mediator.Result);
             container.register('model:picture', Mediator.Picture);
+            container.register('model:group', Mediator.Group);
             store = Mediator.Store.create({
                 container: container
             });
@@ -33,10 +34,14 @@
                   expect(item.get("lastObject")).to.be.undefined;
                   expect(item.get("firstObject")).to.be.undefined;
 
-                  item.get('results').pushObject(store.createRecord('result'));
-                  item.enumerableContentDidChange();
-                  expect(item.get('lastObject')).to.be.an.instanceOf(Mediator.Result);
-                  expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                  item.get('results').then(function(n) {
+                      var currentLength = n.get('length');
+                      n.pushObject(store.createRecord('result'));
+                      item.enumerableContentDidChange();
+                      expect(item.get('length')).to.be.equal(currentLength + 1);
+                      expect(item.get('lastObject')).to.be.an.instanceOf(Mediator.Result);
+                      expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                  });
               })
           });
           it('should give correct result set size', function(){
@@ -46,10 +51,11 @@
                 expect(item.get("length")).to.be.zero;
 
                 var firstResult = store.createRecord('result',{connection:item});
-                item.get('results').pushObject(firstResult);
-                item.enumerableContentDidChange();
-
-                expect(item.get('length')).to.be.one;
+                item.get('results').then(function(n) {
+                    n.pushObject(firstResult);
+                    item.enumerableContentDidChange();
+                    expect(item.get('length')).to.be.one;
+                });
             })
           })
         })
