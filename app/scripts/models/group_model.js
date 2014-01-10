@@ -87,6 +87,12 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return this.get('results').map(function(n){return n.get('source');}).filter(function(n) {return n instanceof Mediator.Source});
     }.property('results'),
 
+    pictures: function() {
+        var localPictures = new Ember.Set();
+        this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'))});
+        return localPictures;
+    }.property('results.pictures'),
+
         /*)
     getCategories: function() {
         var localCategories = new Ember.Set();

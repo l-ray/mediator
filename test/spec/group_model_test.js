@@ -287,5 +287,49 @@
 
         })
 
+        describe('return pictures of all results', function () {
+
+            it('should on standard have no pictures', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    expect(item.get("pictures")).to.be.not.undefined;
+                    expect(item.get("pictures")).to.be.empty;
+                })
+            });
+
+            it('should show all nested pictures)', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+
+                    var firstResult = store.createRecord('result', {});
+
+                    var secondResult = store.createRecord('result', {});
+
+                    item.get('results').pushObject(firstResult);
+                    item.get('results').pushObject(secondResult);
+                    item.enumerableContentDidChange();
+
+                    expect(item.get('pictures')).to.be.not.empty;
+                })
+            });
+
+            it('should be lower case letter/numbers only)', function(){
+                Ember.run( function() {
+                    var title ="mQGiyQFsPJHwpPprgv7DWW3lxFC!%$&%$§´é´qôb";
+                    var location ="vvueBBZK7QqoBlF2txZXtqMNF";
+                    var item = store.createRecord('group',{});
+
+                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
+                    item.enumerableContentDidChange();
+
+                    expect(item.get('reducedSummary').length).to.be.gt.zero;
+                    expect(item.get('reducedSummary').length).to.be.lt(title.length + location.length);
+                    expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
+                    expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
+                })
+            });
+
+        })
+
     });
 })();
