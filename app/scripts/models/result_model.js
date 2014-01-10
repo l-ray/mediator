@@ -34,8 +34,8 @@ Mediator.Result = DS.Model.extend({
         if (this.get('categories') && this.get('categories').get('length') > 0) tmpPriority += 100;
         if (this.get('pictures') && this.get('pictures').get('length') > 0) tmpPriority += 100;
         if (this.get('links') && this.get('links').get('length') > 0)  tmpPriority += 100;
-        if (typeof(this.get('price')) !== 'undefined')    tmpPriority += 50;
-
+        if (typeof(this.get('price')) !== 'undefined') tmpPriority += 50;
+        console.log("result returns priority "+ tmpPriority);
         return tmpPriority;
     }.property('price', 'categories', 'pictures', 'links'),
 

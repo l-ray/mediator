@@ -63,7 +63,7 @@
             });
          });
 
-        describe('return optimal title', function () {
+        describe('return title', function () {
 
             it('should on standard have an empty title', function(){
                 Ember.run( function() {
@@ -106,7 +106,7 @@
             });
         });
 
-        describe('return optimal subtitle', function () {
+        describe('return subtitle', function () {
 
             it('should on standard have an empty sub-title', function(){
                 Ember.run( function() {
@@ -138,7 +138,7 @@
 
         });
 
-        describe('return optimal price', function () {
+        describe('return price', function () {
 
             it('should on standard have an empty price', function(){
                 Ember.run( function() {
@@ -169,7 +169,7 @@
             });
         });
 
-        describe('return optimal location', function () {
+        describe('return location', function () {
             it('should on standard have an empty location', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
@@ -211,7 +211,7 @@
             });
         });
 
-        describe('return optimal startDate', function () {
+        describe('return startDate', function () {
 
             it('should on standard have an empty startDate', function(){
                 Ember.run( function() {
@@ -292,7 +292,9 @@
             it('should on standard have no pictures', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
+
                     expect(item.get("pictures")).to.be.not.undefined;
+                    expect(item.get('pictures')).to.be.an.instanceof(Ember.Set);
                     expect(item.get("pictures")).to.be.empty;
                 })
             });
@@ -302,34 +304,55 @@
                     var item = store.createRecord('group',{});
 
                     var firstResult = store.createRecord('result', {});
+                    firstResult.get('pictures')
+                        .pushObject(store.createRecord('picture', {'url':'http://test.co/img1.src'}));
 
                     var secondResult = store.createRecord('result', {});
+                    var p2 = secondResult.get('pictures');
+                    p2.pushObject(store.createRecord('picture', {'url':'http://test.co/img2.src'}));
+                    p2.pushObject(store.createRecord('picture', {'url':'http://test.co/img3.src'}));
 
                     item.get('results').pushObject(firstResult);
                     item.get('results').pushObject(secondResult);
                     item.enumerableContentDidChange();
 
+                    expect(item.get('pictures')).to.be.an.instanceof(Ember.Set);
                     expect(item.get('pictures')).to.be.not.empty;
+                    expect(item.get('pictures').length).to.be.equal(3);
+                })
+            });
+        })
+
+        describe('returned priorities', function () {
+
+            it('should recognize empty system priority', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    console.log("item get priority" + item);
+                    expect(item.get("priority")).to.equal(0);
                 })
             });
 
-            it('should be lower case letter/numbers only)', function(){
+            it('should recognize filled system priority', function(){
                 Ember.run( function() {
-                    var title ="mQGiyQFsPJHwpPprgv7DWW3lxFC!%$&%$§´é´qôb";
-                    var location ="vvueBBZK7QqoBlF2txZXtqMNF";
                     var item = store.createRecord('group',{});
 
-                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
-                    item.enumerableContentDidChange();
+                    var result1 = store.createRecord('result', {});
+                    var result2 = store.createRecord('result', {'price': 5});
 
-                    expect(item.get('reducedSummary').length).to.be.gt.zero;
-                    expect(item.get('reducedSummary').length).to.be.lt(title.length + location.length);
-                    expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
-                    expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
+                    item.get('results').pushObject(result1);
+                    item.enumerableContentDidChange();
+                    expect(item.get('length')).to.equal(1);
+                    expect(item.get("priority")).to.be.equal(0);
+
+                    item.get('results').pushObject(result2);
+                    item.enumerableContentDidChange();
+                    expect(item.get('length')).to.equal(2);
+                    // expect(item.get('priority')).to.be.not.equal(0);
+                    expect(item.get('priority')).to.be.equal(result2.get('priority'));
                 })
             });
 
         })
-
     });
 })();

@@ -12,7 +12,18 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
-    priorityBySystem: DS.attr('number', {defaultValue: 0 }),
+    priorityBySystem: function() {
+        return (this.get('results').get('length') == 0) ?
+            0 :
+            new Ember.Set(this.get('results'))
+                .reduce(
+                    function (currentMax, n){
+                        console.log("currentMax"+currentMax);
+                        console.log("priority"+ n.get('priority'));
+                        console.log("newMax"+Math.max(currentMax,n.get('priority')));
+                        return Math.max(currentMax,n.get('priority'));
+                    },0);
+    }.property('results'),
 
     results: DS.hasMany('result'),
 
@@ -89,9 +100,9 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     pictures: function() {
         var localPictures = new Ember.Set();
-        this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'))});
+        this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'));});
         return localPictures;
-    }.property('results.pictures'),
+    }.property('@each'),
 
         /*)
     getCategories: function() {
@@ -102,25 +113,6 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return localCategories;
     },
 
-    getPictures: function() {
-        var localPictures = new Ember.Set();
-        for (var i=0; i < this.elements.length; i++) {
-            if (this.elements[i].pictures().length > 0)
-                localPictures= localPictures.addEach(this.elements[i].pictures);
-        }
-        return localPictures();
-    },
-
-    getLinks: function() {
-        var localLinks = new Ember.Set();
-        for (var i=0; i < this.elements.length; i++) {
-            if (this.elements[i].getLinks().length >0)
-                localLinks = localLinks.addEach(this.elements[i].getLinks());
-        }
-        return localLinks;
-    },
-
-    get: function(iCount) { return this.elements[iCount];},
 
     addPatternResult: function(item) {
         if (item instanceof Mediator.Result) {
@@ -168,7 +160,16 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
     },
 */
     priority: function() {
-        return this.get('priorityByRuleSet') + this.get('priorityBySystem') + this.get('priorityByUser');
+        console.log("priority single" + this.get('priorityByRuleSet') + " "
+                + this.get('priorityBySystem') + " "
+                + this.get('priorityByUser'));
+        console.log("priority over all" +
+            (this.get('priorityByRuleSet')
+            + this.get('priorityBySystem')
+            + this.get('priorityByUser')));
+        return (this.get('priorityByRuleSet')
+            + this.get('priorityBySystem')
+            + this.get('priorityByUser'));
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser')
 
 });
