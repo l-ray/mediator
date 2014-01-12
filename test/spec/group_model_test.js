@@ -348,7 +348,7 @@
                     item.get('results').pushObject(result2);
                     item.enumerableContentDidChange();
                     expect(item.get('length')).to.equal(2);
-                    // expect(item.get('priority')).to.be.not.equal(0);
+                    expect(item.get('priority')).to.be.not.equal(0);
                     expect(item.get('priority')).to.be.equal(result2.get('priority'));
                 })
             });

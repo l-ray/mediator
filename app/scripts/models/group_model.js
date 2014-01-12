@@ -18,12 +18,9 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
             new Ember.Set(this.get('results'))
                 .reduce(
                     function (currentMax, n){
-                        console.log("currentMax"+currentMax);
-                        console.log("priority"+ n.get('priority'));
-                        console.log("newMax"+Math.max(currentMax,n.get('priority')));
                         return Math.max(currentMax,n.get('priority'));
                     },0);
-    }.property('results'),
+    }.property('results.@each.priority'),
 
     results: DS.hasMany('result'),
 
@@ -104,69 +101,16 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return localPictures;
     }.property('@each'),
 
-        /*)
+   /*)
     getCategories: function() {
         var localCategories = new Ember.Set();
         for (var i=0; i < this.elements.length; i++) {
             localCategories = localCategories.addEach(this.elements[i].categories);
         }
         return localCategories;
-    },
+    },*/
 
-
-    addPatternResult: function(item) {
-        if (item instanceof Mediator.Result) {
-            this.elements.push(item);
-            this.update();
-        } else throw this._InvalidArgumentException;
-    },
-
-    update:function() {
-        var priorityBySystem = 0;
-        priorityBySystem = this.getSources().inject(
-            priorityBySystem,
-            function (sum,item) {
-                return sum + item.getPriority();
-            }
-        );
-        priorityBySystem += this.getPatternResults().max(function (n){return n.getPriority();});
-
-        this.iPriorityBySystem = priorityBySystem;
-    },
-
-    getPatternResults: function() {
-        return this.elements;
-    },
-
-    addAll: function(items) {
-        this.increasePriorityBySystem(items.inject(0, function(memo, item) {return memo + item.getPriority();}));
-        this.elements = this.elements.concat(items);
-        this.update();
-    },
-
-    increasePriorityByRuleset: function(count) {
-        if (!isNaN(count))
-            this.priorityByRuleset += count;
-    },
-
-    increasePriorityByUser: function(count) {
-        if (!isNaN(count))
-            this.priorityByUser += count;
-    },
-
-    increasePriorityBySystem: function(count) {
-        if (!isNaN(count))
-            this.priorityBySystem += count;
-    },
-*/
     priority: function() {
-        console.log("priority single" + this.get('priorityByRuleSet') + " "
-                + this.get('priorityBySystem') + " "
-                + this.get('priorityByUser'));
-        console.log("priority over all" +
-            (this.get('priorityByRuleSet')
-            + this.get('priorityBySystem')
-            + this.get('priorityByUser')));
         return (this.get('priorityByRuleSet')
             + this.get('priorityBySystem')
             + this.get('priorityByUser'));
