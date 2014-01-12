@@ -39,7 +39,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
                                 if (item && item.get('title') && item.get('title').trim()) { return true; }
                             }).get('firstObject');
         return selected ? selected.get('title') : "";
-    }.property('results','length'),
+    }.property('results.@each.title','length'),
 
     subtitle: function() {
         var selected = this.get('results').filter(
@@ -63,7 +63,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
                 if (item && item.get('location') && item.get('location').trim()) { return true; }
             }).get('firstObject');
         return selected ? selected.get('location') : "";
-    }.property('results','length'),
+    }.property('results.@each.location','length'),
 
     startDate: function() {
         var selected = this.get('results').filter(

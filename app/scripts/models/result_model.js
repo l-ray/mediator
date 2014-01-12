@@ -23,19 +23,17 @@ Mediator.Result = DS.Model.extend({
 
     pictures: DS.hasMany('picture'),
 
-    categories: undefined, /* DS.hasMany('category'), */
+    categories: undefined, /*DS.hasMany('category'),*/
 
     links: undefined, /*DS.hasMany('link'),*/
 
 
     priority: function() {
         var tmpPriority = 0;
-
         if (this.get('categories') && this.get('categories').get('length') > 0) tmpPriority += 100;
         if (this.get('pictures') && this.get('pictures').get('length') > 0) tmpPriority += 100;
         if (this.get('links') && this.get('links').get('length') > 0)  tmpPriority += 100;
         if (typeof(this.get('price')) !== 'undefined') tmpPriority += 50;
-        console.log("result returns priority "+ tmpPriority);
         return tmpPriority;
     }.property('price', 'categories', 'pictures', 'links'),
 

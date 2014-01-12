@@ -9,10 +9,6 @@ Mediator.Router.map(function () {
   this.resource('groupset_edit', { path: '/groupset_edit/:groupset_edit_id' });
   this.resource('groupset_edit.edit', { path: '/groupset_edit/:groupset_edit_id/edit' });
   
-  this.resource('groupsets');
-  this.resource('groupset', { path: '/groupset/:groupset_id' });
-  this.resource('groupset.edit', { path: '/groupset/:groupset_id/edit' });
-  
   this.resource('picture_edit');
   this.resource('picture_edit', { path: '/picture_edit/:picture_edit_id' });
   this.resource('picture_edit.edit', { path: '/picture_edit/:picture_edit_id/edit' });
@@ -29,6 +25,9 @@ Mediator.Router.map(function () {
   this.resource('group', { path: '/group/:group_id' });
   this.resource('group.edit', { path: '/group/:group_id/edit' });
 
+  this.resource('groupsets');
+  this.resource('groupset', { path: '/groupset/:groupset_id' });
+  this.resource('groupset.edit', { path: '/groupset/:groupset_id/edit' });
 
     /* this.resource('source_edit');
      this.resource('source_edit', { path: '/source_edit/:source_edit_id' });

@@ -97,11 +97,21 @@
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
 
-                    var test = "cooL, bro";
-                    var testReduced = "cool bro";
-                    item.get('results').pushObject(store.createRecord('result', {'title':test}));
+                    item.get('results').pushObject(store.createRecord('result', {'title':"cooL, bro"}));
                     item.enumerableContentDidChange();
-                    expect(item.get("reducedTitle")).to.be.equal(testReduced);
+                    expect(item.get("reducedTitle")).to.be.equal("cool bro");
+
+                    item.get('firstObject').set('title',"  .-DiLemM ? ");
+                    expect(item.get("reducedTitle")).to.match(/dilemm/,"upperCase and umlaute");
+
+                    item.get('firstObject').set('title',"  .-DiLemMÖ ? ");
+                    expect(item.get("reducedTitle")).to.match(/dilemmö/,"upperCase and umlaute");
+
+                    item.get('firstObject').set('title',"U96");
+                    expect(item.get("reducedTitle")).to.match(/u96/,"numbers");
+
+                    item.get('firstObject').set('title',"###\ test  -. -Me---");
+                    expect(item.get("reducedTitle")).to.be.equal("test me","Stripping spaces");
                 })
             });
         });
@@ -202,11 +212,22 @@
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
 
-                    var test = "cooL, bro";
-                    var testReduced = "cool bro";
-                    item.get('results').pushObject(store.createRecord('result', {'location':test}));
+                    item.get('results').pushObject(store.createRecord('result', {'location':'cooL, bro'}));
                     item.enumerableContentDidChange();
-                    expect(item.get("reducedLocation")).to.be.equal(testReduced);
+                    expect(item.get("reducedLocation")).to.be.equal("cool bro");
+
+                    item.get('firstObject').set('location',"  .-DiLemM ? ");
+                    expect(item.get("reducedLocation")).to.match(/dilemm/,"upperCase and umlaute");
+
+                    item.get('firstObject').set('location',"  .-DiLemMÖ ? ");
+                    expect(item.get("reducedLocation")).to.match(/dilemmö/,"upperCase and umlaute");
+
+                    item.get('firstObject').set('location',"U96");
+                    expect(item.get("reducedLocation")).to.match(/u96/,"numbers");
+
+                    item.get('firstObject').set('location',"###\ test  -. -Me---");
+                    expect(item.get("reducedLocation")).to.be.equal("test me","Stripping spaces");
+
                 })
             });
         });
@@ -262,10 +283,11 @@
                     item.enumerableContentDidChange();
 
                     expect(item.get('reducedSummary').split(" ").length).to.be.four;
-                    expect(item.get('reducedSummary').split(" ")).to.contain("bro");
-                    expect(item.get('reducedSummary').split(" ")).to.contain("cool");
-                    expect(item.get('reducedSummary').split(" ")).to.contain("yeah");
-                    expect(item.get('reducedSummary').split(" ")).to.contain("what");
+                    expect(item.get('reducedSummary').split(" "))
+                        .to.contain("bro")
+                        .and.to.contain("cool")
+                        .and.to.contain("yeah")
+                        .and.to.contain("what");
                 })
             });
 
@@ -328,7 +350,6 @@
             it('should recognize empty system priority', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    console.log("item get priority" + item);
                     expect(item.get("priority")).to.equal(0);
                 })
             });
@@ -348,7 +369,6 @@
                     item.get('results').pushObject(result2);
                     item.enumerableContentDidChange();
                     expect(item.get('length')).to.equal(2);
-                    expect(item.get('priority')).to.be.not.equal(0);
                     expect(item.get('priority')).to.be.equal(result2.get('priority'));
                 })
             });
