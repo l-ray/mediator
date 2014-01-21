@@ -1,4 +1,5 @@
 /*global Ember*/
+
 Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
     date: DS.attr('date', {defaultValue:new Date()}),
@@ -116,6 +117,7 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
     sort: function() {
         this.elements = this.get("groups").sortingStrategy(this.sortingStrategy);
     }
+
 });
 
 // delete below here if you do not want fixtures

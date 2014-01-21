@@ -21,6 +21,8 @@ module.exports = function(config) {
       'app/bower_components/handlebars/handlebars.runtime.js',
       'app/bower_components/ember/ember.js',
       'app/bower_components/ember-data-shim/ember-data.js',
+
+      'app/bower_components/simmetrix_levenshtein/lib/simmetrix.levenshtein.js',
       
       'test/lib/chai.js',
       'app/bower_components/ember-mocha-adapter/adapter.js',
