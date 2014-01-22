@@ -5,10 +5,10 @@
     "ember": "1.2.0",
     "ember-data-shim": "~1.0.0-beta.2",
     "bootstrap-sass": "~3.0.0",
-    "simmetrix_levenshtein": "https://github.com/l-ray/simmetrix_levenshtein.git",
-    "simmetrix_qgram": "https://github.com/l-ray/simmetrix_qgram.git",
-    "simmetrix_smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
-    "simmetrix_longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git"
+    "simmetrix-levenshtein": "https://github.com/l-ray/simmetrix_levenshtein.git",
+    "simmetrix-qgram": "https://github.com/l-ray/simmetrix_qgram.git",
+    "simmetrix-smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
+    "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git"
   },
   "devDependencies": {
     "ember-mocha-adapter": "0.1.2"

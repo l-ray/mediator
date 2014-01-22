@@ -1,12 +1,7 @@
 {
   "name": "mediator",
   "version": "0.0.1",
-  "dependencies": {
-    "simmetrix_levenshtein": "git+https://github.com/l-ray/simmetrix_levenshtein.git",
-    "simmetrix_longestsubstring": "git+https://github.com/l-ray/simmetrix_longestsubstring.git",
-    "simmetrix_smithwaterman": "git+https://github.com/l-ray/simmetrix_smithwaterman.git",
-    "simmetrix_gram": "git+https://github.com/l-ray/simmetrix_qgram.git"
-  },
+  "dependencies": { },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",

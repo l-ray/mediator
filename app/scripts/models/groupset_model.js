@@ -55,7 +55,7 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
         if (this.__isSimilarBecauseOfIdenticalPictures(patternResultGroup1, patternResultGroup2))
             return true;
 
-        var coarseGrain1 = Simmetrix.QGram.similarity(
+        var coarseGrain1 = smQGram.similarity(
             patternResultGroup1.get("reducedSummary"),
             patternResultGroup2.get("reducedSummary")
         );
@@ -69,7 +69,7 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
         if ((coarseGrain1) > Mediator.constants._CONST_QGRAM_RATIO)
         //matrix[i][j] =
             similarityFactor =
-                (Simmetrix.SmithWaterman.similarity(
+                (smSmithWaterman.similarity(
                     patternResultGroup1.get('reducedSummary'),
                     patternResultGroup2.get('reducedSummary')
                 )
@@ -87,11 +87,11 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
             if (ratio > Mediator.constants._CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE) {
                 ratio =
-                    ((Simmetrix.SmithWaterman.similarity(
+                    ((smSmithWaterman.similarity(
                         patternResultGroup1.get('reducedTitle'),
                         patternResultGroup2.get('reducedTitle')
                     ) +
-                        Simmetrix.SmithWaterman.similarity(
+                        smSmithWaterman.similarity(
                             patternResultGroup1.get('reducedLocation'),
                             patternResultGroup2.get('reducedLocation'))
                         ) /2 );
