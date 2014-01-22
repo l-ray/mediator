@@ -24,27 +24,26 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
     },
 
     cleanUp: function() {
-        var matrixLength = this.groups.get('length');
+        var matrixLength = this.get('groups').get('length');
         var matrix = new Array(matrixLength);
 
-        for (var i=0; i<this.groups.get('length'); i++) {
-            matrix[i] = new Array(this.groups.get('length'));
+        for (var i=0; i<this.get('groups').get('length'); i++) {
+            matrix[i] = new Array(this.get('groups').get('length'));
 
-            for (var j=0; j < this.groups.get('length'); j++) {
+            for (var j=0; j < this.get('groups').get('length'); j++) {
 
                 if ( i!=j
-                    && this.get("groups").toArray()[j].initialized
+                    && this.get("groups").toArray()[j].get('initialized')
                     && this.__isSimilar(this.get("groups").toArray()[i], this.get("groups").toArray()[j])) {
 
-                    this.get("groups").toArray()[i].initialized= false;
-                    this.get("groups").toArray()[i].pushObjects(this.get("groups").toArray()[j].get('results'));
-                    this.remove(this.get("groups").toArray()[j]);
+                    this.get("groups").toArray()[i].set('initialized', false);
+                    (this.get("groups").toArray()[i]).pushObjects(this.get("groups").toArray()[j].get('results'));
+                    this.get("groups").removeObject(this.get("groups").toArray()[j]);
                     j--;
                 }
             }
         }
-
-        try {this.update.defer();} catch (e) {alert(e);};
+        this.enumerableContentDidChange();
     },
 
     // retrieves similarity of two given groups

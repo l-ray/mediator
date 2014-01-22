@@ -127,59 +127,72 @@
                         testPRItem1.set('location',"Altes Wettb�ro");
                         testPRItem2.set('location',"Altes Wettb�ro");
 
-                    /*
-                        info(item1.getLocationCompareString()+" <--> "+item2.getLocationCompareString());
-                        info(item1.getTitleCompareString()+" <--> "+item2.getTitleCompareString());
-                        info(item1.getCompleteCompareString()+" <--> "+item2.getCompleteCompareString());
-                    */
-                        /*
-                        expect(Simmetrix.SmithWaterman.getSimilarity(item1.get("reducedSummary"),item2.get("reducedSummary"))).to.be.one;
-                        */
-                        /*info(QGramsDistance.getSimilarity(item1.getCompleteCompareString(),item2.getCompleteCompareString()));
-                        assert(this.item.__isSimilar(item1,item2),"Veranstaltung aehnlich");
+                        expect(item.__isSimilar(item1,item2)).to.be.equal(true,"Veranstaltung aehnlich");
 
-                        testPRItem2.setLocation("kuhlhemd");
-                        testPRItem2.setTitle("klamauk");
+                        testPRItem2.set("location","kuhlhemd");
+                        testPRItem2.set("title", "klamauk");
 
-                        assert(!this.item.__isSimilar(item1,item2),"Veranstaltung unaehnlich");
+                        expect(item.__isSimilar(item1,item2)).to.be.equal(false,"Veranstaltung unaehnlich");
 
-                        testPRItem1.setLocation("Beatpol (ehemals Starclub)");
-                        testPRItem1.setTitle("JULI ZEH & SLUT");
+                        testPRItem1.set("location","Beatpol (ehemals Starclub)");
+                        testPRItem1.set("title","JULI ZEH & SLUT");
 
-                        testPRItem2.setLocation("Beatpol");
-                        testPRItem2.setTitle("JULI ZEH & SLUT (D) 'CORPUS DELICTI - EINE SCHALLNOVELLE'");
+                        testPRItem2.set("location","Beatpol");
+                        testPRItem2.set("title","JULI ZEH & SLUT (D) 'CORPUS DELICTI - EINE SCHALLNOVELLE'");
 
-                        info(item1.getCompleteCompareString()+"<-->"+item2.getCompleteCompareString());
-                        info(QGramsDistance.getSimilarity(item1.getCompleteCompareString(),item2.getCompleteCompareString()));
-                        info(SmithWaterman.getSimilarity(item1.getCompleteCompareString(),item2.getCompleteCompareString()));
-                        assert(this.item.__isSimilar(item1,item2),"Veranstaltung beatpol aehnlich");
+                        var debugDescription = "Veranstaltung beatpol aehnlich\n";
+                        debugDescription += item1.get("reducedSummary")+"<-->"+item2.get("reducedSummary")+"\n";
+                        debugDescription += "qgram:"+ smQGram.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+" | ";
+                        debugDescription += "smithWaterman:"+ smSmithWaterman.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+"\n";
+                        expect(item.__isSimilar(item1,item2)).to.be.equal(true,debugDescription);
 
-                        fail("not yet implemented");*/
                     });
             });
+        });
 
+        describe('Combining similar result groups', function () {
+            it('should combine groupSets with similar groups', function(){
+                Ember.run( function() {
+
+                    var item = store.createRecord('groupset',{});
+
+                    var item1 = store.createRecord('group');
+                    var testPRItem1 = store.createRecord('result',{'title':'test1'});
+                    testPRItem1.get('pictures').pushObject(
+                        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'}));
+                    item1.get('results').pushObject(testPRItem1);
+
+                    var item2 = store.createRecord('group');
+                    var testPRItem2 = store.createRecord('result',{'title':'test2'});
+                    testPRItem2.get('pictures').pushObject(
+                        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'}));
+                    item2.get('results').pushObject(testPRItem2);
+
+
+
+                    item.get('groups').pushObjects([item1,item2]);
+                    item.enumerableContentDidChange();
+                    expect(item.get('length')).to.be.equal(2);
+
+                    item.cleanUp();
+                    // reduce items to one group
+                    expect(item.get('length')).to.be.equal(1, "set-length");
+                    expect(item.get('firstObject').get('length')).to.be.equal(2, "groups per set");
+
+
+                    var item3 = store.createRecord('group');
+                    var testPRItem3 = store.createRecord('result',{'title':"Larifari", 'location':"Lasterfahri"});
+                    item3.get('results').pushObject(testPRItem3);
+
+                    item.get('groups').pushObjects([item3]);
+                    item.enumerableContentDidChange();
+                    expect(item.get('length')).to.be.equal(2);
+                    item.cleanUp();
+                    expect(item.get('length')).to.be.equal(2);
+                    expect(item.get('firstObject').get('length')).to.be.equal(2, "groups per set");
+                    expect(item.get('lastObject').get('length')).to.be.equal(1, "groups per set");
                     /*
 
-                    testCleanUp:function(){with(this) {
-                        var testPRItem1 = new PatternResult();
-                        testPRItem1.setTitle("test1");
-                        testPRItem1.addPicture(new PatternPicture("http://test.de/lol.jpg"));
-
-                        var testPRItem2 = new PatternResult();
-                        testPRItem2.setTitle("test2");
-                        testPRItem2.addPicture(new PatternPicture("http://test.de/lol.jpg"));
-
-                        var item1 = new PatternResultGroup();
-                        item1.addPatternResult(testPRItem1);
-
-                        var item2 = new PatternResultGroup();
-                        item2.addPatternResult(testPRItem2);
-
-                        this.item.push(item1);
-                        this.item.push(item2);
-                        this.item.cleanUp();
-
-                        assertEqual(1,this.item.size());
 
                         var testPRItem3 = new PatternResult();
                         testPRItem3.setTitle("Larifari");
@@ -193,10 +206,10 @@
 
                         assertEqual(2,this.item.size());
                         fail("not yet implemented");
-                    }},
+                    }},*/
                 })
             });
- */
+
         })
     });
 })();

@@ -33,6 +33,12 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return this.get('results').nextObject(index);
     },
 
+    pushObjects: function(objects) {
+        this.enumerableContentWillChange();
+        this.get('results').pushObjects(objects);
+        this.enumerableContentDidChange();
+    },
+
     title: function() {
         var selected = this.get('results').filter(
                             function(item, index, self){
