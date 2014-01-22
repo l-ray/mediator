@@ -44,7 +44,7 @@
 
                     var item = store.createRecord('groupset',{});
                     expect(item).to.be.an.instanceof(Mediator.Groupset);
-                    expect(item.get("length")).to.be.zero;
+                    item.toArray().should.have.length.zero;
 
                     var firstResult = store.createRecord('group',{});
                     item.get('groups').pushObject(firstResult);
@@ -144,16 +144,17 @@
                         debugDescription += item1.get("reducedSummary")+"<-->"+item2.get("reducedSummary")+"\n";
                         debugDescription += "qgram:"+ smQGram.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+" | ";
                         debugDescription += "smithWaterman:"+ smSmithWaterman.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+"\n";
-                        expect(item.__isSimilar(item1,item2)).to.be.equal(true,debugDescription);
+
+                        item.__isSimilar(item1,item2).should.be.equal(true,debugDescription);
 
                     });
             });
         });
 
         describe('Combining similar result groups', function () {
+
             it('should combine groupSets with similar groups', function(){
                 Ember.run( function() {
-
                     var item = store.createRecord('groupset',{});
 
                     var item1 = store.createRecord('group');
@@ -172,41 +173,40 @@
 
                     item.get('groups').pushObjects([item1,item2]);
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.equal(2);
+                    item.toArray().should.have.length(2);
 
                     item.cleanUp();
                     // reduce items to one group
-                    expect(item.get('length')).to.be.equal(1, "set-length");
-                    expect(item.get('firstObject').get('length')).to.be.equal(2, "groups per set");
+                    item.toArray().should.have.length(1, "set-length");
+                    item.get('firstObject').toArray().should.have.length(2, "groups per set");
 
+                })
+            });
+
+            it('should not combine groupSets with unsimilar groups', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('groupset',{});
+
+                    var item1 = store.createRecord('group');
+                    var testPRItem1 = store.createRecord('result',{'title':'test1'});
+                    testPRItem1.get('pictures').pushObject(
+                        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'}));
+                    item1.get('results').pushObject(testPRItem1);
 
                     var item3 = store.createRecord('group');
                     var testPRItem3 = store.createRecord('result',{'title':"Larifari", 'location':"Lasterfahri"});
                     item3.get('results').pushObject(testPRItem3);
 
-                    item.get('groups').pushObjects([item3]);
+                    item.get('groups').pushObjects([item1, item3]);
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.equal(2);
+                    item.toArray().should.have.length(2);
+
                     item.cleanUp();
-                    expect(item.get('length')).to.be.equal(2);
-                    expect(item.get('firstObject').get('length')).to.be.equal(2, "groups per set");
-                    expect(item.get('lastObject').get('length')).to.be.equal(1, "groups per set");
-                    /*
 
+                    item.toArray().should.have.length(2);
+                    item.get('firstObject').toArray().should.have.length(1, "groups per set");
+                    item.get('lastObject').toArray().should.have.length(1, "groups per set");
 
-                        var testPRItem3 = new PatternResult();
-                        testPRItem3.setTitle("Larifari");
-                        testPRItem3.setLocation("Lasterfahri");
-                        testPRItem3.addCategory("PopCorn");
-
-                        var item3 = new PatternResultGroup();
-                        item3.addPatternResult(testPRItem3);
-                        this.item.push(item3);
-                        this.item.cleanUp();
-
-                        assertEqual(2,this.item.size());
-                        fail("not yet implemented");
-                    }},*/
                 })
             });
 

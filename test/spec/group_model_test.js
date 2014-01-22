@@ -192,18 +192,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length.one;
                     expect(item.get("location")).to.be.empty;
 
                     var location = "Himmelreich";
                     item.get('results').pushObject(store.createRecord('result', {'location':location}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.two;
+                    item.toArray().should.have.length.two;
                     expect(item.get("location")).to.be.equal(location);
 
                     item.get('results').pushObject(store.createRecord('result', {'location':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.three;
+                    item.toArray().should.have.length.three;
                     expect(item.get("location")).to.be.equal(location);
                 })
             });
@@ -246,18 +246,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length.one;
                     expect(item.get("startDate")).to.be.empty;
 
                     var startDate = "2013-12-11 20:00";
                     item.get('results').pushObject(store.createRecord('result', {'startDate':startDate}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.two;
+                    item.toArray().should.have.length.two;
                     expect(item.get("startDate")).to.be.equal(startDate);
 
                     item.get('results').pushObject(store.createRecord('result', {'startDate':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.three;
+                    item.toArray().should.have.length.three;
                     expect(item.get("startDate")).to.be.equal(startDate);
                 })
             });
@@ -300,8 +300,8 @@
                     item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
                     item.enumerableContentDidChange();
 
-                    expect(item.get('reducedSummary').length).to.be.gt.zero;
-                    expect(item.get('reducedSummary').length).to.be.lt(title.length + location.length);
+                    item.get('reducedSummary').should.have.length.gt.zero;
+                    item.get('reducedSummary').should.have.length.lt(title.length + location.length);
                     expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
                     expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
                 })
@@ -340,7 +340,7 @@
 
                     expect(item.get('pictures')).to.be.an.instanceof(Ember.Set);
                     expect(item.get('pictures')).to.be.not.empty;
-                    expect(item.get('pictures').length).to.be.equal(3);
+                    item.get('pictures').should.have.length(3);
                 })
             });
         })
@@ -363,12 +363,12 @@
 
                     item.get('results').pushObject(result1);
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.equal(1);
+                    item.toArray().should.have.length(1);
                     expect(item.get("priority")).to.be.equal(0);
 
                     item.get('results').pushObject(result2);
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.equal(2);
+                    item.toArray().should.have.length(2);
                     expect(item.get('priority')).to.be.equal(result2.get('priority'));
                 })
             });
