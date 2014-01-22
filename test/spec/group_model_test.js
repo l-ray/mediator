@@ -43,13 +43,13 @@
                 Ember.run( function() {
 
                     var item = store.createRecord('group',{});
-                    expect(item.get("length")).to.be.zero;
+                    item.toArray().should.have.length(0);
 
                     var firstResult = store.createRecord('result',{});
                     item.get('results').pushObject(firstResult);
                     item.enumerableContentDidChange();
 
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length(1);
                 })
             })
         });
@@ -77,18 +77,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length(1);
                     expect(item.get("title")).to.be.empty;
 
                     var testTitle = "cool, bro";
                     item.get('results').pushObject(store.createRecord('result', {'title':testTitle}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.two;
+                    item.toArray().should.have.length(2);
                     expect(item.get("title")).to.be.equal(testTitle);
 
                     item.get('results').pushObject(store.createRecord('result', {'title':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.three;
+                    item.toArray().should.have.length(3);
                     expect(item.get("title")).to.be.equal(testTitle);
                 })
             });
@@ -130,18 +130,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length(1);
                     expect(item.get("subtitle")).to.be.empty;
 
                     var subTitle = "cool, bro";
                     item.get('results').pushObject(store.createRecord('result', {'subtitle':subTitle}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.two;
+                    item.toArray().should.have.length(2);
                     expect(item.get("subtitle")).to.be.equal(subTitle);
 
                     item.get('results').pushObject(store.createRecord('result', {'subtitle':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.three;
+                    item.toArray().should.have.length(3);
                     expect(item.get("subtitle")).to.be.equal(subTitle);
                 })
             });
@@ -162,18 +162,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                    item.toArray().should.have.length(1);
                     expect(item.get("price")).to.be.empty;
 
                     var price = "5 Euro";
                     item.get('results').pushObject(store.createRecord('result', {'price':price }));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.two;
+                    item.toArray().should.have.length(2);
                     expect(item.get("price")).to.be.equal(price);
 
                     item.get('results').pushObject(store.createRecord('result', {'price':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.three;
+                    item.toArray().should.have.length(3);
                     expect(item.get("price")).to.be.equal(price);
                 })
             });
@@ -192,18 +192,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.one;
+                    item.toArray().should.have.length(1);
                     expect(item.get("location")).to.be.empty;
 
                     var location = "Himmelreich";
                     item.get('results').pushObject(store.createRecord('result', {'location':location}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.two;
+                    item.toArray().should.have.length(2);
                     expect(item.get("location")).to.be.equal(location);
 
                     item.get('results').pushObject(store.createRecord('result', {'location':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.three;
+                    item.toArray().should.have.length(3);
                     expect(item.get("location")).to.be.equal(location);
                 })
             });
@@ -246,18 +246,18 @@
                     var item = store.createRecord('group',{});
                     item.get('results').pushObject(store.createRecord('result', {}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.one;
+                    item.toArray().should.have.length(1);
                     expect(item.get("startDate")).to.be.empty;
 
                     var startDate = "2013-12-11 20:00";
                     item.get('results').pushObject(store.createRecord('result', {'startDate':startDate}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.two;
+                    item.toArray().should.have.length(2);
                     expect(item.get("startDate")).to.be.equal(startDate);
 
                     item.get('results').pushObject(store.createRecord('result', {'startDate':"dontShowThis"}));
                     item.enumerableContentDidChange();
-                    item.toArray().should.have.length.three;
+                    item.toArray().should.have.length(3);
                     expect(item.get("startDate")).to.be.equal(startDate);
                 })
             });
@@ -282,7 +282,7 @@
                     item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
                     item.enumerableContentDidChange();
 
-                    expect(item.get('reducedSummary').split(" ").length).to.be.four;
+                    item.get('reducedSummary').split(" ").should.have.length(4);
                     expect(item.get('reducedSummary').split(" "))
                         .to.contain("bro")
                         .and.to.contain("cool")
