@@ -4,3 +4,54 @@
 html, body {
     margin: 30px 0;
 }
+
+ul.dates {
+  overflow: hidden;
+}
+
+ul.dates .day {
+  display:block;
+  float:left;
+}
+
+ul.dates .day a {
+  border-right: 1px solid #aaaaaa;
+  padding: 0px 2px 0px 2px;
+  display: block;
+}
+
+ul.dates .day .number,
+ul.dates .day .name {
+  display: block;
+}
+
+ul.dates .day a,
+ul.dates .day a:link,
+ul.dates .day a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+ul.dates .day a:hover {
+  text-decoration: underlined;
+  background-color: #ffc080 !important;
+}
+
+ul.dates .saturday  {
+  background-color: #efefef;
+}
+
+ul.dates .sunday  {
+  background-color: #dddddd;
+}
+
+ul.dates .day a.active  {
+  border-right: 1px solid #ff6500;
+  border-left: 1px solid #ff6500;
+}
+
+ul.dates .day a.active,
+ul.dates .day a.active:link {
+  background-color: #ff6500;
+  color: #ffffff;
+}

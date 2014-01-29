@@ -8,7 +8,8 @@
     "simmetrix-levenshtein": "https://github.com/l-ray/simmetrix_levenshtein.git",
     "simmetrix-qgram": "https://github.com/l-ray/simmetrix_qgram.git",
     "simmetrix-smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
-    "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git"
+    "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git",
+    "momentjs": "~2.5.1"
   },
   "devDependencies": {
     "ember-mocha-adapter": "0.1.2"

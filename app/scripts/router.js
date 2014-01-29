@@ -29,6 +29,9 @@ Mediator.Router.map(function () {
   this.resource('groupset', { path: '/groupset/:groupset_id' });
   this.resource('groupset.edit', { path: '/groupset/:groupset_id/edit' });
 
+  this.resource('eventdates');
+  this.resource('eventdate', { path: '/eventdate/:eventdate_id' });
+
     /* this.resource('source_edit');
      this.resource('source_edit', { path: '/source_edit/:source_edit_id' });
      this.resource('source_edit.edit', { path: '/source_edit/:source_edit_id/edit' });
