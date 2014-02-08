@@ -104,7 +104,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
     pictures: function() {
         var localPictures = new Ember.Set();
         this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'));});
-        return localPictures;
+        return localPictures.toArray();
     }.property('@each'),
 
    /*)

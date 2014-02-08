@@ -2,7 +2,7 @@
 
 Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
-    date: DS.attr('date', {defaultValue:new Date()}),
+    date: DS.attr('date'),
 
     groups: DS.hasMany('group'),
 
@@ -115,7 +115,17 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
     sort: function() {
         this.elements = this.get("groups").sortingStrategy(this.sortingStrategy);
-    }
+    },
+
+    isSaturday: function() {
+        var day = this.get('date').getDay();
+        return day == 6;
+    }.property('date'),
+
+    isSunday: function() {
+        var day = this.get('date').getDay();
+        return day == 0;
+    }.property('date'),
 
 });
 
@@ -125,14 +135,14 @@ Mediator.Groupset.FIXTURES = [
   {
     id: 0,
     
-    date: 'foo'
+    date: new Date()
     
   },
   
   {
     id: 1,
     
-    date: 'foo'
+    date: new Date()
     
   }
   

@@ -1,9 +1,71 @@
 <h1>ResultGroups</h1>
 
-<ul>
- {{#each model}}
-     <li>{{#linkTo 'group' this}}{{this.id}}{{this.priority}}  {{/linkTo}}</li>
-  {{/each}}
-</ul>
+    <ul>
+        {{#each model}}
+            <li>
+                <ul>
+                    <li class="pictures">
+                        {{ render 'pictures' this.pictures }}
+                    </li>
+                    <li class="categories">
+                        <ul>
+                        {{#each categories }}
+                            <li>{{ render 'category' this }}</li>
+                        {{/each}}
+                        </ul>
+                    </li>
+                    <li class="title">{{ this.title }}</li>
+                    <li class="priority">{{ this.priority }}</li>
+                    <li class="subtitle">{{ this.subtitle }}</li>
+                    <li class="date">{{ this.startDate }}</li>
+                    <li class="location">{{this.location}}</li>
+                    <li class="price">{{ this.price }}</li>
+                    <!-- var aPatternLinks = this.getLinks();
+                    if (this.getLinks().length >0) {
+                    for (var i=0; i < aPatternLinks.length; i++) {
+                    var item = document.createElement("li");
+                    var linkItem = document.createElement("a");
+                    linkItem.setAttribute("href",aPatternLinks[i]);
+                    linkItem.setAttribute("target","_blank");
+                    linkItem.appendChild(document.createTextNode(aPatternLinks[i]));
+                    item.appendChild(linkItem);
+                    oLiPattern.appendChild(item);
+                    } -->
+                    <li class="links">
+                        <ul>
+                            {{#each links }}
+                                <li>{{ render 'link' this }}</li>
+                            {{/each}}
+                        </ul>
+                    </li>
+
+                    <!-- var aPatternSources = this.getSources();
+                    for (var i=0; i < aPatternSources.length; i++) {
+                    var item = new Element("li",{});
+                    var itemA = new Element("a",{"target": "_new"});
+                    var itemB = new Element("img", {
+                    "src": aPatternSources[i].getIcon(),
+                    "alt": aPatternSources[i],
+                    "class" : "event_info_source_icon"});
+                    if (aPatternSources[i].getSourceLink() != undefined)
+                    itemA.setAttribute("href",aPatternSources[i].getSourceLink());
+                    else
+                    itemA.setAttribute("href",aPatternSources[i].getURL());
+                    itemA.appendChild(itemB);
+                    item.appendChild(itemA);
+                    oLiPattern.appendChild(item);
+                    } -->
+                    <li class="sources">hallihallo
+                        <ul>
+                            {{#each sources }}
+                                <li>{{ this }}</li>
+                            {{/each}}
+                        </ul>
+                    </li>
+                    <li>{{#linkTo 'group' this}}{{this.id}}{{/linkTo}}</li>
+                </ul>
+            </li>
+        {{/each}}
+    </ul>
 
 {{outlet}}
