@@ -23,14 +23,14 @@ Mediator.Result = DS.Model.extend({
 
     pictures: DS.hasMany('picture'),
 
-    categories: undefined, /*DS.hasMany('category'),*/
+    categories: DS.attr('string'),
 
-    links: undefined, /*DS.hasMany('link'),*/
+    links: DS.hasMany('link'),
 
 
     priority: function() {
         var tmpPriority = 0;
-        if (this.get('categories') && this.get('categories').get('length') > 0) tmpPriority += 100;
+        if (this.get('categories') && this.get('categories').length > 0) tmpPriority += 100;
         if (this.get('pictures') && this.get('pictures').get('length') > 0) tmpPriority += 100;
         if (this.get('links') && this.get('links').get('length') > 0)  tmpPriority += 100;
         if (typeof(this.get('price')) !== 'undefined') tmpPriority += 50;
@@ -68,7 +68,7 @@ Mediator.Result.FIXTURES = [
 
         group: undefined,
 
-        category: undefined
+        categories: 'block,floete,punk,rock,folk'
 
     },
 
@@ -97,7 +97,8 @@ Mediator.Result.FIXTURES = [
 
         group: undefined,
 
-        categories: undefined
+        categories: 'folk,punk'
+
     },
 
     {
@@ -123,7 +124,7 @@ Mediator.Result.FIXTURES = [
 
         group: undefined,
 
-        categories: undefined
+        categories: 'pop,rock'
     }
 
 ];

@@ -16,6 +16,7 @@
             container.register('model:connection', Mediator.Connection);
             container.register('model:result', Mediator.Result);
             container.register('model:picture', Mediator.Picture);
+            container.register('model:link', Mediator.Link);
             container.register('model:group', Mediator.Group);
             store = Mediator.Store.create({
                 container: container

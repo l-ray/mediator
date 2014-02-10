@@ -16,6 +16,7 @@
             container.register('model:result', Mediator.Result);
             container.register('model:connection', Mediator.Connection);
             container.register('model:picture', Mediator.Picture);
+            container.register('model:link', Mediator.Link);
             store = Mediator.Store.create({
                 container: container
             });
@@ -315,8 +316,8 @@
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
 
-                    expect(item.get("pictures")).to.be.not.undefined;
-                    expect(item.get('pictures')).to.be.an.instanceof(Ember.Set);
+                    expect(item.get('pictures')).that.is.not.undefined;
+                    expect(item.get('pictures')).to.be.an('array');
                     expect(item.get("pictures")).to.be.empty;
                 })
             });
@@ -338,7 +339,7 @@
                     item.get('results').pushObject(secondResult);
                     item.enumerableContentDidChange();
 
-                    expect(item.get('pictures')).to.be.an.instanceof(Ember.Set);
+                    expect(item.get('pictures')).to.have.an.property('length');
                     expect(item.get('pictures')).to.be.not.empty;
                     item.get('pictures').should.have.length(3);
                 })
@@ -373,6 +374,74 @@
                 })
             });
 
+        });
+
+        describe('return links of all results', function () {
+
+            it('should on standard have no links', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+
+                    expect(item.get('links')).that.is.not.undefined;
+                    expect(item.get('links')).to.be.an('array');
+                    expect(item.get("links")).to.be.empty;
+                })
+            });
+
+            it('should show all nested links)', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+
+                    var firstResult = store.createRecord('result', {});
+                    firstResult.get('links')
+                        .pushObject(store.createRecord('link', {'url':'http://test.co/img1.src'}));
+
+                    var secondResult = store.createRecord('result', {});
+                    var p2 = secondResult.get('links');
+                    p2.pushObject(store.createRecord('link', {'url':'http://test.co/img2.src'}));
+                    p2.pushObject(store.createRecord('link', {'url':'http://test.co/img3.src'}));
+
+                    item.get('results').pushObject(firstResult);
+                    item.get('results').pushObject(secondResult);
+                    item.enumerableContentDidChange();
+
+                    expect(item.get('links')).to.have.an.property('length');
+                    expect(item.get('links')).to.be.not.empty;
+                    item.get('links').should.have.length(3);
+                })
+            });
+        })
+
+        describe('return categories of all results', function () {
+
+            it('should on standard have no links', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+
+                    expect(item.get('categories')).that.is.not.undefined;
+                    expect(item.get('categories')).to.be.an('array');
+                    expect(item.get("categories")).to.be.empty;
+                })
+            });
+
+            it('should show all nested links)', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+
+                    var firstResult = store.createRecord('result', {id:"p1"});
+                    firstResult.set('categories', "jazz");
+
+                    var secondResult = store.createRecord('result', {id:"p2"});
+                    var p2 = secondResult.set('categories',"pop,jazz,etc");
+
+                    item.get('results').pushObject(firstResult);
+                    item.get('results').pushObject(secondResult);
+                    item.enumerableContentDidChange();
+
+                    expect(item.get('categories')).to.have.an.property('length').and.to.be.not.empty;
+                    item.get('categories').should.have.length(3);
+                })
+            });
         })
     });
 })();

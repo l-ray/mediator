@@ -7,10 +7,10 @@
                     <li class="pictures">
                         {{ render 'pictures' this.pictures }}
                     </li>
-                    <li class="categories">
+                    <li title="categories" class="categories">Cat
                         <ul>
                         {{#each categories }}
-                            <li>{{ render 'category' this }}</li>
+                            <li>{{ this }}</li>
                         {{/each}}
                         </ul>
                     </li>
@@ -32,9 +32,9 @@
                     oLiPattern.appendChild(item);
                     } -->
                     <li class="links">
-                        <ul>
+                        <ul>links come here
                             {{#each links }}
-                                <li>{{ render 'link' this }}</li>
+                                <li>link {{ render 'link' this }}</li>
                             {{/each}}
                         </ul>
                     </li>

@@ -107,14 +107,25 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return localPictures.toArray();
     }.property('@each'),
 
-   /*)
-    getCategories: function() {
-        var localCategories = new Ember.Set();
-        for (var i=0; i < this.elements.length; i++) {
-            localCategories = localCategories.addEach(this.elements[i].categories);
-        }
-        return localCategories;
-    },*/
+    links: function() {
+        var localLinks = new Ember.Set();
+        this.get('results').forEach(function(n) {localLinks.addEach(n.get('links'));});
+        return localLinks.toArray();
+    }.property('@each'),
+
+    categories: function() {
+        var itemSet = new Ember.Set();
+        this.get('results').forEach(
+            function(n) {
+                try {
+                    itemSet.addEach(n.get('categories').split(Mediator.constants._RESULT_CATEGORY_SPLITTER));
+                } catch (e) {
+                    // expected object
+                }
+            }
+        );
+        return itemSet.toArray();
+    }.property('@each'),
 
     priority: function() {
         return (this.get('priorityByRuleSet')
@@ -126,7 +137,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
 // delete below here if you do not want fixtures
 Mediator.Group.FIXTURES = [
-  
+
   {
     id: 0,
 

@@ -16,6 +16,7 @@
             container.register('model:connection', Mediator.Connection);
             container.register('model:source', Mediator.Source);
             container.register('model:picture', Mediator.Picture);
+            container.register('model:link', Mediator.Link);
             store = Mediator.Store.create({
                 container: container
             });
@@ -23,6 +24,22 @@
 
         after(function () {
             store = null;
+        });
+
+        describe('returning array where expected', function () {
+            it('initially shows empty categories', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('result',{});
+                    expect(item.get("categories")).to.be.empty;
+                })
+            });
+
+            it('fills categories', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('result',{'categories':'pop,rock,etc'});
+                    expect(item.get("categories")).not.to.be.empty;
+                })
+            });
         });
 
         describe('calculate result-priority dependent from properties', function () {
