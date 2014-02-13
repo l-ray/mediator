@@ -59,6 +59,20 @@
                 });
             })
           })
-        })
+        });
+
+        describe('The Connection ', function () {
+            it('should provide a name attribute', function(){
+                Ember.run( function() {
+
+                    var item = store.createRecord('connection',{});
+                    expect(item.get("name")).to.be.not.undefined;
+                    expect(item.get("name")).to.be.null;
+
+                    item.set('source',store.createRecord('source',{name:'testSource'}));
+                    expect(item.get("name")).to.equal('testSource');
+                })
+            });
+        });
     });
 })();

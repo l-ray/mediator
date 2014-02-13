@@ -4,12 +4,14 @@ Mediator.GroupsetRoute = Ember.Route.extend({
       var tmpGroupSet = this.get('store').createRecord('groupset', {});
       console.log("createRecord item "+tmpGroupSet);
       var group1 = this.get('store').createRecord('group',{});
-      var picture1 = this.get('store').createRecord('picture', {});
-      var picture2 = this.get('store').createRecord('picture', {});
-      var result1 = this.get('store').createRecord('result',{'title':'test1'});
+      var picture1 = this.get('store').createRecord('picture', {'url': 'http://ruthe.de/cartoons/strip_1705.jpg', 'thumbnailUrl':'http://ruthe.de/cartoons/tn_strip_1705.jpg'});
+      var picture2 = this.get('store').createRecord('picture', {'url': 'http://ruthe.de/cartoons/strip_1704.jpg', 'thumbnailUrl':'http://ruthe.de/cartoons/tn_strip_1704.jpg'});
+      var source1 = this.get('store').createRecord('source', {'name':'testSource'});
+      var connection1 = this.get('store').createRecord('connection', {'source':source1});
+      var result1 = this.get('store').createRecord('result',{'title':'test1', 'connection':connection1});
       result1.get('pictures').pushObjects([picture1, picture2]);
 
-      var link1 = this.get('store').createRecord('link', {'url':'testURLSingular'});
+      var link1 = this.get('store').createRecord('link', {'url':'testURLSingular','result':result1});
       result1.get('links').pushObject(link1);
       result1.set('categories',"lila,laune,lullen");
 

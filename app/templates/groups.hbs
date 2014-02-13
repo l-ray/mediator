@@ -4,7 +4,7 @@
         {{#each model}}
             <li>
                 <ul>
-                    <li class="pictures">
+                    <li class="pictures">pic
                         {{ render 'pictures' this.pictures }}
                     </li>
                     <li title="categories" class="categories">Cat
@@ -14,30 +14,14 @@
                         {{/each}}
                         </ul>
                     </li>
-                    <li class="title">{{ this.title }}</li>
-                    <li class="priority">{{ this.priority }}</li>
-                    <li class="subtitle">{{ this.subtitle }}</li>
-                    <li class="date">{{ this.startDate }}</li>
-                    <li class="location">{{this.location}}</li>
-                    <li class="price">{{ this.price }}</li>
-                    <!-- var aPatternLinks = this.getLinks();
-                    if (this.getLinks().length >0) {
-                    for (var i=0; i < aPatternLinks.length; i++) {
-                    var item = document.createElement("li");
-                    var linkItem = document.createElement("a");
-                    linkItem.setAttribute("href",aPatternLinks[i]);
-                    linkItem.setAttribute("target","_blank");
-                    linkItem.appendChild(document.createTextNode(aPatternLinks[i]));
-                    item.appendChild(linkItem);
-                    oLiPattern.appendChild(item);
-                    } -->
-                    <li class="links">
-                        <ul>links come here
-                            {{#each links }}
-                                <li>link {{ render 'link' this }}</li>
-                            {{/each}}
-                        </ul>
-                    </li>
+                    <li class="title">title{{ this.title }}</li>
+                    <li class="priority">prio{{ this.priority }}</li>
+                    <li class="subtitle">subtitle{{ this.subtitle }}</li>
+                    <li class="date">start{{ this.startDate }}</li>
+                    <li class="location">loc{{this.location}}</li>
+                    <li class="price">price{{ this.price }}</li>
+
+                    <li class="links">{{render 'links' links }}</li>
 
                     <!-- var aPatternSources = this.getSources();
                     for (var i=0; i < aPatternSources.length; i++) {
