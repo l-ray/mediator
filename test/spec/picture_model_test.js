@@ -36,11 +36,11 @@
                                             "priority":"myPriority"
                                         });
 
-                  expect(item.get("name")).to.be.equal("myName");
-                  expect(item.get("url")).to.be.equal("myUrl");
-                  expect(item.get("thumbnailUrl")).to.be.equal("myThumbnail");
-                  expect(item.get("description")).to.be.equal("myDescription");
-                  expect(item.get("priority")).to.be.equal("myPriority");
+                  expect(item.get("name")).to.be.a('string').and.equal("myName");
+                  expect(item.get("url")).to.be.a('string').and.equal("myUrl");
+                  expect(item.get("thumbnailUrl")).to.be.a('string').and.equal("myThumbnail");
+                  expect(item.get("description")).to.be.a('string').and.equal("myDescription");
+                  expect(item.get("priority")).to.be.a('string').and.equal("myPriority");
 
               })
           })

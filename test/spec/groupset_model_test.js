@@ -78,7 +78,7 @@
                                 testPRItem1,
                                 testPRItem2
                             )
-                    ).to.be.true;
+                    ).to.be.equal(true);
 
                 })
             });
@@ -102,7 +102,7 @@
                                 testPRItem1,
                                 testPRItem2
                             )
-                    ).to.be.false;
+                    ).to.be.equal(false,"Veranstaltung nicht aehnlich");
 
                 })
             });
@@ -120,7 +120,7 @@
                         var item2 = store.createRecord('group');
                         item2.get('results').pushObject(testPRItem2);
 
-                        expect(item.__isSimilar(item1,item2)).to.be.true;
+                        expect(item.__isSimilar(item1,item2)).to.be.equal(true);
 
                         testPRItem1.set('title',"PUNSCHIGEL / STOP DANCING IF YOU CAN!!!");
                         testPRItem2.set('title',"PUNSCHIGEL");

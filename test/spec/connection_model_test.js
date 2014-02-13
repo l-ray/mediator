@@ -70,7 +70,7 @@
                     expect(item.get("name")).to.be.null;
 
                     item.set('source',store.createRecord('source',{name:'testSource'}));
-                    expect(item.get("name")).to.equal('testSource');
+                    expect(item.get("name")).to.be.a('string').and.equal('testSource');
                 })
             });
         });
