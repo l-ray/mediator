@@ -42,6 +42,28 @@
             });
         });
 
+        describe('returning sources name', function () {
+            it('initially ', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('result',{});
+                    expect(item.get("sourceName")).to.be.empty;
+                })
+            });
+
+            it('filled connection', function(){
+                Ember.run( function() {
+                    var item = store.createRecord(
+                        'result',{
+                            'connection':store.createRecord('connection', {
+                                'source' : store.createRecord('source',{'name':'lilaSource'})
+                            })
+                        });
+                    expect(item.get("sourceName")).not.to.be.empty;
+                    item.get("sourceName").should.equal('lilaSource');
+                })
+            });
+        });
+
         describe('calculate result-priority dependent from properties', function () {
             it('should on standard return', function(){
               Ember.run( function() {

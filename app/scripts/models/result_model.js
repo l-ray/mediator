@@ -39,7 +39,15 @@ Mediator.Result = DS.Model.extend({
 
     toString: function () {
         return this.get('title') + ", " + this.get('location') + ", " + this.get('startDate');
-    }
+    },
+
+    sourceName: function() {
+        try {
+            return this.get('connection').get('name');
+        } catch (e) {
+            return "";
+        }
+    }.property('connection')
 
 });
 

@@ -13,7 +13,7 @@ Mediator.GroupsetsRoute = Ember.Route.extend({
 
             var group1 = this.get('store').createRecord('group',{});
 
-            var result1 = this.get('store').createRecord('result',{'title':'test1'});
+            var result1 = this.get('store').createRecord('result',{'title':'test1-groupsets', 'subtitle':'testSubtitle'});
             var picture1 = this.get('store').createRecord('picture', {});
             var picture2 = this.get('store').createRecord('picture', {});
             result1.get('pictures').pushObjects([picture1, picture2]);
