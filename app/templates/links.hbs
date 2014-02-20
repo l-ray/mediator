@@ -1,0 +1,10 @@
+<h1>Links</h1>
+
+<ul>
+
+    {{#each model}}
+     <li><a {{bindAttr href=this.url}} target="_blank">name {{link.name}}</a></li>
+  {{/each}}
+</ul>
+
+{{outlet}}
