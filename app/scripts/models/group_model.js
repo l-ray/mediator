@@ -97,8 +97,8 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
             .join(" ");
     }.property('title','location'),
 
-    sources: function() {
-        return this.get('results').map(function(n){return n.get('source');}).filter(function(n) {return n instanceof Mediator.Source});
+    connections: function() {
+        return this.get('results').map(function(n){return n.get('connection');}).filter(function(n) {return n instanceof Mediator.Connection});
     }.property('results'),
 
     pictures: function() {

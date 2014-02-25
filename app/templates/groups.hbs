@@ -3,9 +3,13 @@
     <ul>
         {{#each model}}
             <li>
-                <ul>
-                    <li class="pictures">pic
-                        {{ render 'pictures' this.pictures }}
+                <ul class="event">
+                    <li class="pictures">
+                        <ul class="picture-list">
+                            {{#each this.pictures}}
+                                <li><img {{bindAttr src=this.thumbnailUrl}} /></li>
+                            {{/each}}
+                        </ul>
                     </li>
                     <li title="categories" class="categories">Cat
                         <ul>
@@ -21,7 +25,16 @@
                     <li class="location">loc{{this.location}}</li>
                     <li class="price">price{{ this.price }}</li>
 
-                    <li class="links">{{render 'links' links }}</li>
+                    <li class="links">
+                    <ul>
+                        {{#each links}}
+                             <li>
+                                <a {{bindAttr href=this.url}} target="_blank">
+                                    <img class="event_info_source_icon" {{bindAttr title=this.name src=this.result.connection.source.icon}} />
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul></li>
 
                     <!-- var aPatternSources = this.getSources();
                     for (var i=0; i < aPatternSources.length; i++) {
@@ -41,8 +54,12 @@
                     } -->
                     <li class="sources">hallihallo
                         <ul>
-                            {{#each sources }}
-                                <li>{{ this }}</li>
+                            {{#each results }}
+                                <li>
+                                    <a {{bindAttr href=this.resultUrl}} target="_blank">
+                                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.connection.source.icon}} />
+                                    </a>
+                                </li>
                             {{/each}}
                         </ul>
                     </li>

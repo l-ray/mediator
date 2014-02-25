@@ -6,7 +6,7 @@ Mediator.GroupsetRoute = Ember.Route.extend({
       var group1 = this.get('store').createRecord('group',{});
       var picture1 = this.get('store').createRecord('picture', {'url': 'http://ruthe.de/cartoons/strip_1705.jpg', 'thumbnailUrl':'http://ruthe.de/cartoons/tn_strip_1705.jpg'});
       var picture2 = this.get('store').createRecord('picture', {'url': 'http://ruthe.de/cartoons/strip_1704.jpg', 'thumbnailUrl':'http://ruthe.de/cartoons/tn_strip_1704.jpg'});
-      var source1 = this.get('store').createRecord('source', {'name':'testSource'});
+      var source1 = this.get('store').createRecord('source', {'name':'testSource', icon:'http://www.groovestation.de/favicon.ico'});
       var connection1 = this.get('store').createRecord('connection', {'source':source1});
       var result1 = this.get('store').createRecord('result',{
                             'title':'test1-groupset',

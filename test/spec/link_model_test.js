@@ -32,7 +32,7 @@
                   var item = store.createRecord(
                         'link',
                         {
-                            url:"myUrl",
+                            url:"http://myUrl.de",
                             result: store.createRecord(
                                 'result',
                                 {
@@ -42,8 +42,7 @@
                         });
 
                   expect(item.get("name")).to.be.a('string').and.equal("testName");
-                  expect(item.get("url")).to.be.a('string').and.equal("myUrl");
-
+                  expect(item.get("url")).to.be.a('string').and.equal("http://myUrl.de");
               })
           })
         })

@@ -32,6 +32,11 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
         return this.get('source.name');
     }.property('source.name'),
 
+    sourceUrl: function() {
+        return this.get('source.url');
+    }.property('source.url'),
+
+
     disabled: function() {
         return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
     }

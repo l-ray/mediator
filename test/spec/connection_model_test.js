@@ -62,15 +62,18 @@
         });
 
         describe('The Connection ', function () {
-            it('should provide a name attribute', function(){
+            it('should provide a name and url attribute', function(){
                 Ember.run( function() {
 
                     var item = store.createRecord('connection',{});
                     expect(item.get("name")).to.be.not.undefined;
                     expect(item.get("name")).to.be.null;
+                    expect(item.get("sourceUrl")).to.be.not.undefined;
+                    expect(item.get("sourceUrl")).to.be.null;
 
-                    item.set('source',store.createRecord('source',{name:'testSource'}));
+                    item.set('source',store.createRecord('source',{name:'testSource', url:'http://web.de'}));
                     expect(item.get("name")).to.be.a('string').and.equal('testSource');
+                    expect(item.get("sourceUrl")).to.be.a('string').and.equal('http://web.de');
                 })
             });
         });

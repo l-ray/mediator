@@ -27,7 +27,6 @@ Mediator.Result = DS.Model.extend({
 
     links: DS.hasMany('link'),
 
-
     priority: function() {
         var tmpPriority = 0;
         if (this.get('categories') && this.get('categories').length > 0) tmpPriority += 100;
@@ -47,6 +46,12 @@ Mediator.Result = DS.Model.extend({
         } catch (e) {
             return "";
         }
+    }.property('connection'),
+
+    resultUrl: function() {
+        var url = this.get('url');
+        var sourceUrl = this.get('connection') ? this.get('connection').get('sourceUrl'): '';
+        return url ? url : sourceUrl;
     }.property('connection')
 
 });

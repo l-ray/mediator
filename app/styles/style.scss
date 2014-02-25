@@ -6,52 +6,107 @@ html, body {
 }
 
 ul.dates {
+
   overflow: hidden;
+
+ .day {
+    display:block;
+    float:left;
+
+    a,
+    a:link,
+    a:visited {
+      border-right: 1px solid #aaaaaa;
+      padding: 0px 2px 0px 2px;
+      display: block;
+      text-decoration: none;
+      color: black;
+    }
+
+    a:hover {
+      text-decoration: underlined;
+      background-color: #ffc080 !important;
+    }
+
+    a.active,
+    a.active:link {
+      background-color: #ff6500;
+      color: #ffffff;
+    }
+
+    a.active  {
+      border-right: 1px solid #ff6500;
+      border-left: 1px solid #ff6500;
+    }
+
+    .number, .name {
+      display: block;
+    }
+ }
+
+  .saturday  {
+    background-color: #efefef;
+  }
+
+  .sunday  {
+    background-color: #dddddd;
+  }
+
 }
 
-ul.dates .day {
-  display:block;
-  float:left;
-}
+  ul.event {
 
-ul.dates .day a {
-  border-right: 1px solid #aaaaaa;
-  padding: 0px 2px 0px 2px;
-  display: block;
-}
+    li {
+      background-image: none !important;
+      list-style-image: none;
+      padding-left: 0 !important;
+    }
 
-ul.dates .day .number,
-ul.dates .day .name {
-  display: block;
-}
+    li.categories {
 
-ul.dates .day a,
-ul.dates .day a:link,
-ul.dates .day a:visited {
-  text-decoration: none;
-  color: black;
-}
+      li:after {
+        content: " | ";
+      }
 
-ul.dates .day a:hover {
-  text-decoration: underlined;
-  background-color: #ffc080 !important;
-}
+      li {
+        display: inline;
+        list-style-type: none;
+      }
 
-ul.dates .saturday  {
-  background-color: #efefef;
-}
+    }
 
-ul.dates .sunday  {
-  background-color: #dddddd;
-}
+    li.title {
+      list-style-type: none;
+      text-transform: uppercase;
+    }
 
-ul.dates .day a.active  {
-  border-right: 1px solid #ff6500;
-  border-left: 1px solid #ff6500;
-}
+    li.pictures ul.picture-list,
+    li.pictures ul.picture-list li {
+      list-style: none outside none;
+    }
 
-ul.dates .day a.active,
-ul.dates .day a.active:link {
-  background-color: #ff6500;
-  color: #ffffff;
-}
+    ul.pictures ul {
+      float: left;
+      padding: 2px;
+    }
+
+    li.location:after,
+    li.date:after {
+      content: " | ";
+    }
+
+    li.date {
+      display: inline;
+      list-style-type: none;
+    }
+
+    li.price {
+      display: inline;
+      list-style-type: none;
+    }
+
+    li.location, li.price {
+      display: inline;
+      list-style-type: none;
+    }
+  }
