@@ -30,8 +30,8 @@ Mediator.Result = DS.Model.extend({
     priority: function() {
         var tmpPriority = 0;
         if (this.get('categories') && this.get('categories').length > 0) tmpPriority += 100;
-        if (this.get('pictures') && this.get('pictures').get('length') > 0) tmpPriority += 100;
-        if (this.get('links') && this.get('links').get('length') > 0)  tmpPriority += 100;
+        if (this.get('pictures') && this.get('pictures.length') > 0) tmpPriority += 100;
+        if (this.get('links') && this.get('links.length') > 0)  tmpPriority += 100;
         if (typeof(this.get('price')) !== 'undefined') tmpPriority += 50;
         return tmpPriority;
     }.property('price', 'categories', 'pictures', 'links'),
@@ -79,7 +79,7 @@ Mediator.Result.FIXTURES = [
 
         connection: 0,
 
-        group: undefined,
+        pictures: [ ],
 
         categories: 'block,floete,punk,rock,folk'
 
@@ -106,7 +106,7 @@ Mediator.Result.FIXTURES = [
 
         connection: 1,
 
-        pictures: ['0','1'],
+        pictures: [ 0 , 1 ],
 
         group: undefined,
 

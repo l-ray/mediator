@@ -20,6 +20,8 @@ Mediator.Picture.FIXTURES = [
     id: 0,
     
     name: 'foo',
+
+    result: 1,
     
     url: 'http://nichtlustig.de/comics/full/081028.jpg',
     
@@ -35,9 +37,11 @@ Mediator.Picture.FIXTURES = [
     id: 1,
     
     name: 'bar',
-    
+
+    result: 1,
+
     url: 'http://static.nichtlustig.de/comics/full/130925.jpg',
-    
+
     thumbnailUrl: 'http://static.nichtlustig.de/comics/full/130925.jpg',
     
     description: 'bar',

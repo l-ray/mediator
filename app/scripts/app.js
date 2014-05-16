@@ -1,4 +1,6 @@
-var Mediator = window.Mediator = Ember.Application.create();
+var Mediator = window.Mediator = Ember.Application.create({
+    LOG_TRANSITIONS: true
+});
 
 Mediator.constants = Ember.Object.create({
      _CONST_LEVENSHTEIN_RATIO : 0.7,

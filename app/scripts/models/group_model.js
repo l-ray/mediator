@@ -12,6 +12,10 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
+    results: DS.hasMany('result', {async:true}),
+
+    groupset: DS.belongsTo('groupset'),
+
     priorityBySystem: function() {
         return (this.get('results').get('length') == 0) ?
             0 :
@@ -21,8 +25,6 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
                         return Math.max(currentMax,n.get('priority'));
                     },0);
     }.property('results.@each.priority'),
-
-    results: DS.hasMany('result'),
 
     _SourceNotSetException: { name: 'PatternSourceNotSetException', message: 'PatternSource Not Set in Connection.' },
     _InvalidArgumentException: { name: 'InvalidArgumentException', message: 'Argument is not from the correct type.' },
@@ -153,7 +155,9 @@ Mediator.Group.FIXTURES = [
     
     priorityBySystem: 100,
 
-    results: undefined
+    results: [1,2],
+
+    groupset: 0
   },
   
   {
@@ -171,7 +175,9 @@ Mediator.Group.FIXTURES = [
     
     priorityBySystem: 'foo',
 
-    results: undefined
+    results: undefined,
+
+    groupset: 0
   }
   
 ];

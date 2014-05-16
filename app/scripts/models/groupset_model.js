@@ -4,7 +4,7 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
     date: DS.attr('date'),
 
-    groups: DS.hasMany('group'),
+    groups: DS.hasMany('group', { async: true }),
 
     length: function(){return this.get('groups').get('length');}.property('groups'),
 
@@ -28,6 +28,7 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
         var matrix = new Array(matrixLength);
 
         for (var i=0; i<this.get('groups').get('length'); i++) {
+
             matrix[i] = new Array(this.get('groups').get('length'));
 
             for (var j=0; j < this.get('groups').get('length'); j++) {
@@ -125,25 +126,41 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
     isSunday: function() {
         var day = this.get('date').getDay();
         return day == 0;
-    }.property('date'),
+    }.property('date')
 
 });
 
 // delete below here if you do not want fixtures
 Mediator.Groupset.FIXTURES = [
-  
+
+    {
+        id: '2014-05-14',
+        date: new Date(2014,5,14),
+        groups: []
+    },
+
   {
-    id: 0,
-    
-    date: new Date()
-    
+    id: '2014-05-15',
+    date: new Date(2014,5,15),
+    groups: [0,1]
   },
   
   {
-    id: 1,
-    
-    date: new Date()
-    
+    id: '2014-05-16',
+    date: new Date(2014,5,16),
+    groups: []
+  },
+
+  {
+        id: '2014-05-17',
+        date: new Date(2014,5,17),
+        groups: []
+  },
+
+  {
+        id: '2014-05-18',
+        date: new Date(2014,5,18),
+        groups: []
   }
   
 ];

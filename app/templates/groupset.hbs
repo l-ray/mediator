@@ -1,13 +1,9 @@
-{{ render 'groupsets' }}
-
-{{ render 'connections' }}
-
 <h1>groupSet</h1>
 
-event Date: {{ this.date }}
+event Date: {{ date }}
 
-groups {{ this.groups }}
+groups {{ groups }}
 
-{{ render 'groups' this.groups }}
+{{ render 'groups' groups }}
 
 {{outlet}}

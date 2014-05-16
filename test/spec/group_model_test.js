@@ -17,6 +17,7 @@
             container.register('model:connection', Mediator.Connection);
             container.register('model:picture', Mediator.Picture);
             container.register('model:link', Mediator.Link);
+            container.register('model:groupset', Mediator.Groupset);
             store = Mediator.Store.create({
                 container: container
             });
@@ -34,10 +35,15 @@
                     expect(item.get("lastObject")).to.be.undefined;
                     expect(item.get("firstObject")).to.be.undefined;
 
-                    item.get('results').pushObject(store.createRecord('result'));
-                    item.enumerableContentDidChange();
-                    expect(item.get('lastObject')).to.be.an.instanceOf(Mediator.Result);
-                    expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                    item.get('results').then(function(results) {
+
+                        results.pushObject(store.createRecord('result'));
+
+                        item.enumerableContentDidChange();
+                        expect(item.get('lastObject')).to.be.an.instanceOf(Mediator.Result);
+                        expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                    });
+
                 })
             });
             it('should give correct result set size', function(){
@@ -47,10 +53,13 @@
                     item.toArray().should.have.length(0);
 
                     var firstResult = store.createRecord('result',{});
-                    item.get('results').pushObject(firstResult);
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
+                        results.pushObject(firstResult);
 
-                    item.toArray().should.have.length(1);
+                        item.enumerableContentDidChange();
+
+                        item.toArray().should.have.length(1);
+                    });
                 })
             })
         });
@@ -76,21 +85,26 @@
             it('should show first non-empty title', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    item.get('results').pushObject(store.createRecord('result', {}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("title")).to.be.a('string').and.to.be.empty;
+                    item.get('results').then( function(results) {
+                        results.pushObject(store.createRecord('result', {}));
 
-                    var testTitle = "cool, bro";
-                    item.get('results').pushObject(store.createRecord('result', {'title':testTitle}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get("title")).to.be.a('string').and.to.equal(testTitle);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("title")).to.be.a('string').and.to.be.empty;
 
-                    item.get('results').pushObject(store.createRecord('result', {'title':"dontShowThis"}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(3);
-                    expect(item.get("title")).to.be.a('string').and.to.equal(testTitle);
+                        var testTitle = "cool, bro";
+                        results.pushObject(store.createRecord('result', {'title':testTitle}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get("title")).to.be.a('string').and.to.equal(testTitle);
+
+                        results.pushObject(store.createRecord('result', {'title':"dontShowThis"}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(3);
+                        expect(item.get("title")).to.be.a('string').and.to.equal(testTitle);
+
+                    });
+
                 })
             });
 
@@ -98,21 +112,24 @@
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
 
-                    item.get('results').pushObject(store.createRecord('result', {'title':"cooL, bro"}));
-                    item.enumerableContentDidChange();
-                    expect(item.get("reducedTitle")).to.be.a('string').and.to.equal("cool bro");
+                    item.get('results').then(function(results) {
+                        results.pushObject(store.createRecord('result', {'title':"cooL, bro"}));
 
-                    item.get('firstObject').set('title',"  .-DiLemM ? ");
-                    expect(item.get("reducedTitle")).to.match(/dilemm/,"upperCase and umlaute");
+                        item.enumerableContentDidChange();
+                        expect(item.get("reducedTitle")).to.be.a('string').and.to.equal("cool bro");
 
-                    item.get('firstObject').set('title',"  .-DiLemMÖ ? ");
-                    expect(item.get("reducedTitle")).to.match(/dilemmö/,"upperCase and umlaute");
+                        item.get('firstObject').set('title',"  .-DiLemM ? ");
+                        expect(item.get("reducedTitle")).to.match(/dilemm/,"upperCase and umlaute");
 
-                    item.get('firstObject').set('title',"U96");
-                    expect(item.get("reducedTitle")).to.match(/u96/,"numbers");
+                        item.get('firstObject').set('title',"  .-DiLemMÖ ? ");
+                        expect(item.get("reducedTitle")).to.match(/dilemmö/,"upperCase and umlaute");
 
-                    item.get('firstObject').set('title',"###\ test  -. -Me---");
-                    expect(item.get("reducedTitle")).to.be.a('string').and.to.equal("test me","Stripping spaces");
+                        item.get('firstObject').set('title',"U96");
+                        expect(item.get("reducedTitle")).to.match(/u96/,"numbers");
+
+                        item.get('firstObject').set('title',"###\ test  -. -Me---");
+                        expect(item.get("reducedTitle")).to.be.a('string').and.to.equal("test me","Stripping spaces");
+                    });
                 })
             });
         });
@@ -129,21 +146,25 @@
             it('should show first non-empty sub-title', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    item.get('results').pushObject(store.createRecord('result', {}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("subtitle")).to.be.a('string').and.to.be.empty;
+                    item.get('results').then(function(results) {
+                        results.pushObject(store.createRecord('result', {}));
 
-                    var subTitle = "cool, bro";
-                    item.get('results').pushObject(store.createRecord('result', {'subtitle':subTitle}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get("subtitle")).to.be.a('string').and.to.equal(subTitle);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("subtitle")).to.be.a('string').and.to.be.empty;
 
-                    item.get('results').pushObject(store.createRecord('result', {'subtitle':"dontShowThis"}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(3);
-                    expect(item.get("subtitle")).to.be.a('string').and.to.equal(subTitle);
+                        var subTitle = "cool, bro";
+                        results.pushObject(store.createRecord('result', {'subtitle':subTitle}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get("subtitle")).to.be.a('string').and.to.equal(subTitle);
+
+                        results.pushObject(store.createRecord('result', {'subtitle':"dontShowThis"}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(3);
+                        expect(item.get("subtitle")).to.be.a('string').and.to.equal(subTitle);
+                    });
+
                 })
             });
 
@@ -161,21 +182,31 @@
             it('should show first non-empty price', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    item.get('results').pushObject(store.createRecord('result', {}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("price")).to.be.empty;
+                    item.get('results').then(function(results) {
+                        results.pushObject(
+                            store.createRecord('result', {})
+                        );
 
-                    var price = "5 Euro";
-                    item.get('results').pushObject(store.createRecord('result', {'price':price }));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get("price")).to.be.equal(price);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("price")).to.be.empty;
 
-                    item.get('results').pushObject(store.createRecord('result', {'price':"dontShowThis"}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(3);
-                    expect(item.get("price")).to.be.equal(price);
+                        var price = "5 Euro";
+                        results.pushObject(
+                            store.createRecord('result', {'price':price })
+                        );
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get("price")).to.be.equal(price);
+
+                        results.pushObject(
+                            store.createRecord('result', {'price':"dontShowThis"})
+                        );
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(3);
+                        expect(item.get("price")).to.be.equal(price);
+                    });
+
                 })
             });
         });
@@ -191,21 +222,24 @@
             it('should show first non-empty location', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    item.get('results').pushObject(store.createRecord('result', {}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("location")).to.be.a('string').and.to.be.empty;
+                    item.get('results').then(function(results) {
+                        results.pushObject(store.createRecord('result', {}));
 
-                    var location = "Himmelreich";
-                    item.get('results').pushObject(store.createRecord('result', {'location':location}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get("location")).to.be.a('string').and.to.equal(location);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("location")).to.be.a('string').and.to.be.empty;
 
-                    item.get('results').pushObject(store.createRecord('result', {'location':"dontShowThis"}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(3);
-                    expect(item.get("location")).to.be.a('string').and.to.equal(location);
+                        var location = "Himmelreich";
+                        results.pushObject(store.createRecord('result', {'location':location}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get("location")).to.be.a('string').and.to.equal(location);
+
+                        results.pushObject(store.createRecord('result', {'location':"dontShowThis"}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(3);
+                        expect(item.get("location")).to.be.a('string').and.to.equal(location);
+                    });
                 })
             });
 
@@ -213,22 +247,26 @@
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
 
-                    item.get('results').pushObject(store.createRecord('result', {'location':'cooL, bro'}));
-                    item.enumerableContentDidChange();
-                    expect(item.get("reducedLocation")).to.be.a('string').and.to.equal("cool bro");
+                    item.get('results').then(function(results) {
+                        results.pushObject(
+                            store.createRecord('result', {'location':'cooL, bro'})
+                        );
 
-                    item.get('firstObject').set('location',"  .-DiLemM ? ");
-                    expect(item.get("reducedLocation")).to.match(/dilemm/,"upperCase and umlaute");
+                        item.enumerableContentDidChange();
+                        expect(item.get("reducedLocation")).to.be.a('string').and.to.equal("cool bro");
 
-                    item.get('firstObject').set('location',"  .-DiLemMÖ ? ");
-                    expect(item.get("reducedLocation")).to.match(/dilemmö/,"upperCase and umlaute");
+                        item.get('firstObject').set('location',"  .-DiLemM ? ");
+                        expect(item.get("reducedLocation")).to.match(/dilemm/,"upperCase and umlaute");
 
-                    item.get('firstObject').set('location',"U96");
-                    expect(item.get("reducedLocation")).to.match(/u96/,"numbers");
+                        item.get('firstObject').set('location',"  .-DiLemMÖ ? ");
+                        expect(item.get("reducedLocation")).to.match(/dilemmö/,"upperCase and umlaute");
 
-                    item.get('firstObject').set('location',"###\ test  -. -Me---");
-                    expect(item.get("reducedLocation")).to.be.a('string').and.to.equal("test me","Stripping spaces");
+                        item.get('firstObject').set('location',"U96");
+                        expect(item.get("reducedLocation")).to.match(/u96/,"numbers");
 
+                        item.get('firstObject').set('location',"###\ test  -. -Me---");
+                        expect(item.get("reducedLocation")).to.be.a('string').and.to.equal("test me","Stripping spaces");
+                    });
                 })
             });
         });
@@ -245,21 +283,25 @@
             it('should show first non-empty startDate', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
-                    item.get('results').pushObject(store.createRecord('result', {}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("startDate")).to.be.empty;
+                    item.get('results').then(function(results) {
+                        results.pushObject(store.createRecord('result', {}));
 
-                    var startDate = "2013-12-11 20:00";
-                    item.get('results').pushObject(store.createRecord('result', {'startDate':startDate}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get("startDate")).to.be.equal(startDate);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("startDate")).to.be.empty;
 
-                    item.get('results').pushObject(store.createRecord('result', {'startDate':"dontShowThis"}));
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(3);
-                    expect(item.get("startDate")).to.be.equal(startDate);
+                        var startDate = "2013-12-11 20:00";
+                        results.pushObject(store.createRecord('result', {'startDate':startDate}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get("startDate")).to.be.equal(startDate);
+
+                        results.pushObject(store.createRecord('result', {'startDate':"dontShowThis"}));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(3);
+                        expect(item.get("startDate")).to.be.equal(startDate);
+                    });
+
                 })
             });
 
@@ -280,15 +322,20 @@
                     var location ="cool what yeah-";
                     var item = store.createRecord('group',{});
 
-                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
+                        results.pushObject(
+                            store.createRecord('result', {'title':title, 'location':location})
+                        );
 
-                    item.get('reducedSummary').split(" ").should.have.length(4);
-                    expect(item.get('reducedSummary').split(" "))
-                        .to.contain("bro")
-                        .and.to.contain("cool")
-                        .and.to.contain("yeah")
-                        .and.to.contain("what");
+                        item.enumerableContentDidChange();
+
+                        item.get('reducedSummary').split(" ").should.have.length(4);
+                        expect(item.get('reducedSummary').split(" "))
+                            .to.contain("bro")
+                            .and.to.contain("cool")
+                            .and.to.contain("yeah")
+                            .and.to.contain("what");
+                    });
                 })
             });
 
@@ -298,14 +345,19 @@
                     var location ="vvueBBZK7QqoBlF2txZXtqMNF";
                     var item = store.createRecord('group',{});
 
-                    item.get('results').pushObject(store.createRecord('result', {'title':title, 'location':location}));
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
+                        results.pushObject(
+                            store.createRecord('result', {'title': title, 'location': location})
+                        );
 
-                    item.get('reducedSummary').should.be.a('string');
-                    item.get('reducedSummary').should.have.length.gt.zero;
-                    item.get('reducedSummary').should.have.length.lt(title.length + location.length);
-                    expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
-                    expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
+                        item.enumerableContentDidChange();
+
+                        item.get('reducedSummary').should.be.a('string');
+                        item.get('reducedSummary').should.have.length.gt.zero;
+                        item.get('reducedSummary').should.have.length.lt(title.length + location.length);
+                        expect(item.get('reducedSummary')).to.be.equal(item.get('reducedSummary').toLowerCase());
+                        expect(item.get('reducedSummary')).to.match(/[\d\s ]/);
+                    });
                 })
             });
 
@@ -336,13 +388,16 @@
                     p2.pushObject(store.createRecord('picture', {'url':'http://test.co/img2.src'}));
                     p2.pushObject(store.createRecord('picture', {'url':'http://test.co/img3.src'}));
 
-                    item.get('results').pushObject(firstResult);
-                    item.get('results').pushObject(secondResult);
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
 
-                    expect(item.get('pictures')).to.have.an.property('length');
-                    expect(item.get('pictures')).to.be.not.empty;
-                    item.get('pictures').should.have.length(3);
+                        results.pushObject(firstResult);
+                        results.pushObject(secondResult);
+                        item.enumerableContentDidChange();
+
+                        expect(item.get('pictures')).to.have.an.property('length');
+                        expect(item.get('pictures')).to.be.not.empty;
+                        item.get('pictures').should.have.length(3);
+                    });
                 })
             });
         })
@@ -363,15 +418,18 @@
                     var result1 = store.createRecord('result', {});
                     var result2 = store.createRecord('result', {'price': 5});
 
-                    item.get('results').pushObject(result1);
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(1);
-                    expect(item.get("priority")).to.be.equal(0);
+                    item.get('results').then(function(results) {
+                        results.pushObject(result1);
 
-                    item.get('results').pushObject(result2);
-                    item.enumerableContentDidChange();
-                    item.toArray().should.have.length(2);
-                    expect(item.get('priority')).to.be.equal(result2.get('priority'));
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(1);
+                        expect(item.get("priority")).to.be.equal(0);
+
+                        item.get('results').pushObject(result2);
+                        item.enumerableContentDidChange();
+                        item.toArray().should.have.length(2);
+                        expect(item.get('priority')).to.be.equal(result2.get('priority'));
+                    });
                 })
             });
 
@@ -402,13 +460,15 @@
                     p2.pushObject(store.createRecord('link', {'url':'http://test.co/img2.src'}));
                     p2.pushObject(store.createRecord('link', {'url':'http://test.co/img3.src'}));
 
-                    item.get('results').pushObject(firstResult);
-                    item.get('results').pushObject(secondResult);
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
+                        results.pushObject(firstResult);
+                        results.pushObject(secondResult);
+                        item.enumerableContentDidChange();
 
-                    expect(item.get('links')).to.have.an.property('length');
-                    expect(item.get('links')).to.be.not.empty;
-                    item.get('links').should.have.length(3);
+                        expect(item.get('links')).to.have.an.property('length');
+                        expect(item.get('links')).to.be.not.empty;
+                        item.get('links').should.have.length(3);
+                    });
                 })
             });
         })
@@ -434,12 +494,14 @@
                     var secondResult = store.createRecord('result', {id:"p2"});
                     var p2 = secondResult.set('categories',"pop,jazz,etc");
 
-                    item.get('results').pushObject(firstResult);
-                    item.get('results').pushObject(secondResult);
-                    item.enumerableContentDidChange();
+                    item.get('results').then(function(results) {
+                        results.pushObject(firstResult);
+                        results.pushObject(secondResult);
+                        item.enumerableContentDidChange();
 
-                    expect(item.get('categories')).to.have.an.property('length').and.to.be.not.empty;
-                    item.get('categories').should.have.length(3);
+                        expect(item.get('categories')).to.have.an.property('length').and.to.be.not.empty;
+                        item.get('categories').should.have.length(3);
+                    });
                 })
             });
         })

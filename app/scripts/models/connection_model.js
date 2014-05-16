@@ -22,7 +22,7 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     results: DS.hasMany('result', {'async':true}),
 
-    length: function(){return this.get('results.length');}.property('results.length'),
+    length: Ember.computed.alias('results.length'),
 
     nextObject: function(index) {
         return this.get('results').nextObject(index);

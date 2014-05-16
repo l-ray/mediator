@@ -82,7 +82,7 @@
             it('should on picture list only return', function(){
                 Ember.run( function() {
                     var pic = store.createRecord('picture',{});
-                    var item = store.createRecord('result',{'pictures' : pic});
+                    var item = store.createRecord('result');
                     item.get('pictures').pushObject(pic);
                     expect(item.get("priority")).to.be.equal(100);
                 })

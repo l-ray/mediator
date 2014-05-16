@@ -1,13 +1,13 @@
 <h1>ResultGroups</h1>
 
     <ul>
-        {{#each model}}
+        {{#each }}
             <li>
                 <ul class="event">
-                    <li class="pictures">
+                    <li class="pictures">picturesque:{{this.pictures}}
                         <ul class="picture-list">
                             {{#each this.pictures}}
-                                <li><img {{bindAttr src=this.thumbnailUrl}} /></li>
+                                <li><img {{bindAttr src=thumbnailUrl}} /></li>
                             {{/each}}
                         </ul>
                     </li>
