@@ -11,6 +11,8 @@ Mediator.constants = Ember.Object.create({
 });
 
 /* Order and include as you please. */
+require('scripts/adapters/*');
+require('scripts/components/*');
 require('scripts/controllers/*');
 require('scripts/store');
 require('scripts/models/*');

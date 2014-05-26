@@ -24,6 +24,8 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     length: Ember.computed.alias('results.length'),
 
+    id: function() {[this.get('source.id'),this.get('startDate')].join('-')}.property('source.id','startDate'),
+
     nextObject: function(index) {
         return this.get('results').nextObject(index);
     },
@@ -36,9 +38,12 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
         return this.get('source.url');
     }.property('source.url'),
 
-
     disabled: function() {
         return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
+    },
+
+    toString: function() {
+        return "[Connection id:"+this.get('id')+"]";
     }
 });
 
@@ -46,7 +51,7 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 Mediator.Connection.FIXTURES = [
   
   {
-    id: 0,
+    id: '0-2014-05-15',
     
     startDate: new Date(),
     
@@ -63,7 +68,7 @@ Mediator.Connection.FIXTURES = [
   },
   
   {
-    id: 1,
+    id: '1-2014-05-15',
     
     startDate: new Date(),
     

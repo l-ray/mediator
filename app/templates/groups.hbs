@@ -1,71 +1,8 @@
 <h1>ResultGroups</h1>
 
-    <ul>
+    <ul class="result_groups">
         {{#each }}
-            <li>
-                <ul class="event">
-                    <li class="pictures">picturesque:{{this.pictures}}
-                        <ul class="picture-list">
-                            {{#each this.pictures}}
-                                <li><img {{bindAttr src=thumbnailUrl}} /></li>
-                            {{/each}}
-                        </ul>
-                    </li>
-                    <li title="categories" class="categories">Cat
-                        <ul>
-                        {{#each categories }}
-                            <li>{{ this }}</li>
-                        {{/each}}
-                        </ul>
-                    </li>
-                    <li class="title">title{{ this.title }}</li>
-                    <li class="priority">prio{{ this.priority }}</li>
-                    <li class="subtitle">subtitle{{ this.subtitle }}</li>
-                    <li class="date">start{{ this.startDate }}</li>
-                    <li class="location">loc{{this.location}}</li>
-                    <li class="price">price{{ this.price }}</li>
-
-                    <li class="links">
-                    <ul>
-                        {{#each links}}
-                             <li>
-                                <a {{bindAttr href=this.url}} target="_blank">
-                                    <img class="event_info_source_icon" {{bindAttr title=this.name src=this.result.connection.source.icon}} />
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul></li>
-
-                    <!-- var aPatternSources = this.getSources();
-                    for (var i=0; i < aPatternSources.length; i++) {
-                    var item = new Element("li",{});
-                    var itemA = new Element("a",{"target": "_new"});
-                    var itemB = new Element("img", {
-                    "src": aPatternSources[i].getIcon(),
-                    "alt": aPatternSources[i],
-                    "class" : "event_info_source_icon"});
-                    if (aPatternSources[i].getSourceLink() != undefined)
-                    itemA.setAttribute("href",aPatternSources[i].getSourceLink());
-                    else
-                    itemA.setAttribute("href",aPatternSources[i].getURL());
-                    itemA.appendChild(itemB);
-                    item.appendChild(itemA);
-                    oLiPattern.appendChild(item);
-                    } -->
-                    <li class="sources">hallihallo
-                        <ul>
-                            {{#each results }}
-                                <li>
-                                    <a {{bindAttr href=this.resultUrl}} target="_blank">
-                                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.connection.source.icon}} />
-                                    </a>
-                                </li>
-                            {{/each}}
-                        </ul>
-                    </li>
-                    <li>{{#linkTo 'group' this}}{{this.id}}{{/linkTo}}</li>
-                </ul>
-            </li>
+            {{group-details group=this tagName="li"}}
         {{/each}}
     </ul>
 

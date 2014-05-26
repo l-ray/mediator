@@ -1,0 +1,19 @@
+{{input type="checkbox" checked=connection.active}}
+<img {{bindAttr src=connection.source.icon}} class="connectionSource_Icon" />
+<span class="connectionSource">
+    {{#linkTo 'source' connection.source}}
+        {{connection.source.name}}
+    {{/linkTo}}
+</span>
+<span class="connectionStatus">{{connection.status}}</span>
+<span class="connectionResults">Size: {{connection.length}}</span>
+<span class="connectionId">Id: {{connection.id}}</span>
+
+{{ render 'connection' connection }}
+
+{{#if connection.editMode}}
+    <button {{action 'doneEditing' connection}}>Done</button>
+    {{render 'source.edit' connection.source}}
+{{else}}
+    <button {{action 'edit' connection}}>edit me</button>
+{{/if}}

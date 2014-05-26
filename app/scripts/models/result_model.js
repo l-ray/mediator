@@ -13,6 +13,8 @@ Mediator.Result = DS.Model.extend({
 
     description: DS.attr('string'),
 
+    location: DS.attr('string'),
+
     price: DS.attr('number'),
 
     url: DS.attr('string'),
@@ -37,7 +39,7 @@ Mediator.Result = DS.Model.extend({
     }.property('price', 'categories', 'pictures', 'links'),
 
     toString: function () {
-        return this.get('title') + ", " + this.get('location') + ", " + this.get('startDate');
+        return "[Title:"+this.get('title') + ", Location:" + this.get('location') + ", start:" + this.get('start')+"]";
     },
 
     sourceName: function() {
@@ -71,15 +73,17 @@ Mediator.Result.FIXTURES = [
 
         abstract: 'foo',
 
+        location: 'foo-testlocation',
+
         description: 'foo',
 
         price: '50',
 
         url: 'foo',
 
-        connection: 0,
+        connection: '0-2014-05-15',
 
-        pictures: [ ],
+        /*pictures: [ ],*/
 
         categories: 'block,floete,punk,rock,folk'
 
@@ -102,11 +106,13 @@ Mediator.Result.FIXTURES = [
 
         price: 'bar',
 
+        location: 'bar-testlocation',
+
         url: 'bar',
 
-        connection: 1,
+        connection: '1-2014-05-15',
 
-        pictures: [ 0 , 1 ],
+        /*pictures: [ 0 , 1 ],*/
 
         group: undefined,
 
@@ -129,11 +135,13 @@ Mediator.Result.FIXTURES = [
 
         description: 'bar2',
 
+        location: 'bar2-testlocation',
+
         price: 'bar2',
 
         url: 'bar2',
 
-        connection: '1',
+        connection: '1-2014-05-15',
 
         group: undefined,
 

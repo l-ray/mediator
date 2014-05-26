@@ -73,7 +73,7 @@
             });
          });
 
-        describe('return title', function () {
+        describe('title', function () {
 
             it('should on standard have an empty title', function(){
                 Ember.run( function() {
@@ -134,7 +134,7 @@
             });
         });
 
-        describe('return subtitle', function () {
+        describe('subtitle', function () {
 
             it('should on standard have an empty sub-title', function(){
                 Ember.run( function() {
@@ -170,7 +170,7 @@
 
         });
 
-        describe('return price', function () {
+        describe('price', function () {
 
             it('should on standard have an empty price', function(){
                 Ember.run( function() {
@@ -211,7 +211,7 @@
             });
         });
 
-        describe('return location', function () {
+        describe('location', function () {
             it('should on standard have an empty location', function(){
                 Ember.run( function() {
                     var item = store.createRecord('group',{});
@@ -271,7 +271,7 @@
             });
         });
 
-        describe('return startDate', function () {
+        describe('startDate', function () {
 
             it('should on standard have an empty startDate', function(){
                 Ember.run( function() {
@@ -291,12 +291,12 @@
                         expect(item.get("startDate")).to.be.empty;
 
                         var startDate = "2013-12-11 20:00";
-                        results.pushObject(store.createRecord('result', {'startDate':startDate}));
+                        results.pushObject(store.createRecord('result', {'start':startDate}));
                         item.enumerableContentDidChange();
                         item.toArray().should.have.length(2);
                         expect(item.get("startDate")).to.be.equal(startDate);
 
-                        results.pushObject(store.createRecord('result', {'startDate':"dontShowThis"}));
+                        results.pushObject(store.createRecord('result', {'start':"dontShowThis"}));
                         item.enumerableContentDidChange();
                         item.toArray().should.have.length(3);
                         expect(item.get("startDate")).to.be.equal(startDate);
@@ -307,7 +307,7 @@
 
         }),
 
-        describe('return summary string', function () {
+        describe('summary string', function () {
 
             it('should on standard have an empty summary', function(){
                 Ember.run( function() {
@@ -363,7 +363,7 @@
 
         })
 
-        describe('return pictures of all results', function () {
+        describe('pictures of all results', function () {
 
             it('should on standard have no pictures', function(){
                 Ember.run( function() {
@@ -402,7 +402,7 @@
             });
         })
 
-        describe('returned priorities', function () {
+        describe('priorities', function () {
 
             it('should recognize empty system priority', function(){
                 Ember.run( function() {
@@ -435,7 +435,7 @@
 
         });
 
-        describe('return links of all results', function () {
+        describe('links of all results', function () {
 
             it('should on standard have no links', function(){
                 Ember.run( function() {

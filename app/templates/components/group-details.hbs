@@ -1,0 +1,59 @@
+    <section class="event">
+        {{#if group.pictures}}
+            <ul class="pictures">
+                {{#each group.pictures}}
+                    <li><img {{bindAttr src=thumbnailUrl}} /></li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <span class="noPicturesWarning">No pictures found for this event.{{group.pictures}}</span>
+        {{/if}}
+
+        {{#if group.categories}}
+            <ul title="categories" class="categories">
+                {{#each group.categories }}
+                    <li>{{ this }}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
+
+        <h1 class="title">{{ group.title }}</h1>
+        {{#if group.subtitle}}
+            <h2 class="subtitle">{{ group.subtitle }}</h2>
+        {{/if}}
+        {{#if group.description}}
+            <div class="description">{{ group.description }}</div>
+        {{/if}}
+        <time class="date">
+            {{#if group.startDate}}
+                {{ format-date group.startDate "DD.MM.YYYY" }}
+            {{else}}
+                no start date
+            {{/if}}
+        </time>
+        <span class="location">{{#if group.location}} {{group.location}} {{else}}no location{{/if}}</span>
+        <span class="price">{{#if group.price }}{{ group.price }}{{else}}no price{{/if}}</span>
+
+        <ul class="links">
+            {{#each group.links}}
+                <li>
+                    <a {{bindAttr href=this.url}} target="_blank">
+                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.result.connection.source.icon}} />
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+
+        <ul class="sources">
+            {{#each group.results }}
+                <li>
+                    <a {{bindAttr href=this.resultUrl}} target="_blank">
+                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.connection.source.icon}} />
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+
+        <span class="priority">prio{{ group.priority }}</span>
+        <span>{{#linkTo 'group' group}}{{group.id}}{{/linkTo}}</span>
+    </section>

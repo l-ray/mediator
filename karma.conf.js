@@ -11,7 +11,6 @@ module.exports = function(config) {
     // Testing framework to be used, default is `jasmine`.
     frameworks : [
       'mocha'
-      
     ],
 
 
@@ -26,8 +25,9 @@ module.exports = function(config) {
       'app/bower_components/simmetrix-longestsubstring/lib/simmetrix.longestsubstring.js',
       'app/bower_components/simmetrix-qgram/lib/simmetrix.qgram.js',
       'app/bower_components/simmetrix-smithwaterman/lib/simmetrix.smithwaterman.js',
+      'app/bower_components/momentjs/moment.js',
       
-      'test/lib/chai.js',
+      'test/bower_components/chai/chai.js',
       'app/bower_components/ember-mocha-adapter/adapter.js',
       
       '.tmp/scripts/combined-scripts.js',
@@ -82,7 +82,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers : ['Firefox'],
+    browsers : ['Chrome'],
 
 
     // If the browser does not capture in the given timeout [ms], then kill it.

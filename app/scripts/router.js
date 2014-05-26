@@ -14,11 +14,8 @@ Mediator.Router.map(function () {
         });
     });
 
-    this.resource('groupsets', function() {
-        this.resource('groupset', { path: '/:groupset_id' }, function() {
-            this.route('edit');
-        });
-        this.route('create');
+    this.resource('groupset', { path: '/groupset/:groupset_id' }, function() {
+        this.route('edit');
     });
 
     this.resource('sources', function() {

@@ -6,6 +6,7 @@
     });
 });*/
 
+/*
 describe("ApplicationRoute", function () {
     describe("model property", function () {
         var applicationRoute = Mediator.ApplicationRoute.create();
@@ -15,4 +16,4 @@ describe("ApplicationRoute", function () {
         });
     });
 });
-
+*/

@@ -29,7 +29,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
     _SourceNotSetException: { name: 'PatternSourceNotSetException', message: 'PatternSource Not Set in Connection.' },
     _InvalidArgumentException: { name: 'InvalidArgumentException', message: 'Argument is not from the correct type.' },
 
-    length: function(){return this.get('results').get('length');}.property('results'),
+    length: function(){return this.get('results.length');}.property('results'),
 
     nextObject: function(index) {
         return this.get('results').nextObject(index);
@@ -52,34 +52,34 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
     subtitle: function() {
         var selected = this.get('results').filter(
             function(item, index, self){
-                if (item && item.get('subtitle') && item.get('subtitle').trim()) { return true; }
+                return !Ember.isEmpty(item.get('subtitle'));
             }).get('firstObject');
         return selected ? selected.get('subtitle') : "";
-    }.property('results','length'),
+    }.property('results.@each.subtitle'),
 
     price: function() {
         var selected = this.get('results').filter(
-            function(item, index, self){
-                if (item && item.get('price') && item.get('price').trim()) { return true; }
+            function(item){
+                return !Ember.isEmpty(item.get('price'));
             }).get('firstObject');
         return selected ? selected.get('price') : "";
-    }.property('results','length'),
+    }.property('results.@each.price'),
 
     location: function() {
         var selected = this.get('results').filter(
-            function(item, index, self){
-                if (item && item.get('location') && item.get('location').trim()) { return true; }
+            function(item){
+                return !Ember.isEmpty(item.get('location'));
             }).get('firstObject');
         return selected ? selected.get('location') : "";
-    }.property('results.@each.location','length'),
+    }.property('results.@each.location'),
 
     startDate: function() {
         var selected = this.get('results').filter(
-            function(item, index, self){
-                if (item && item.get('startDate') && item.get('startDate').trim()) { return true; }
+            function(item){
+                return !Ember.isEmpty(item.get('start'));
             }).get('firstObject');
-        return selected ? selected.get('startDate') : "";
-    }.property('results','length'),
+        return selected ? selected.get('start') : "";
+    }.property('results.@each.start'),
 
     _returnCompareString: function(myString) {
         return $.trim(myString.toLowerCase().replace(/[^a-zäöü0-9]+/g," "));
@@ -101,19 +101,19 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     connections: function() {
         return this.get('results').map(function(n){return n.get('connection');}).filter(function(n) {return n instanceof Mediator.Connection});
-    }.property('results'),
+    }.property('results.@each.connection'),
 
     pictures: function() {
         var localPictures = new Ember.Set();
         this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'));});
         return localPictures.toArray();
-    }.property('@each'),
+    }.property('results.@each.pictures'),
 
     links: function() {
         var localLinks = new Ember.Set();
         this.get('results').forEach(function(n) {localLinks.addEach(n.get('links'));});
         return localLinks.toArray();
-    }.property('@each'),
+    }.property('results.@each.links'),
 
     categories: function() {
         var itemSet = new Ember.Set();
@@ -127,7 +127,7 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
             }
         );
         return itemSet.toArray();
-    }.property('@each'),
+    }.property('results.@each.categories'),
 
     priority: function() {
         return (this.get('priorityByRuleSet')
@@ -143,7 +143,7 @@ Mediator.Group.FIXTURES = [
   {
     id: 0,
 
-    title: 'foo',
+    /*title: 'foo',*/
     
     recycled: false,
     
@@ -163,7 +163,7 @@ Mediator.Group.FIXTURES = [
   {
     id: 1,
 
-    title: 'foo',
+   /* title: 'foo',*/
     
     recycled: 'foo',
     
