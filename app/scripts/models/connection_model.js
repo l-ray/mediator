@@ -20,11 +20,14 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     source: DS.belongsTo('source'),
 
-    results: DS.hasMany('result', {'async':true}),
-
     length: Ember.computed.alias('results.length'),
 
-    id: function() {[this.get('source.id'),this.get('startDate')].join('-')}.property('source.id','startDate'),
+    groupset: DS.belongsTo('groupset'),
+
+    results: DS.hasMany('result', {'async':true}),
+
+        // possibly not needed at all, as the adapter gives the new IDs
+    //id: function() {[this.get('source.id'),this.get('startDate')].join('-')}.property('source.id','startDate'),
 
     nextObject: function(index) {
         return this.get('results').nextObject(index);

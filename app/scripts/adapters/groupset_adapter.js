@@ -30,21 +30,50 @@
      // generate Groupsets for the next x days in advance
      findAll: function(store, type) {
 
-         //store.find('connection')
-
-         var fixtures = this.fixturesForType(type);
+        var fixtures = this.fixturesForType(type);
+         var results = [];
 
         fixtures.forEach(function(item) {
-         //   console.log(store.find('connection',{ "startDate": item.id }));
-        })
+
+            var newGroupset = store.createRecord('groupset', {
+                date : item.date,
+                id: item.id
+            });
+
+
+            console.log("finding connections for groupset "+item.id);
+
+            var promiseArray = store.find('connection',{ 'startDate': item.id });
+            console.log("promiseArray"+promiseArray);
+            promiseArray.then(
+                function(connections){
+                    console.log("Got the following connections:"+connections);
+
+                    connections.forEach(
+                        function(connection) {
+                            console.log("Found connection:"+connection);
+
+                            newGroupset.get('connections').then(function(n) {
+                                console.log("pushed connection |"+connection+"| with source |"+connection.get('source')+"| into groupset "+newGroupset);
+                                n.pushObject(connection);
+                                connection.set('groupset', newGroupset);
+                            });
+                        }
+                    )
+                }, function(data,data2) { console.log("something broke"+data);}
+            );
+
+            store.find('group',0).then(function(n){newGroupset.get('groups').then(function(m){m.pushObject(n);})});
+            store.find('group',1).then(function(n){newGroupset.get('groups').then(function(m){m.pushObject(n);})});
+
+            results.push(newGroupset);
+        });
 
          Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
 
-         console.log("Grouzpset all-find");
+         console.log("Groupset all-find");
 
-         return this.simulateRemoteCall(function() {
-             return fixtures;
-         }, this);
+         return results;
      }
 
 });

@@ -1,3 +1,5 @@
+// Ember.LOG_BINDINGS = true;
+
 var Mediator = window.Mediator = Ember.Application.create({
     LOG_TRANSITIONS: true
 });

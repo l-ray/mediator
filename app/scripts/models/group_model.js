@@ -157,7 +157,6 @@ Mediator.Group.FIXTURES = [
 
     results: [1,2],
 
-    groupset: 0
   },
   
   {
@@ -177,7 +176,6 @@ Mediator.Group.FIXTURES = [
 
     results: undefined,
 
-    groupset: 0
   }
   
 ];

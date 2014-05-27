@@ -1,9 +1,29 @@
-<h1>groupSet</h1>
+<div>
+    <div class="col-md-3">
+        <div class="well sidebar-nav">
+            <ul class="list-group">
+                {{#each connection in connections}}
+                    {{connection-details connection=connection tagName="li" classNames="list-group-item" }}
+                    connection source {{connection.source}}
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h1>groupSet</h1>
 
-event Date: {{ date }}
+        <dl>
+            <dt>event Date:</dt> <dd>{{ date }}</dd>
+            <dt>groups</dt> <dd>{{ groups }}</dd>
+            <dt>connections</dt> <dd>{{ connections }} size {{ connections.length }}</dd>
 
-groups {{ groups }}
+        </dl>
 
-{{ render 'groups' groups }}
+        {{ render 'groups' groups }}
 
-{{outlet}}
+        {{outlet}}
+
+    </div>
+</div>
+
+

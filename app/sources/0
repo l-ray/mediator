@@ -1,8 +1,9 @@
-{   "source":{
-    "id": "0",
-    "name": "foo",
-    "url": "http://www.groovestation.de/",
-    "icon": "http://www.groovestation.de/favicon.ico",
-    "additional": "false",
-    "priority": "50"
-}}
+{ "source":{
+        "id": "0",
+        "name": "foo",
+        "url": "http://www.groovestation.de/",
+        "icon": "http://www.groovestation.de/favicon.ico",
+        "additional": "false",
+        "priority": "50"
+    }
+}

@@ -6,6 +6,9 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 
     groups: DS.hasMany('group', { async: true }),
 
+    // as connections rely on sources, that has to be loaded asynchronous, this might have to async
+    connections: DS.hasMany('connection', { async: true }),
+
     length: function(){return this.get('groups').get('length');}.property('groups'),
 
     nextObject: function(index) {
@@ -133,11 +136,11 @@ Mediator.Groupset = DS.Model.extend(Ember.Enumerable,{
 // delete below here if you do not want fixtures
 Mediator.Groupset.FIXTURES = [
 
-    {
-        id: '2014-05-14',
-        date: new Date(2014,5,14),
-        groups: []
-    },
+  {
+    id: '2014-05-14',
+    date: new Date(2014,5,14),
+    groups: []
+  },
 
   {
     id: '2014-05-15',
@@ -152,15 +155,15 @@ Mediator.Groupset.FIXTURES = [
   },
 
   {
-        id: '2014-05-17',
-        date: new Date(2014,5,17),
-        groups: []
+    id: '2014-05-17',
+    date: new Date(2014,5,17),
+    groups: []
   },
 
   {
-        id: '2014-05-18',
-        date: new Date(2014,5,18),
-        groups: []
+    id: '2014-05-18',
+    date: new Date(2014,5,18),
+    groups: []
   }
   
 ];

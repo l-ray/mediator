@@ -1,51 +1,89 @@
-Mediator.ConnectionAdapter = DS.FixtureAdapter.extend({
 
-    find: function(store, type, id) {
+Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
 
-        console.log("Asking for connection with ID"+id);
 
-        var fixtures = this.fixturesForType(type),
-            fixture;
+    // if extending FixtureAdapter
+    /*
+    findQuery: function(store, type, query, array) {
 
-        Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
+        var startDateString = query.startDate;
+        var startDateArray= startDateString.split("-");
+        var startDate = new Date(startDateArray[0],startDateArray[1],startDateArray[2]);
+        console.log("Asking for connections with startDate "+query.startDate+" and array " + array + " from store " + store);
 
-        if (fixtures) {
-            fixture = Ember.A(fixtures).findProperty('id', id);
-        }
+        return DS.PromiseArray.create({
+            promise: new Promise(function(resolve, reject){
+                var results = [];
+                console.log("in promise-land");
+                store.findAll('source').then(function(sources) {
+                    console.log("found |"+sources.get('length')+"| sources ");
+                    sources.forEach(
+                        function (rootSource) {
+                            console.log("working with source"+rootSource.get('id'));
+                            var calculatedId = rootSource.get('id') + "-"+startDateString;
+                            var tmpConnection = store.createRecord(
+                                Mediator.Connection,
+                                {
+                                    'id': calculatedId,
+                                    'source': rootSource,
+                                    'startDate': startDate,
+                                    'links' : {'results':"/results/"}
+                                }
+                            );
 
-        if (fixture) {
-            return this.simulateRemoteCall(function() {
-                return fixture;
-            }, this);
-        }
-    },
-
-    findAll: function(store, type) {
-        var fixtures = this.fixturesForType(type);
-
-        console.log("Asking for all connections");
-
-        Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
-
-        return this.simulateRemoteCall(function() {
-            return fixtures;
-        }, this);
-    },
+                            results.push(tmpConnection);
+                            console.log("["+results.length+"] foreach created |"+tmpConnection.get('source.id')+"| on date |"+startDate+"|from source" + rootSource);
+                        }
+                    );
+                    console.log("left foreach with results"+results);
+                    resolve(results);
+                },reject);
+            })
+        });
+    },*/
 
     findQuery: function(store, type, query, array) {
-        var fixtures = this.fixturesForType(type);
 
-        console.log("Asking for connections with query"+query+" and array " + array);
+        var startDateString = query.startDate;
+        var startDateArray= startDateString.split("-");
+        var startDate = new Date(startDateArray[0],startDateArray[1],startDateArray[2]);
+        console.log("Asking for connections with startDate "+query.startDate+" and array " + array + " from store " + store);
 
-        Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
+        return new Ember.RSVP.Promise(function(resolve, reject){
+            var results = [];
 
-        fixtures = this.queryFixtures(fixtures, query, type);
+            store.find('source').then(function(sources) {
+                console.log("found |"+sources.get('length')+"| sources ");
+                sources.forEach(
+                    function (rootSource) {
 
-        if (fixtures) {
-            return this.simulateRemoteCall(function() {
-                return fixtures;
-            }, this);
-        }
+                        var calculatedId = rootSource.get('id') + "-"+startDateString;
+
+                        var tmpConnection = store.createRecord(
+                            Mediator.Connection,{
+                                'id': calculatedId,
+                                'source': rootSource,
+                                'startDate': startDate,
+                                'links' : {'results':"/results/"}
+                            }
+                        );
+                        rootSource.get('connections').then(function(c){c.pushObject(tmpConnection);});
+
+                        results.push(tmpConnection);
+                        console.log("["+results.length+"] foreach created |"+rootSource+"| on date |"+startDate+"|from source" + rootSource);
+                    }
+                );
+                console.log("left foreach with results"+results);
+                resolve({"connections":results});
+            },reject);
+        });
+    },
+
+    findHasMany: function(store, record, url) {
+        console.log("Called findHasMany with record |"+record+"| and url |"+url+"|");
+        console.log(Ember.makeArray(store.find("result", {connection: record.get('id')})));
+        return [];
     }
+
 
 });
