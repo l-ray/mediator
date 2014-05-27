@@ -58,22 +58,23 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
                     function (rootSource) {
 
                         var calculatedId = rootSource.get('id') + "-"+startDateString;
+                        var resultUrl = "/results/"+rootSource.get('id')+"/"+startDateString+"/";
 
-                        var tmpConnection = store.createRecord(
-                            Mediator.Connection,{
-                                'id': calculatedId,
-                                'source': rootSource,
-                                'startDate': startDate,
-                                'links' : {'results':"/results/"}
-                            }
-                        );
+                        var connectionObject = {
+                            'id': calculatedId,
+                            'source': rootSource,
+                            'startDate': startDate,
+                            'links' : {'results':resultUrl}
+                        };
+
+                        var tmpConnection = store.createRecord(Mediator.Connection, connectionObject);
                         rootSource.get('connections').then(function(c){c.pushObject(tmpConnection);});
 
-                        results.push(tmpConnection);
+                        results.push(connectionObject);
                         console.log("["+results.length+"] foreach created |"+rootSource+"| on date |"+startDate+"|from source" + rootSource);
                     }
                 );
-                console.log("left foreach with results"+results);
+
                 resolve({"connections":results});
             },reject);
         });
@@ -81,9 +82,7 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
 
     findHasMany: function(store, record, url) {
         console.log("Called findHasMany with record |"+record+"| and url |"+url+"|");
-        console.log(Ember.makeArray(store.find("result", {connection: record.get('id')})));
-        return [];
+        return DS.RESTAdapter.prototype.findHasMany(store, record, url);
     }
-
 
 });
