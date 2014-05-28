@@ -165,33 +165,33 @@
 
             it('should combine groupSets with similar groups', function(){
                 Ember.run( function() {
-                    var item = store.createRecord('groupset',{});
+                    var groupsetItem = store.createRecord('groupset',{});
 
-                    var item1 = store.createRecord('group');
+                    var groupItem1 = store.createRecord('group');
                     var testPRItem1 = store.createRecord('result',{'title':'test1'});
                     testPRItem1.get('pictures').pushObject(
                         store.createRecord('picture',{url:'"http://test.de/lol.jpg"'}));
 
-                    var item2 = store.createRecord('group');
+                    var groupItem2 = store.createRecord('group');
                     var testPRItem2 = store.createRecord('result',{'title':'test2'});
                     testPRItem2.get('pictures').pushObject(
                         store.createRecord('picture',{url:'"http://test.de/lol.jpg"'}));
 
-                    item1.get('results').then(function(results) {
+                    groupItem1.get('results').then(function(results) {
                         results.pushObject(testPRItem1);
-                        item2.get('results').then(function(otherResults) {
+                        groupItem2.get('results').then(function(otherResults) {
                             otherResults.pushObject(testPRItem2);
 
-                            item.get('groups').then(function(groups) {
-                                groups.pushObjects([item1,item2]);
+                            groupsetItem.get('groups').then(function(groups) {
+                                groups.pushObjects([groupItem1,groupItem2]);
 
-                                item.enumerableContentDidChange();
-                                item.toArray().should.have.length(2);
+                                groupsetItem.enumerableContentDidChange();
+                                groupsetItem.toArray().should.have.length(2);
 
-                                item.cleanUp();
+                                groupsetItem.cleanUp();
                                 // reduce items to one group
-                                item.toArray().should.have.length(1, "set-length");
-                                item.get('firstObject').toArray().should.have.length(2, "groups per set");
+                                groupsetItem.toArray().should.have.length(1, "set-length");
+                                groupsetItem.get('firstObject').toArray().should.have.length(2, "groups per set");
                             });
 
                         });

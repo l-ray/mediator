@@ -64,6 +64,7 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
                             'id': calculatedId,
                             'source': rootSource,
                             'startDate': startDate,
+                            'status'   : Mediator.ConnectionStatus.IDLE,
                             'links' : {'results':resultUrl}
                         };
 
@@ -82,7 +83,8 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
 
     findHasMany: function(store, record, url) {
         console.log("Called findHasMany with record |"+record+"| and url |"+url+"|");
-        return DS.RESTAdapter.prototype.findHasMany(store, record, url);
+        var result = DS.RESTAdapter.prototype.findHasMany(store, record, url);
+        return result;
     }
 
 });

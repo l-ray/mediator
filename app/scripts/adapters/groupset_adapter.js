@@ -60,11 +60,8 @@
                             });
                         }
                     )
-                }, function(data,data2) { console.log("something broke"+data);}
+                }, function(data) { console.log("something broke"+data);}
             );
-
-            store.find('group',0).then(function(n){newGroupset.get('groups').then(function(m){m.pushObject(n);})});
-            store.find('group',1).then(function(n){newGroupset.get('groups').then(function(m){m.pushObject(n);})});
 
             results.push(newGroupset);
         });

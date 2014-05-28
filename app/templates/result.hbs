@@ -19,6 +19,16 @@
             {{model.priority}}
         </td>
     </tr>
+    <tr>
+        <td>
+            <strong>pictures:</strong>
+        </td>
+        <td>
+            {{#each picture in model.pictures}}
+                {{picture}}
+            {{/each}}
+        </td>
+    </tr>
 </table>
 
 {{outlet}}
