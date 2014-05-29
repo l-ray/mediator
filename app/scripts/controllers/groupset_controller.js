@@ -8,9 +8,12 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
                 if(connection.get('status') == Mediator.ConnectionStatus.RECEIVING) {
                     connection.get('results').forEach(
                         function (result) {
+                            console.log("working on result:"+result.get('id'));
                             if (Ember.isEmpty(result.get('group'))) {
                                 var tmpGroup = store.createRecord('group');
-                                tmpGroup.get('results').then(function(n){n.pushObject(result);console.log("results per group:"+ n.get('length'));});
+                                var tmpGroupResults = tmpGroup.get('results');
+                                tmpGroupResults.pushObject(result);
+                                console.log("pushed result |"+result.get('id')+"|results per group:"+ tmpGroup.get('length'));
                                 result.set('group', tmpGroup);
                                 groups.pushObject(tmpGroup);
                             }
@@ -21,41 +24,16 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
         );
     }.observes('connections.@each.status'),
 
+
     cleanUp: function() {
-        console.log("started cleaning up");
+        var model = this.get('model');
+        for (var i=0; i < model.get('groups.length'); i++) {
 
-        var matrixLength = this.get('groups.length');
-        console.log("Matrix-length"+matrixLength);
+            var currentI = model.get("groups").toArray()[i];
 
-        var groups = this.get('groups');
+            for (var j=0; j < model.get('groups.length'); j++) {
 
- /*       groups.forEach(function(group){
-            var group1 = group;
-            groups.forEach(function(group2){
-                var group2 = group2;
-
-                if ( group1 != group2
-                    && group2.get('initialized')
-                    && this.__isSimilar(group1, group2)) {
-
-                    group1.set('initialized', false);
-                    group1.pushObjects(group2.get('results'));
-                    this.get("groups").removeObject(group2);
-                    j--;
-                }
-
-            })
-        })
-*/
-
-        for (var i=0; i < this.get('groups.length'); i++) {
-
-            var currentI = this.get("groups").toArray()[i];
-
-            for (var j=0; j < this.get('groups.length'); j++) {
-
-                var currentJ = this.get("groups").toArray()[j];
-                console.log("currentJ:"+currentJ);
+                var currentJ = model.get("groups").toArray()[j];
 
                 if ( i!=j
                     && currentJ.get('initialized')
@@ -63,18 +41,25 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
 
                     currentI.set('initialized', false);
                     currentI.pushObjects(currentJ.get('results').toArray());
-                    this.get("groups").removeObject(currentJ);
-                    j--;
+
+                    // console.log("GROUPS:"+this.get("groups"));
+                    model.get("groups").removeObject(currentJ);
+
+                     j--;
                 }
             }
 
         }
-        //this.enumerableContentDidChange();
+
         console.log("group has |"+this.get('groups.length')+"| elements");
     }.observes('groups.length'),
 
     // retrieves similarity of two given groups
     __isSimilar: function(patternResultGroup1, patternResultGroup2) {
+
+        if (patternResultGroup1 == patternResultGroup2) {
+            return true;
+        }
 
         var ratio;
 
@@ -88,10 +73,6 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
 
         var similarityFactor = 0;
 
-        // if titles totally fail, we can skip in depth analysis of second value
-        /*if (coarseGrain1 >= Mediator.constants._CONST_QGRAM_LEVEL1_RATIO)
-         coarseGrain2 = QGramsDistance.getSimilarity(patternResultGroup1.getLocationCompareString(), patternResultGroup2.getLocationCompareString());
-         */
         if ((coarseGrain1) > Mediator.constants._CONST_QGRAM_RATIO)
         //matrix[i][j] =
             similarityFactor =

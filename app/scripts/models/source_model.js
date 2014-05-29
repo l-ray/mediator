@@ -22,11 +22,11 @@ Mediator.Source.FIXTURES = [
   {
     id: 0,
     
-    name: 'foo',
+    name: 'fooFixture',
     
     url: 'http://www.groovestation.de/',
     
-    icon: 'http://www.groovestation.de/favicon.ico',
+    icon: 'http://l-ray.de/fileadmin/images/ico_movie.gif',
 
     additional: false,
     
@@ -37,11 +37,11 @@ Mediator.Source.FIXTURES = [
   {
     id: 1,
     
-    name: 'bar',
+    name: 'barFixture',
     
     url: 'http://www.banq.de/',
     
-    icon: 'http://www.banq.de/ico/favicon.ico',
+    icon: 'http://l-ray.de/fileadmin/images/ico_project.gif',
     
     additional: true,
     

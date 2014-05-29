@@ -1,13 +1,6 @@
     <section class="event">
-        {{#if group.pictures}}
-            <ul class="pictures">
-                {{#each group.pictures}}
-                    <li><img {{bindAttr src=thumbnailUrl}} /></li>
-                {{/each}}
-            </ul>
-        {{else}}
-            <span class="noPicturesWarning">No pictures found for this event.{{group.pictures}}</span>
-        {{/if}}
+
+        {{pictures-array pictures=group.pictures classNames="pictures"}}
 
         {{#if group.categories}}
             <ul title="categories" class="categories">
@@ -36,20 +29,20 @@
 
         <ul class="links">
             {{#each group.links}}
-                <li>
-                    <a {{bindAttr href=this.url}} target="_blank">
-                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.result.connection.source.icon}} />
-                    </a>
+                <li title="Link">
+                    <a {{bindAttr href=url}} target="_blank">
+                        <img class="event_info_source_icon" {{bindAttr title=name src=result.connection.source.icon}} />
+                    </a>{{result.connection.source.id}}
                 </li>
             {{/each}}
         </ul>
 
         <ul class="sources">
             {{#each group.results }}
-                <li>
-                    <a {{bindAttr href=this.resultUrl}} target="_blank">
-                        <img class="event_info_source_icon" {{bindAttr title=this.name src=this.connection.source.icon}} />
-                    </a>
+                <li title="Source">
+                    <a {{bindAttr href=resultUrl}} target="_blank">
+                        <img class="event_info_source_icon" {{bindAttr title=name src=connection.source.icon}} />
+                    </a><span style="display:none;"> S:{{connection.source.id}} r:{{id}}</span>
                 </li>
             {{/each}}
         </ul>

@@ -12,7 +12,8 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
-    results: DS.hasMany('result', {async:true}),
+    // results are pushed manually into group, so there is no asynchronisity here
+    results: DS.hasMany('result'),
 
     groupset: DS.belongsTo('groupset'),
 
@@ -105,7 +106,11 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     pictures: function() {
         var localPictures = new Ember.Set();
-        this.get('results').forEach(function(n) {localPictures.addEach(n.get('pictures'));});
+        this.get('results').forEach(function(n) {
+            if (n.get('pictures.length') > 0) {
+                localPictures.addEach(n.get('pictures').toArray());
+            }
+        });
         return localPictures.toArray();
     }.property('results.@each.pictures'),
 

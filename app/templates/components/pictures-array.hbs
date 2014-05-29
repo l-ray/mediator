@@ -1,0 +1,9 @@
+         {{#if pictures}}
+            <ul>
+                {{#each pictures}}
+                    <li><img {{bindAttr src=thumbnailUrl}} /></li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <span class="noPicturesWarning">No pictures found for this event.</span>
+        {{/if}}

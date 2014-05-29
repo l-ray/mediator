@@ -1,1 +1,3 @@
-Mediator.GroupAdapter = DS.FixtureAdapter.extend({ });
+Mediator.GroupAdapter = DS.FixtureAdapter.extend({
+
+});

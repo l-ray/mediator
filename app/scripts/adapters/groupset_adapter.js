@@ -1,5 +1,3 @@
-// Mediator.GroupsetAdapter = DS.FixtureAdapter.extend({ });
-
  Mediator.GroupsetAdapter = DS.FixtureAdapter.extend({
 
      // generate the complete groupset for the given ID including
