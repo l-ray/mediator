@@ -15,6 +15,7 @@
             var container = new Ember.Container();
             container.register('model:group', Mediator.Group);
             container.register('model:groupset', Mediator.Groupset);
+            container.register('model:connection', Mediator.Connection);
             container.register('model:result', Mediator.Result);
             container.register('model:picture', Mediator.Picture);
             container.register('model:link', Mediator.Link);
@@ -217,25 +218,61 @@
 
         });
 
-        describe('recognize new results and convert them into own cluster/group', function () {
-            it('should travers connections for new results and put those as new groups into the set', function() {
-                Ember.run( function() {
-                    controller.set('store', store);
+        describe('recognize new results ', function () {
+            it('should travers connections', function() {
 
-                    var connection1 = store.createRecord('connection',{});
-                    var connection2 = store.createRecord('connection',{});
-                    var connection3 = store.createRecord('connection',{});
+                Ember.run( function() {
+
+                    var connection1 = store.createRecord('connection',{ status: Mediator.ConnectionStatus.IDLE});
+                    var connection2 = store.createRecord('connection',{ status: Mediator.ConnectionStatus.WAITING});
+                    var connection3 = store.createRecord('connection',{ status: Mediator.ConnectionStatus.RECEIVING});
+                    var connection4 = store.createRecord('connection',{ status: null });
 
                     var model = store.createRecord('groupset',{});
-                    model.get('connections').pushObject(connection1);
-                    model.get('connections').pushObject(connection2);
-                    model.get('connections').pushObject(connection3);
                     controller.set('model', model);
+                    controller.set('store', store);
 
-                    controller.addResultsAsGroups();
+                    model.get('connections').then(function(n) {
+                        n.pushObject(connection1);
+                        n.pushObject(connection2);
+                        n.pushObject(connection3);
+                        n.pushObject(connection4);
 
-                })
-            }),
+                        controller.addResultsAsGroups();
+
+                        expect(connection1.get("status")).to.be.equal(Mediator.ConnectionStatus.IDLE);
+                        expect(connection2.get("status")).to.be.equal(Mediator.ConnectionStatus.WAITING);
+                        expect(connection3.get("status")).to.be.equal(Mediator.ConnectionStatus.IDLE);
+                        expect(connection4.get("status")).to.be.equal(null);
+
+                    });
+                });
+
+                it('for new results and put those as new groups into the set', function(){
+
+                    Ember.run( function() {
+                        controller.set('store', store);
+                        var model = store.createRecord('groupset',{});
+                        controller.set('model', model);
+
+                        var connection1 = store.createRecord('connection',{});
+                        connection1.get('results').then(function(n){
+                            var testResult = store.createRecord('result',{ });
+                            n.pushObject(testResult);
+                            model.get('connections').then(function(m) {
+                                m.pushObject(connection1);
+
+                                controller.addResultsAsGroups();
+
+                                expect(testResult.get("group")).to.not.be.a('null');
+                                expect(model.toArray().to.have.length(1));
+                                expect(model.get("firstObject.results.firstObject")).to.be.equal(testResult);
+                            });
+                        });
+
+                    })
+                });
+            });
 
             it('should return a group with the given result in the first step', function() {
                 Ember.run( function() {
@@ -248,33 +285,6 @@
                 })
             })
         });
-
-
-        /*
-        addResultsAsGroups: function() {
-            var store = this.store;
-            var groups = this.get("groups");
-            this.get('connections').forEach(
-                function(connection) {
-                    if(connection.get('status') == Mediator.ConnectionStatus.RECEIVING) {
-                        connection.get('results').forEach(
-                            function (result) {
-                                console.log("working on result:"+result.get('id'));
-                                if (Ember.isEmpty(result.get('group'))) {
-                                    var tmpGroup = store.createRecord('group');
-                                    var tmpGroupResults = tmpGroup.get('results');
-                                    tmpGroupResults.pushObject(result);
-                                    console.log("pushed result |"+result.get('id')+"|results per group:"+ tmpGroup.get('length'));
-                                    result.set('group', tmpGroup);
-                                    groups.pushObject(tmpGroup);
-                                }
-                            }
-                        );
-                        //connection.set('status',Mediator.ConnectionStatus.IDLE);
-                    }
-                }
-            );
-        },*/
 
     });
 })();

@@ -16,7 +16,7 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
                         },
                         this
                     );
-                    //connection.set('status',Mediator.ConnectionStatus.IDLE);
+                    connection.set('status',Mediator.ConnectionStatus.IDLE);
                 }
             },
             this

@@ -26,11 +26,7 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     results: DS.hasMany('result', {'async':true}),
 
-    // possibly not needed at all, as the adapter gives the new IDs
-    //id: function() {[this.get('source.id'),this.get('startDate')].join('-')}.property('source.id','startDate'),
-
     setStatusToLoaded: function() {
-        console.log("triggered setStatusToLoaded with current status"+this.get("status"));
         if (this.get("status") != Mediator.ConnectionStatus.RECEIVING) {
             this.set("status", Mediator.ConnectionStatus.RECEIVING);
         }
