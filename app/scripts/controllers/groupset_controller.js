@@ -1,7 +1,6 @@
 Mediator.GroupsetController = Ember.ObjectController.extend({
 
     addResultsAsGroups: function() {
-        var store = this.store;
         var groups = this.get("groups");
         this.get('connections').forEach(
             function(connection) {
@@ -10,22 +9,35 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
                         function (result) {
                             console.log("working on result:"+result.get('id'));
                             if (Ember.isEmpty(result.get('group'))) {
-                                var tmpGroup = store.createRecord('group');
-                                var tmpGroupResults = tmpGroup.get('results');
-                                tmpGroupResults.pushObject(result);
-                                console.log("pushed result |"+result.get('id')+"|results per group:"+ tmpGroup.get('length'));
-                                result.set('group', tmpGroup);
-                                groups.pushObject(tmpGroup);
+                                groups.pushObject(
+                                    this.__produceNewGroupForResult(result)
+                                );
                             }
-                        }
+                        },
+                        this
                     );
+                    //connection.set('status',Mediator.ConnectionStatus.IDLE);
                 }
-            }
+            },
+            this
         );
+    },
+
+    processFreshIncomingResults: function(){
+        Ember.run.once(this, 'addResultsAsGroups');
     }.observes('connections.@each.status'),
 
+    __produceNewGroupForResult: function(result) {
+        var store = this.store;
+        var tmpGroup = store.createRecord('group');
+        var tmpGroupResults = tmpGroup.get('results');
+        tmpGroupResults.pushObject(result);
+        result.set('group', tmpGroup);
+        return tmpGroup;
+    },
 
-    cleanUp: function() {
+    processSimilarityMeasurement: function() {
+
         var model = this.get('model');
         for (var i=0; i < model.get('groups.length'); i++) {
 
@@ -41,17 +53,19 @@ Mediator.GroupsetController = Ember.ObjectController.extend({
 
                     currentI.set('initialized', false);
                     currentI.pushObjects(currentJ.get('results').toArray());
+                    currentI.enumerableContentDidChange();
 
-                    // console.log("GROUPS:"+this.get("groups"));
                     model.get("groups").removeObject(currentJ);
-
+                    model.enumerableContentDidChange(currentJ);
                      j--;
                 }
             }
 
         }
+    },
 
-        console.log("group has |"+this.get('groups.length')+"| elements");
+    cleanUp: function() {
+        Ember.run.once(this, 'processSimilarityMeasurement');
     }.observes('groups.length'),
 
     // retrieves similarity of two given groups
