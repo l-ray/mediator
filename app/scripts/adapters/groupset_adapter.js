@@ -42,14 +42,13 @@
             console.log("finding connections for groupset "+item.id);
 
             var promiseArray = store.find('connection',{ 'startDate': item.id });
-            console.log("promiseArray"+promiseArray);
+
             promiseArray.then(
                 function(connections){
                     console.log("Got the following connections:"+connections);
 
                     connections.forEach(
                         function(connection) {
-                            console.log("Found connection:"+connection);
 
                             newGroupset.get('connections').then(function(n) {
                                 console.log("pushed connection |"+connection+"| with source |"+connection.get('source')+"| into groupset "+newGroupset);
@@ -58,7 +57,7 @@
                             });
                         }
                     )
-                }, function(data) { console.log("something broke"+data);}
+                }, function(data) { console.log("Could not retrieve connection."+data);}
             );
 
             results.push(newGroupset);

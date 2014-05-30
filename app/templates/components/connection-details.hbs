@@ -9,6 +9,8 @@
 <span class="connectionResults">Size: {{connection.length}}</span>
 <span class="connectionId">Id: {{connection.id}}</span>
 
+{{render 'results' connection.results}}
+
 {{ render 'connection' connection }}
 
 {{#if connection.editMode}}

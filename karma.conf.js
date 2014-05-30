@@ -44,7 +44,7 @@ module.exports = function(config) {
 
     // Test results reporter to use.
     // Possible values: 'dots', 'progress', 'junit'
-    reporters : ['progress'],
+    reporters : ['dots'],
 
 
     // Web server port.
