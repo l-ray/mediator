@@ -91,7 +91,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode.
     // If it's `true`, then it captures browsers, runs the tests and exits.
-    singleRun : false
+    singleRun : true
 
   });
 
