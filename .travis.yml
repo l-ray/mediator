@@ -6,5 +6,6 @@ before_install:
   - gem install sass
   - gem install compass
 install: npm install
-# before_script: 
+before_script: 
+   - bower install
 #  - grunt build
