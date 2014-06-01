@@ -4,16 +4,16 @@
     describe('Give it some context', function () {
         describe('maybe a bit more context here', function () {
             it('should hold levenshtein', function () {
-                expect(window.smLevenshtein).to.not.be.undefined;
+                expect(window.smLevenshtein).to.not.be.an('undefined');
             });
             it('should hold qgram', function () {
-                expect(window.smQGram).to.not.be.undefined;
+                expect(window.smQGram).to.not.be.an('undefined');
             });
             it('should hold smithWaterman', function () {
-                expect(window.smSmithWaterman).to.not.be.undefined;
+                expect(window.smSmithWaterman).to.not.be.an('undefined');
             });
             it('should hold longest substring', function () {
-                expect(window.smLongestSubstring).to.not.be.undefined;
+                expect(window.smLongestSubstring).to.not.be.an('undefined');
             });
         });
     });

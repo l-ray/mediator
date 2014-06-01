@@ -8,13 +8,14 @@
         var store = null;
 
         beforeEach(function() {
-            Mediator.Store = DS.Store.extend({
+            Mediator.ApplicationStore = DS.Store.extend({
                 adapter: Mediator.ApplicationAdapter
             });
             var container = new Ember.Container();
             container.register('model:source', Mediator.Source);
             container.register('model:connection', Mediator.Connection);
-            store = Mediator.Store.create({
+
+            store = Mediator.ApplicationStore.create({
                 container: container
             });
         });

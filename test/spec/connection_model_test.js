@@ -8,7 +8,7 @@
         var store = null;
 
         beforeEach(function() {
-            Mediator.Store = DS.Store.extend({
+            Mediator.ApplicationStore = DS.Store.extend({
                 adapter: Mediator.ApplicationAdapter
             });
             var container = new Ember.Container();
@@ -19,7 +19,7 @@
             container.register('model:link', Mediator.Link);
             container.register('model:group', Mediator.Group);
             container.register('model:groupset', Mediator.Groupset);
-            store = Mediator.Store.create({
+            store = Mediator.ApplicationStore.create({
                 container: container
             });
         });

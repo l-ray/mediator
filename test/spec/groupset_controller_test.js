@@ -9,12 +9,13 @@
         var controller = null;
 
         beforeEach(function() {
-            Mediator.Store = DS.Store.extend({
+            Mediator.ApplicationStore = DS.Store.extend({
                 adapter: Mediator.ApplicationAdapter
             });
             var container = new Ember.Container();
             container.register('model:group', Mediator.Group);
             container.register('model:groupset', Mediator.Groupset);
+            container.register('model:source', Mediator.Source);
             container.register('model:connection', Mediator.Connection);
             container.register('model:result', Mediator.Result);
             container.register('model:picture', Mediator.Picture);
@@ -26,7 +27,7 @@
                 container: container
             });
 
-            store = Mediator.Store.create({
+            store = Mediator.ApplicationStore.create({
                 container: container
             });
         });
