@@ -31,7 +31,8 @@
     "grunt-neuter": "~0.5.0",
     "grunt-karma": "*",
     "karma-mocha": "~0.1",
-    "karma-chrome-launcher": "~0.1"
+    "karma-chrome-launcher": "~0.1",
+    "karma-phantomjs-launcher": "~0.1"
   },
   "engines": {
     "node": ">=0.8.0"
