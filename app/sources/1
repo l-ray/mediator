@@ -4,6 +4,7 @@
        "url": "http://www.banq.de/",
        "icon": "http://www.banq.de/ico/favicon.ico",
        "additional": "true",
-       "priority": "100"
+       "priority": "100",
+       "active": "true"
     }
 }

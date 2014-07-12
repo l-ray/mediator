@@ -4,6 +4,7 @@
         "url": "http://www.groovestation.de/",
         "icon": "http://www.groovestation.de/favicon.ico",
         "additional": "false",
+        "active": "true",
         "priority": "50"
     }
 }

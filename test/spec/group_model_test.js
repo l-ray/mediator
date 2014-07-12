@@ -15,6 +15,7 @@
             container.register('model:group', Mediator.Group);
             container.register('model:result', Mediator.Result);
             container.register('model:connection', Mediator.Connection);
+            container.register('model:source', Mediator.Source);
             container.register('model:picture', Mediator.Picture);
             container.register('model:link', Mediator.Link);
             container.register('model:groupset', Mediator.Groupset);
@@ -60,15 +61,6 @@
                 })
             })
         });
-
-        describe('calculate group priority dependent from properties', function () {
-            it('should on standard return 0', function(){
-              Ember.run( function() {
-                  var item = store.createRecord('group',{});
-                  expect(item.get("priority")).to.be.zero;
-              })
-            });
-         });
 
         describe('title', function () {
 
@@ -418,6 +410,85 @@
                 });
             });
 
+            it('should recognize empty ruleset priority', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    expect(item.get("priorityByRuleSet")).to.be.equal(0);
+                })
+            });
+
+            it('should recognize filled ruleset priority', function() {
+                Ember.run(function () {
+                    var item = store.createRecord('group', {});
+
+                    var result1 = store.createRecord('result', {
+                        connection: store.createRecord('connection', {
+                            source: store.createRecord('source', {
+                                priority: 5,
+                                additional: false
+                            })
+                        })
+                    });
+
+                    var result2 = store.createRecord('result', {
+                        connection: store.createRecord('connection', {
+                            source: store.createRecord('source', {
+                                priority: 3,
+                                additional: false
+                            })
+                        })
+                    });
+
+                    item.get('results').pushObject(result1);
+                    item.enumerableContentDidChange();
+                    expect(item.get('priorityByRuleSet')).to.equal(5);
+
+                    item.get('results').pushObject(result2);
+                    item.enumerableContentDidChange();
+                    expect(item.get('priorityByRuleSet')).to.equal(4);
+
+                });
+
+                it('should ignore filled ruleset priority marked as additional', function () {
+                    Ember.run(function () {
+                        var item = store.createRecord('group', {});
+
+                        var result1 = store.createRecord('result', {
+                            connection: store.createRecord('connection', {
+                                source: store.createRecord('source', {
+                                    priority: 5,
+                                    additional: false
+                                })
+                            })
+                        });
+
+                        var result2 = store.createRecord('result', {
+                            connection: store.createRecord('connection', {
+                                source: store.createRecord('source', {
+                                    priority: 3,
+                                    additional: true
+                                })
+                            })
+                        });
+
+                        item.get('results').pushObject(result1);
+                        item.get('results').pushObject(result2);
+                        item.enumerableContentDidChange();
+                        expect(item.get('priorityByRuleSet')).to.equal(5);
+
+                    });
+
+                });
+            });
+        });
+
+        describe('calculate group priority dependent from properties', function () {
+            it('should on standard return 0', function(){
+                Ember.run( function() {
+                    var item = store.createRecord('group',{});
+                    expect(item.get("priority")).to.be.zero;
+                })
+            });
         });
 
         describe('links of all results', function () {

@@ -38,6 +38,12 @@ Mediator.Result = DS.Model.extend({
         return tmpPriority;
     }.property('price', 'categories', 'pictures', 'links'),
 
+    connectionPriority: Ember.computed.alias('connection.priority'),
+
+    connectionIgnorePriority: Ember.computed.alias('connection.ignorePriority'),
+
+    enabled: Ember.computed.alias('connection.active'),
+
     toString: function () {
         return "[Title:"+this.get('title') + ", Location:" + this.get('location') + ", start:" + this.get('start')+"]";
     },

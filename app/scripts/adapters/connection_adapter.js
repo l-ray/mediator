@@ -58,11 +58,13 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
                     function (rootSource) {
 
                         var calculatedId = rootSource.get('id') + "-"+startDateString;
+                        var isActive = rootSource.get('active');
                         var resultUrl = "/results/"+rootSource.get('id')+"/"+startDateString+"/";
 
                         var connectionObject = {
                             'id': calculatedId,
                             'source': rootSource,
+                            'active': isActive,
                             'startDate': startDate,
                             'status'   : Mediator.ConnectionStatus.IDLE,
                             'links' : {'results':resultUrl}

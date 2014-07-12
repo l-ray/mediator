@@ -1,6 +1,6 @@
 <ul class="list-group">
  {{#each model}}
-   <li class="list-group-item">
+   <li class="list-group-item">{{checked}}
      {{input type="checkbox" checked=active}}
      <img {{bindAttr src=source.icon}} class="connectionSource_Icon" />
      <span class="connectionSource">

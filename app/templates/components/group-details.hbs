@@ -42,11 +42,12 @@
                 <li title="Source">
                     <a {{bindAttr href=resultUrl}} target="_blank">
                         <img class="event_info_source_icon" {{bindAttr title=name src=connection.source.icon}} />
-                    </a><span style="display:none;"> S:{{connection.source.id}} r:{{id}}</span>
+                    </a><span style="display:block;"> S:{{connection.source.id}} Prio:{{connection.priority}} {{connection.ignorePriority}} r:{{id}}</span>
                 </li>
             {{/each}}
         </ul>
 
-        <span class="priority">prio{{ group.priority }}</span>
+        <span class="priorityRuleset">RS-prio{{ group.priorityByRuleSet }}</span>
+        <span class="priority">sum-prio{{ group.priority }}</span>
         <span>{{#linkTo 'group' group}}{{group.id}}{{/linkTo}}</span>
     </section>

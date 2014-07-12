@@ -8,6 +8,8 @@ Mediator.Source = DS.Model.extend({
 
     icon: DS.attr('string'),
 
+    active: DS.attr('boolean', {defaultValue: true}),
+
     additional: DS.attr('boolean',{ defaultValue: false }),
 
     priority: DS.attr('number',{defaultValue: 0 }),

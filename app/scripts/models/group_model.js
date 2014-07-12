@@ -8,8 +8,6 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     initialized: DS.attr('boolean', {defaultValue:true}),
 
-    priorityByRuleSet: DS.attr('number', {defaultValue: 0 }),
-
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
     // results are pushed manually into group, so there is no asynchronisity here
@@ -26,6 +24,33 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
                         return Math.max(currentMax,n.get('priority'));
                     },0);
     }.property('results.@each.priority'),
+
+    priorityByRuleSet: function() {
+
+        var priority = 0;
+        var holdsPriority = function(n){return n.get('enabled') && !n.get('connection.ignorePriority');};
+        var sumUpPriorities = function(currentPriority,currentResult,i,e) {
+            var resultPrio = currentResult.get('connection.priority');
+            if (
+                resultPrio != null
+                ) {
+                currentPriority += parseInt(resultPrio);
+            }
+            return currentPriority;
+        };
+
+        var results = this.get('results').filter(holdsPriority);
+
+        var resultCount = results.get('length');
+
+        if (resultCount == 0) { return 0; }
+
+        var prioritySum = results.reduce(sumUpPriorities,0)
+
+        priority = Math.floor(prioritySum/resultCount);
+
+        return priority;
+    }.property('results.@each.connectionPriority', 'results.@each.connectionIgnorePriority', 'results.@each.enabled'),
 
     _SourceNotSetException: { name: 'PatternSourceNotSetException', message: 'PatternSource Not Set in Connection.' },
     _InvalidArgumentException: { name: 'InvalidArgumentException', message: 'Argument is not from the correct type.' },
@@ -138,7 +163,12 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
         return (this.get('priorityByRuleSet')
             + this.get('priorityBySystem')
             + this.get('priorityByUser'));
-    }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser')
+    }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
+
+    enabled: function() {
+        var isEnabled = function(item) {return item.get("enabled");}
+        return this.get('results').any(isEnabled);
+    }.property('results.@each.enabled')
 
 });
 
@@ -160,7 +190,7 @@ Mediator.Group.FIXTURES = [
     
     priorityBySystem: 100,
 
-    results: [1,2],
+    results: [1,2]
 
   },
   
@@ -179,7 +209,7 @@ Mediator.Group.FIXTURES = [
     
     priorityBySystem: 'foo',
 
-    results: undefined,
+    results: undefined
 
   }
   

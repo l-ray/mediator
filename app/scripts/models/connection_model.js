@@ -22,6 +22,12 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
 
     length: Ember.computed.alias('results.length'),
 
+    sourceUrl: Ember.computed.alias('source.url'),
+
+    priority: Ember.computed.alias('source.priority'),
+
+    ignorePriority: Ember.computed.alias('source.additional'),
+
     groupset: DS.belongsTo('groupset'),
 
     results: DS.hasMany('result', {'async':true}),
@@ -39,10 +45,6 @@ Mediator.Connection = DS.Model.extend(Ember.Enumerable, {
     name: function() {
         return this.get('source.name');
     }.property('source.name'),
-
-    sourceUrl: function() {
-        return this.get('source.url');
-    }.property('source.url'),
 
     disabled: function() {
         return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
@@ -63,7 +65,7 @@ Mediator.Connection.FIXTURES = [
     
     endDate: new Date(),
 
-    active: true,
+    active: Boolean.true,
     
     status: Mediator.ConnectionStatus.WAITING,
 
@@ -80,7 +82,7 @@ Mediator.Connection.FIXTURES = [
     
     endDate: new Date(),
 
-    active: false,
+    active: true,
     
     status: Mediator.ConnectionStatus.IDLE,
 
@@ -91,4 +93,3 @@ Mediator.Connection.FIXTURES = [
   }
   
 ];
-
