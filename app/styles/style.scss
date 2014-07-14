@@ -5,6 +5,11 @@ html, body {
     margin: 30px 0;
 }
 
+.debug,
+.connectionResults,
+.connectionId,
+.connectionPriority { display: none; }
+
 ul.dates {
 
   overflow: hidden;
@@ -55,6 +60,11 @@ ul.dates {
 }
 
   section.event {
+
+    width: 400px;
+    border: 1px lightgray solid;
+    margin: 3px;
+    padding: 3px;
 
     &:before,
     &:after {
@@ -154,6 +164,45 @@ ul.dates {
         display: inline;
       }
 
+    }
+
+    .administration {
+      float:right;
+
+      li {
+        list-style: none;
+        padding: 0px 2px;
+        display: block;
+        float: left;
+        width: 14px;
+        height: 11px;
+        text-decoration: none;
+
+        span {
+          display:none;
+        }
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        &.recycle_item {
+          background: transparent url(icons/to_tray_klein_blau.gif) no-repeat left top;
+        }
+
+        &.derecycle_item {
+          background: transparent url(icons/from_tray_klein_blau.gif) no-repeat left top;
+        }
+
+        &.item_to_top {
+          background: transparent url(icons/to_top_klein_blau.gif) no-repeat left top;
+        }
+
+        &.item_to_bottom {
+          background: transparent url(icons/to_bottom_klein_blau.gif) no-repeat left top;
+        }
+
+      }
     }
 
   }

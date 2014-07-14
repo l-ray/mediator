@@ -9,7 +9,9 @@
 <span class="connectionResults">Size: {{connection.length}}</span>
 <span class="connectionId">Id: {{connection.id}}</span>
 
-{{render 'results' connection.results}}
+<div>
+    {{render 'results' connection.results class="connectionResults" }}
+</div>
 
 {{ render 'connection' connection }}
 

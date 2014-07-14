@@ -2,7 +2,9 @@
 
     <ul class="result_groups">
         {{#each }}
-            {{group-details group=this tagName="li"}}
+            {{#if enabled}}
+                {{group-details group=this tagName="li"}}
+            {{/if}}
         {{/each}}
     </ul>
 

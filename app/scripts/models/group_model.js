@@ -2,7 +2,7 @@
 Mediator.Group = DS.Model.extend( Ember.Enumerable,
     {
 
-    recycled: DS.attr('boolean', {defaultValue:false}),
+    recycled: false,
 
     lastMoved: DS.attr('number', {defaultValue: 0 }),
 
@@ -167,8 +167,8 @@ Mediator.Group = DS.Model.extend( Ember.Enumerable,
 
     enabled: function() {
         var isEnabled = function(item) {return item.get("enabled");}
-        return this.get('results').any(isEnabled);
-    }.property('results.@each.enabled')
+        return !this.get('recycled') && this.get('results').any(isEnabled);
+    }.property('recycled','results.@each.enabled')
 
 });
 
