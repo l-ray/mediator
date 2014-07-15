@@ -4,6 +4,9 @@ Mediator.GroupDetailsComponent = Ember.Component.extend({
         markRecycled: function(item) {
             item.set("recycled", true);
         },
+        unmarkRecycled: function(item) {
+            item.set("recycled", false);
+        },
         decreaseUserPriority: function(item) {
             item.set(
                 "priorityByUser",

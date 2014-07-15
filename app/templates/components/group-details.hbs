@@ -5,8 +5,13 @@
 
             <li class="item_to_bottom" {{action 'decreaseUserPriority' group}}><span>bottom</span></li>
 
-            <li {{action 'markRecycled' group}} class="recycle_item" ><span>x</span></li>
-        <!-- not working, why? end -->
+            {{#if not group.recycled}}
+               <li {{action 'markRecycled' group}} class="recycle_item" ><span>x</span></li>
+            {{/if}}
+
+            {{#if group.recycled}}
+                <li {{action 'unmarkRecycled' group}} class="derecycle_item" ><span>w</span></li>
+            {{/if}}
         </ul>
 
         {{pictures-array pictures=group.pictures classNames="pictures"}}
