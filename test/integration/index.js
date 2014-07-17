@@ -1,10 +1,10 @@
-/*describe("Index page", function () {
+describe("Index page", function () {
     it("displays a welcome message", function () {
         visit('/').then(function () {
             find('div.well').text().should.contain('Welcome to Yeoman and Ember.js');
         });
     });
-});*/
+});
 
 /*
 describe("ApplicationRoute", function () {
