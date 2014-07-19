@@ -3,11 +3,11 @@ Mediator.ConnectionsController = Ember.ObjectController.extend({
 
     actions: {
         edit: function(model) {
-            console.log("edit connection"+model.get('source'));
+            //console.log("edit connection"+model.get('source'));
             model.set('editMode', true);
         },
         doneEditing: function(model) {
-            console.log("doneEdit connection"+model.get('source'));
+            //console.log("doneEdit connection"+model.get('source'));
             model.set('editMode', false);
         }
     }
