@@ -1,7 +1,5 @@
 
 Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
-
-
     // if extending FixtureAdapter
     /*
     findQuery: function(store, type, query, array) {
@@ -59,7 +57,7 @@ Mediator.ConnectionAdapter = DS.RESTAdapter.extend({
 
                         var calculatedId = rootSource.get('id') + "-"+startDateString;
                         var isActive = rootSource.get('active');
-                        var resultUrl = "/results/"+rootSource.get('id')+"/"+startDateString+"/";
+                        var resultUrl = "/api"+"/results/"+rootSource.get('id')+"/"+startDateString+"/";
 
                         var connectionObject = {
                             'id': calculatedId,
