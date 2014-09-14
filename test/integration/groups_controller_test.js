@@ -101,10 +101,6 @@
                     controller.send('increaseUserPriority', actionModel);
                     expect(actionModel.get('priority')).to.be.above(comparisonModel.get('priority'));
                 });
-                /*Ember.run(function () {
-                    expect(controller.get('model').toArray()[1]).to.be.equal(comparisonModel);
-                    expect(controller.get('model').toArray()[0]).to.be.equal(actionModel);
-                });*/
 
             });
 
