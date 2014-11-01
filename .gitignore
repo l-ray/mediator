@@ -5,4 +5,4 @@ dist
 .tmp
 .idea
 app/bower_components
-*.bak
+test/bower_components

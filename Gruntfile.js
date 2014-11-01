@@ -135,7 +135,7 @@ module.exports = function (grunt) {
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
                 fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: 'app/bower_components',
+                importPath: '<%= yeoman.app %>/bower_components',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
@@ -240,7 +240,7 @@ module.exports = function (grunt) {
             options: {
               variables: {
                 ember: 'bower_components/ember/ember.js',
-                ember_data: 'bower_components/ember-data-shim/ember-data.js'
+                ember_data: 'bower_components/ember-data/ember-data.js'
               }
             },
             files: [
@@ -251,7 +251,7 @@ module.exports = function (grunt) {
             options: {
               variables: {
                 ember: 'bower_components/ember/ember.prod.js',
-                ember_data: 'bower_components/ember-data-shim/ember-data.prod.js'
+                ember_data: 'bower_components/ember-data/ember-data.prod.js'
               }
             },
             files: [
@@ -261,19 +261,35 @@ module.exports = function (grunt) {
         },
         // Put files not handled in other tasks here
         copy: {
+            fonts: {
+                files: [
+                    {
+                        expand: true,
+                        flatten: true,
+                        filter: 'isFile',
+                        cwd: '<%= yeoman.app %>/bower_components/',
+                        dest: '<%= yeoman.app %>/styles/fonts/',
+                        src: [
+                            'bootstrap-sass-official/vendor/assets/fonts/bootstrap/**'
+                        ]
+                    }
+                ]
+            },
             dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= yeoman.app %>',
-                    dest: '<%= yeoman.dist %>',
-                    src: [
-                        '*.{ico,txt}',
-                        '.htaccess',
-                        'images/{,*/}*.{webp,gif}',
-                        'styles/fonts/*'
-                    ]
-                }]
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            '*.{ico,txt}',
+                            '.htaccess',
+                            'images/{,*/}*.{webp,gif}',
+                            'styles/fonts/*'
+                        ]
+                    }
+                ]
             }
         },
         concurrent: {
@@ -295,7 +311,8 @@ module.exports = function (grunt) {
         },
         karma: {
             unit: {
-                configFile: 'karma.conf.js'
+                configFile: 'karma.conf.js',
+                singleRun: true
             }
         },
         emberTemplates: {
@@ -307,7 +324,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    '.tmp/scripts/compiled-templates.js': '<%= yeoman.app %>/templates/{,*/}*.hbs'
+                    '.tmp/scripts/compiled-templates.js': '<%= yeoman.app %>/templates/**/*.hbs'
                 }
             }
         },
@@ -315,7 +332,7 @@ module.exports = function (grunt) {
             app: {
                 options: {
                     filepathTransform: function (filepath) {
-                        return 'app/' + filepath;
+                        return yeomanConfig.app + '/' + filepath;
                     }
                 },
                 src: '<%= yeoman.app %>/scripts/app.js',
@@ -325,6 +342,11 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('server', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve:' + target]);
+    });
+
+    grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
         }
@@ -334,6 +356,7 @@ module.exports = function (grunt) {
             'replace:app',
             'concurrent:server',
             'neuter:app',
+            'copy:fonts',
             'connect:livereload',
             'open',
             'watch'

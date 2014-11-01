@@ -2,16 +2,19 @@
   "name": "mediator",
   "version": "0.0.1",
   "dependencies": {
-    "ember": "1.2.0",
-    "ember-data-shim": "~1.0.0-beta.2",
-    "bootstrap-sass": "~3.0.0",
+    "ember": "1.6.1",
+    "ember-data": "1.0.0-beta.8",
+    "bootstrap-sass-official": "3.1.1",
     "simmetrix-levenshtein": "https://github.com/l-ray/simmetrix_levenshtein.git",
     "simmetrix-qgram": "https://github.com/l-ray/simmetrix_qgram.git",
     "simmetrix-smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
     "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git",
     "momentjs": "~2.5.1"
   },
+  "resolutions": {
+    "ember": "1.6.1"
+  },
   "devDependencies": {
-    "ember-mocha-adapter": "0.1.2"
+    "ember-mocha-adapter": "0.2.1"
   }
 }

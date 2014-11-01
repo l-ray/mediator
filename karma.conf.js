@@ -11,6 +11,7 @@ module.exports = function(config) {
     // Testing framework to be used, default is `jasmine`.
     frameworks : [
       'mocha'
+
     ],
 
 
@@ -19,17 +20,17 @@ module.exports = function(config) {
       'app/bower_components/jquery/dist/jquery.min.js',
       'app/bower_components/handlebars/handlebars.runtime.js',
       'app/bower_components/ember/ember.js',
-      'app/bower_components/ember-data-shim/ember-data.js',
+      'app/bower_components/ember-data/ember-data.js',
 
       'app/bower_components/simmetrix-levenshtein/lib/simmetrix.levenshtein.js',
       'app/bower_components/simmetrix-longestsubstring/lib/simmetrix.longestsubstring.js',
       'app/bower_components/simmetrix-qgram/lib/simmetrix.qgram.js',
       'app/bower_components/simmetrix-smithwaterman/lib/simmetrix.smithwaterman.js',
       'app/bower_components/momentjs/moment.js',
-      
+
       'test/bower_components/chai/chai.js',
       'app/bower_components/ember-mocha-adapter/adapter.js',
-      
+
       '.tmp/scripts/combined-scripts.js',
       '.tmp/scripts/compiled-templates.js',
       'test/support/*.js',

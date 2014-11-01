@@ -1,3 +1,4 @@
+/*
 describe("Index page", function () {
     it("displays a welcome message", function () {
         visit('/').then(function () {
@@ -5,7 +6,7 @@ describe("Index page", function () {
         });
     });
 });
-
+*/
 /*
 describe("ApplicationRoute", function () {
     describe("model property", function () {
