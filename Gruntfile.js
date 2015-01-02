@@ -57,14 +57,42 @@ module.exports = function (grunt) {
                 // change this to '0.0.0.0' to access the server from outside
                 hostname: 'localhost'
             },
+            proxies: [{
+                context: '/api', // the context of the data service
+                host: 'localhost', // wherever the data service is running
+                port: 8888, // the port that the data service is running on
+                rewrite: {
+                    // the key '^/api' is a regex for the path to be rewritten
+                    // the value is the context of the data service
+                    '^/api': '/myBlock1'
+                }
+            }],
             livereload: {
                 options: {
-                    middleware: function (connect) {
-                        return [
+                    middleware: function (connect,options ) {
+                        var middlewares = [
                             lrSnippet,
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app)
                         ];
+
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        options.base.forEach(function (base) {
+                            middlewares.push(connect.static(base));
+                        });
+
+                        // Make directory browse-able.
+                        var directory = options.directory || options.base[options.base.length - 1];
+                        middlewares.push(connect.directory(directory));
+
+                        return middlewares;
                     }
                 }
             },
@@ -151,14 +179,14 @@ module.exports = function (grunt) {
         // not used since Uglify task does concat,
         // but still available if needed
         /*concat: {
-            dist: {}
-        },*/
+         dist: {}
+         },*/
         // not enabled since usemin task does concat and uglify
         // check index.html to edit your build targets
         // enable this task if you prefer defining your build targets here
         /*uglify: {
-            dist: {}
-        },*/
+         dist: {}
+         },*/
         rev: {
             dist: {
                 files: {
@@ -218,14 +246,14 @@ module.exports = function (grunt) {
             dist: {
                 options: {
                     /*removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
-                    //collapseWhitespace: true,
-                    collapseBooleanAttributes: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    removeOptionalTags: true*/
+                     // https://github.com/yeoman/grunt-usemin/issues/44
+                     //collapseWhitespace: true,
+                     collapseBooleanAttributes: true,
+                     removeAttributeQuotes: true,
+                     removeRedundantAttributes: true,
+                     useShortDoctype: true,
+                     removeEmptyAttributes: true,
+                     removeOptionalTags: true*/
                 },
                 files: [{
                     expand: true,
@@ -236,28 +264,28 @@ module.exports = function (grunt) {
             }
         },
         replace: {
-          app: {
-            options: {
-              variables: {
-                ember: 'bower_components/ember/ember.js',
-                ember_data: 'bower_components/ember-data/ember-data.js'
-              }
+            app: {
+                options: {
+                    variables: {
+                        ember: 'bower_components/ember/ember.js',
+                        ember_data: 'bower_components/ember-data/ember-data.js'
+                    }
+                },
+                files: [
+                    {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
+                ]
             },
-            files: [
-              {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
-            ]
-          },
-          dist: {
-            options: {
-              variables: {
-                ember: 'bower_components/ember/ember.prod.js',
-                ember_data: 'bower_components/ember-data/ember-data.prod.js'
-              }
-            },
-            files: [
-              {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
-            ]
-          }
+            dist: {
+                options: {
+                    variables: {
+                        ember: 'bower_components/ember/ember.prod.js',
+                        ember_data: 'bower_components/ember-data/ember-data.prod.js'
+                    }
+                },
+                files: [
+                    {src: '<%= yeoman.app %>/index.html', dest: '.tmp/index.html'}
+                ]
+            }
         },
         // Put files not handled in other tasks here
         copy: {
@@ -357,6 +385,7 @@ module.exports = function (grunt) {
             'concurrent:server',
             'neuter:app',
             'copy:fonts',
+            'configureProxies:server',
             'connect:livereload',
             'open',
             'watch'
