@@ -12,7 +12,7 @@
         <h1>groupSet</h1>
 
         <dl>
-            <dt>event Date:</dt> <dd>{{ date }}</dd>
+            <dt>event Date:</dt> <dd>{{ format-date date 'dddd, DD. MMMM YYYY' }}</dd>
         </dl>
 
         {{ render 'groups' groups }}
