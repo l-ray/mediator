@@ -19,7 +19,6 @@
 
             store = Mediator.ApplicationStore.create({
                 container: container
-
             });
 
         });
@@ -42,12 +41,10 @@
         });
 
         describe(' convert a single picture on a result to a one element array of pictures', function () {
-            it('convert a single picture to an array of pictures ', function(){
+            it('returns an empty array for empty source ', function(){
                 Ember.run( function() {
                     var serializer = store.serializerFor('result');
-                    serializer.extractArray(store,Mediator.Result,{"results":[
-
-                    ]})
+                    expect(serializer.extractArray(store,Mediator.Result,{"results":[]})).to.be.an.instanceOf(Array).and.have.lengthOf(0);
                 })
             });
 
