@@ -58,14 +58,15 @@ module.exports = function (grunt) {
                 hostname: 'localhost'
             },
             proxies: [{
-                context: '/api', // the context of the data service
-                host: 'localhost', // wherever the data service is running
+                context: '/api/results', // the context of the data service
+                host: '127.0.0.1', // wherever the data service is running
                 port: 8888, // the port that the data service is running on
+                https: false,
                 rewrite: {
-                    // the key '^/api' is a regex for the path to be rewritten
-                    // the value is the context of the data service
-                    '^/api': '/myBlock1'
-                }
+                            // the key '^/api' is a regex for the path to be rewritten
+                            // the value is the context of the data service
+                            '^/api/results': '/myBlock1/results'
+                        }
             }],
             livereload: {
                 options: {
