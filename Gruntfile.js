@@ -24,6 +24,19 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    var resultProxy =
+    {
+        context: '/api/results', // the context of the data service
+        host: process.env.RESULT_PROXY_HOST ||'127.0.0.1', // wherever the data service is running
+        port: process.env.RESULT_PROXY_PORT ||8888, // the port that the data service is running on
+        https: false,
+        rewrite: {
+            // the key '^/api' is a regex for the path to be rewritten
+            // the value is the context of the data service
+            '^/api/results': process.env.RESULT_PROXY_DIR || '/myBlock1/results'
+        }
+    };
+
     grunt.initConfig({
         yeoman: yeomanConfig,
         watch: {
@@ -57,17 +70,7 @@ module.exports = function (grunt) {
                 // change this to '0.0.0.0' to access the server from outside
                 hostname: 'localhost'
             },
-            proxies: [{
-                context: '/api/results', // the context of the data service
-                host: '127.0.0.1', // wherever the data service is running
-                port: 8888, // the port that the data service is running on
-                https: false,
-                rewrite: {
-                            // the key '^/api' is a regex for the path to be rewritten
-                            // the value is the context of the data service
-                            '^/api/results': '/myBlock1/results'
-                        }
-            }],
+            proxies: [resultProxy],
             livereload: {
                 options: {
                     middleware: function (connect,options ) {
