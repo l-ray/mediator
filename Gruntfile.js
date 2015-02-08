@@ -115,6 +115,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             mountFolder(connect, yeomanConfig.dist)
                         ];
                     }
@@ -380,7 +381,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
         }
 
         grunt.task.run([
