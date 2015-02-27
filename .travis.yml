@@ -10,3 +10,6 @@ install: npm install
 before_script: 
    - bower install
 #  - grunt build
+
+notifications:
+  irc: "chat.freenode.net#l-ray"
