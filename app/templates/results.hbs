@@ -1,10 +1,10 @@
 <ul>
  {{#each model}}
 <!-- keep the bind-attribute to allow synchronizing with result list ... why ever that is needed -->
- <li {{bind-attr title=this.connectionPriority alt=this.connectionIgnorePriority description=this.enabled}}>{{#linkTo 'result' this}}
+ <li {{bind-attr title=this.connectionPriority alt=this.connectionIgnorePriority description=this.enabled}}>{{#link-to 'result' this}}
      {{this.id}} {{this.title}}
 
- {{/linkTo}}</li>
+ {{/link-to}}</li>
   {{/each}}
 </ul>
 

@@ -49,8 +49,8 @@
                         <ul class="links">
                             {{#each links}}
                                 <li title="Link">
-                                    <a {{bindAttr href=url}} target="_blank">
-                                        <img class="event_info_source_icon" {{bindAttr title=name src=result.connection.source.icon}} />
+                                    <a {{bind-attr href=url}} target="_blank">
+                                        <img class="event_info_source_icon" {{bind-attr title=name src=result.connection.source.icon}} />
                                     </a>{{result.connection.source.id}}
                                 </li>
                             {{/each}}
@@ -59,8 +59,8 @@
                         <ul class="sources">
                             {{#each results }}
                                 <li title="Source">
-                                    <a {{bindAttr href=resultUrl}} target="_blank">
-                                        <img class="event_info_source_icon" {{bindAttr title=name src=connection.source.icon}} />
+                                    <a {{bind-attr href=resultUrl}} target="_blank">
+                                        <img class="event_info_source_icon" {{bind-attr title=name src=connection.source.icon}} />
                                     </a><span class="debug"> S:{{connection.source.id}} Prio:{{connection.priority}} {{connection.ignorePriority}} r:{{id}}</span>
                                 </li>
                             {{/each}}
@@ -69,7 +69,7 @@
                         <div class="debug">
                             <span class="priorityRuleset">RS-prio{{ priorityByRuleSet }}</span>
                             <span class="priority">sum-prio{{ priority }}</span>
-                            <span>{{#linkTo 'group' this}}{{id}}{{/linkTo}}</span>
+                            <span>{{#link-to 'group' this}}{{id}}{{/link-to}}</span>
                         </div>
                     </section>
 

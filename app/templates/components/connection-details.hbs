@@ -1,9 +1,9 @@
 {{input type="checkbox" checked=connection.active}}
-<img {{bindAttr src=connection.source.icon}} class="connectionSource_Icon" />
+<img {{bind-attr src=connection.source.icon}} class="connectionSource_Icon" />
 <span class="connectionSource">
-    {{#linkTo 'source' connection.source}}
+    {{#link-to 'source' connection.source}}
         {{connection.source.name}}
-    {{/linkTo}}
+    {{/link-to}}
 </span>
 <span class="connectionStatus">{{connection.status}}</span>
 <span class="connectionResults">Size: {{connection.length}}</span>

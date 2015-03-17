@@ -2,11 +2,11 @@
  {{#each model}}
    <li class="list-group-item">{{checked}}
      {{input type="checkbox" checked=active}}
-     <img {{bindAttr src=source.icon}} class="connectionSource_Icon" />
+     <img {{bind-attr src=source.icon}} class="connectionSource_Icon" />
      <span class="connectionSource">
-         {{#linkTo 'source' this.source}}
+         {{#link-to 'source' this.source}}
              {{source.name}}
-         {{/linkTo}}
+         {{/link-to}}
      </span>
      <span class="connectionStatus">{{this.status}}</span>
      <span class="connectionResults">Size: {{this.length}}</span>
