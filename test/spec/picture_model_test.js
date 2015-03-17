@@ -41,11 +41,28 @@
                   expect(item.get("name")).to.be.a('string').and.equal("myName");
                   expect(item.get("url")).to.be.a('string').and.equal("myUrl");
                   expect(item.get("thumbnailUrl")).to.be.a('string').and.equal("myThumbnail");
+                  expect(item.get("src")).to.be.a('string').and.equal("myThumbnail");
                   expect(item.get("description")).to.be.a('string').and.equal("myDescription");
                   expect(item.get("priority")).to.be.a('string').and.equal("myPriority");
 
               })
+          }),
+          it('should adapt correctly to missing thumbnail', function(){
+              Ember.run( function() {
+
+                  var item = store.createRecord('picture',
+                      {
+                          name:"myName",
+                          url:"myUrl",
+                          "description":"myDescription",
+                          "priority":"myPriority"
+                      });
+
+                  expect(item.get("url")).to.be.a('string').and.equal("myUrl");
+                  expect(item.get("src")).to.be.a('string').and.equal("myUrl");
+
+              })
           })
-           })
+        })
     });
 })();
