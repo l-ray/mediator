@@ -27,9 +27,12 @@ module.exports = function (grunt) {
     var resultProxy =
     {
         context: '/api/results', // the context of the data service
-        host: process.env.RESULT_PROXY_HOST ||'127.0.0.1', // wherever the data service is running
-        port: process.env.RESULT_PROXY_PORT ||8888, // the port that the data service is running on
+        host: process.env.RESULT_PROXY_HOST || 'localhost', // wherever the data service is running
+        port: process.env.RESULT_PROXY_PORT || 8888, // the port that the data service is running on
         https: false,
+	headers: {
+            'host': process.env.RESULT_PROXY_HOST || 'localhost'
+        },
         rewrite: {
             // the key '^/api' is a regex for the path to be rewritten
             // the value is the context of the data service
