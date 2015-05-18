@@ -405,6 +405,10 @@ module.exports = function (grunt) {
             grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
         });
 
+    grunt.registerTask('heroku:production', function (target) {
+            grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
+        });
+
     grunt.registerTask('test', [
         'clean:server',
         'replace:app',
