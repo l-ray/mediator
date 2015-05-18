@@ -402,11 +402,11 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('heroku:development', function (target) {
-            grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
+            grunt.task.run(['build','configureProxies:server','connect:dist:keepalive']);
         });
 
     grunt.registerTask('heroku:production', function (target) {
-            grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
+            grunt.task.run(['build','configureProxies:server','connect:dist:keepalive']);
         });
 
     grunt.registerTask('test', [
