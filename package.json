@@ -71,7 +71,6 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "test": "grunt test",
-    "postinstall": "echo postinstall time; ./node_modules/grunt-cli/bin/grunt serve:dist"
+    "test": "grunt test"
   }
 }

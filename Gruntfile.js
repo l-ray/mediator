@@ -401,6 +401,10 @@ module.exports = function (grunt) {
         ]);
     });
 
+    grunt.registerTask('heroku:development', function (target) {
+            grunt.task.run(['build','open','configureProxies:server','connect:dist:keepalive']);
+        });
+
     grunt.registerTask('test', [
         'clean:server',
         'replace:app',
