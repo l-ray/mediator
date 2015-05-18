@@ -340,7 +340,7 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'emberTemplates',
-                'compass:dist',
+//                'compass:dist',
                 'imagemin',
                 'svgmin',
                 'htmlmin'
