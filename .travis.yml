@@ -1,15 +1,26 @@
+---
 language: node_js
 node_js:
-  - "0.10"
-before_install: 
-  - npm install -g grunt-cli
+  - "0.12"
+
+sudo: false
+
+cache:
+  directories:
+    - node_modules
+
+before_install:
+  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+  - "npm config set spin false"
+  - "npm install -g npm@^2"
+
+install:
   - npm install -g bower
-  - gem install sass
-  - gem install compass
-install: npm install
-before_script: 
-   - bower install
-#  - grunt build
+  - npm install
+  - bower install
+
+script:
+  - npm test
 
 notifications:
   irc: "chat.freenode.net#l-ray"
