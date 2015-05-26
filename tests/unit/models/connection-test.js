@@ -42,6 +42,7 @@ describeModel(
                   n.pushObject(store.createRecord('result'));
                   item.enumerableContentDidChange();
                   expect(item.get('length')).to.be.equal(currentLength + 1);
+                  expect(item.get('lastObject')).to.be.an.instanceOf(DS.Model);
                   expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
               });
 
@@ -57,7 +58,7 @@ describeModel(
                 item.get('results').then(function(n) {
                     n.pushObject(firstResult);
                     item.enumerableContentDidChange();
-                   // expect(item.get('length')).to.be.one;
+                    expect(item.get('length')).to.be.one;
                 });
             });
 

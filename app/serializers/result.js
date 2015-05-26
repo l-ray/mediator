@@ -9,7 +9,7 @@ export default DS.RESTSerializer.extend({
 
         // in case there is only one result in the json, this will be delivered
         // as single element instead of a correct single element array.
-        if (!Ember.empty(payload.results)) {
+        if (!Ember.isEmpty(payload.results)) {
             payload.results = Ember.makeArray(payload.results);
 
             // in case there is only one picture in the json, this will be delivered
@@ -21,7 +21,7 @@ export default DS.RESTSerializer.extend({
             });
         }
 
-        if (! Ember.empty(payload.pictures)) {
+        if (! Ember.isEmpty(payload.pictures)) {
           payload.pictures = Ember.makeArray(payload.pictures);
         }
 

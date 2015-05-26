@@ -1,33 +1,31 @@
-/*global describe, it */
-'use strict';
+/* jshint expr:true */
+import Mediator from '../../../app';
+import { expect, assert } from 'chai';
+import {
+  describeModel,
+  it
+} from 'ember-mocha';
 
- (function () {
+describeModel(
+  'picture',
+  'Picture Model',
+  {
+  needs: [
+    'model:source',
+    'model:connection',
+    'model:result',
+    'model:group',
+    'model:groupset',
+    'model:picture',
+    'model:link'
+    ]
 
-    describe('Mediator.Picture (Model)', function () {
+  },
+  function() {
+        'use strict';
 
-        var store = null;
-
-        beforeEach(function() {
-            Mediator.ApplicationStore = DS.Store.extend({
-                adapter: Mediator.ApplicationAdapter
-            });
-            var container = new Ember.Container();
-            container.register('model:picture', Mediator.Picture);
-            container.register('model:connection', Mediator.Connection);
-            container.register('model:result', Mediator.Result);
-
-            store = Mediator.ApplicationStore.create({
-                container: container
-            });
-        });
-
-        after(function () {
-            store = null;
-        });
-
-        describe('initialize like expected', function () {
-          it('should return the given parameters correctly', function(){
-              Ember.run( function() {
+           it('should return the given parameters correctly', function(){
+              var store = this.store();
 
                   var item = store.createRecord('picture',
                                         {
@@ -44,11 +42,9 @@
                   expect(item.get("src")).to.be.a('string').and.equal("myThumbnail");
                   expect(item.get("description")).to.be.a('string').and.equal("myDescription");
                   expect(item.get("priority")).to.be.a('string').and.equal("myPriority");
-
-              })
-          }),
+          });
           it('should adapt correctly to missing thumbnail', function(){
-              Ember.run( function() {
+                  var store = this.store();
 
                   var item = store.createRecord('picture',
                       {
@@ -61,8 +57,5 @@
                   expect(item.get("url")).to.be.a('string').and.equal("myUrl");
                   expect(item.get("src")).to.be.a('string').and.equal("myUrl");
 
-              })
-          })
-        })
-    });
-})();
+        });
+});
