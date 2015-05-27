@@ -40,12 +40,10 @@ describeModule(
               container: this.container
             });
 
-
             var model = store.createRecord('group', {});
             var resultModel = store.createRecord('result', {
                 connection: store.createRecord('connection', {})
             });
-
             model.get('results').pushObject(resultModel);
 
             var controller = this.subject();
@@ -67,16 +65,20 @@ describeModule(
           });
 
           var model = store.createRecord('group', {});
+          var resultModel = store.createRecord('result', {
+            connection: store.createRecord('connection', {})
+          });
+          model.get('results').pushObject(resultModel);
 
           var controller = this.subject();
 
-          expect(model.get('recycled')).to.be.equal(false);
-          expect(model.get('enabled')).to.be.equal(true);
+            expect(model.get('recycled')).to.be.equal(false);
+            expect(model.get('enabled')).to.be.equal(true);
 
-          controller.send('markRecycled', model);
+            controller.send('markRecycled', model);
 
-          expect(model.get('recycled')).to.be.equal(true);
-          expect(model.get('enabled')).to.be.equal(false);
+              expect(model.get('recycled')).to.be.equal(true);
+              expect(model.get('enabled')).to.be.equal(false);
         });
 
       it(" restores the recycle mode properly.", function () {
@@ -84,7 +86,6 @@ describeModule(
         var container = this.container;
         var controller = this.subject();
 
-        Ember.run( function() {
           Mediator.ApplicationStore = DS.Store.extend({
             adapter: DS.MochaAdapter
           });
@@ -93,12 +94,16 @@ describeModule(
             container: container
           });
 
-          var model = store.createRecord('group', {});
-
-          controller.send('markRestored', model);
-          expect(model.get('recycled')).to.be.equal(false);
-          expect(model.get('enabled')).to.be.equal(true);
+        var model = store.createRecord('group', {});
+        var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {})
         });
+        model.get('results').pushObject(resultModel);
+
+        controller.send('markRestored', model);
+
+        expect(model.get('recycled')).to.be.equal(false);
+        expect(model.get('enabled')).to.be.equal(true);
       });
 
             it(" Increasing a dataset works on individual Group, initially holds the priorities in natural order.", function () {

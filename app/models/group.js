@@ -169,8 +169,11 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
 
     enabled: function() {
-        var isEnabled = function(item) {return item.get("enabled");};
-        return !this.get('recycled') && this.get('results').any(isEnabled);
+
+      var isEnabled = function(item) {return item.get("enabled");};
+
+      var anySubEnabled = this.get('results').any(isEnabled);
+      return !this.get('recycled') && anySubEnabled;
     }.property('recycled','results.@each.enabled')
 
 });

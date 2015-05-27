@@ -12,7 +12,6 @@ export default Ember.ArrayController.extend({
             item.set("recycled", false);
         },
         decreaseUserPriority: function (item) {
-            console.log("groups controller");
             item.set(
                 "priorityByUser",
                     item.get("priorityByUser") - 1000

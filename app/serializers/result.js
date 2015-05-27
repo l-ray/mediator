@@ -5,7 +5,6 @@ export default DS.RESTSerializer.extend({
 
 
     extractArray: function (store, type, payload) {
-        console.log("in extractArray for Results");
 
         // in case there is only one result in the json, this will be delivered
         // as single element instead of a correct single element array.
