@@ -1,44 +1,50 @@
-/*global describe, it */
-'use strict';
+/* jshint expr:true */
+import { expect, assert } from 'chai';
+import Ember from 'ember';
+import Mediator from '../../../app';
+import {
+  describeModule,
+  it,
+  before,
+  after
+} from 'ember-mocha';
 
- (function () {
+/* global smSmithWaterman */
+/* global smQGram */
 
-    describe('Mediator.GroupSet (Controller)', function () {
+describeModule(
+  'controller:groupset',
+  'Groupset Controller',
+  {
+    // Specify the other units that are required for this test.
+    needs: [
+    'model:source',
+    'model:connection',
+    'model:result',
+    'model:picture',
+    'model:link',
+    'model:groupset',
+    'model:group'
+    ]
+  },
+  function() {
 
-        var store = null;
-        var controller = null;
+          it('exists', function() {
+                  var controller = this.subject();
+                  expect(controller).to.be.ok;
+                });
 
-        beforeEach(function() {
-            Mediator.ApplicationStore = DS.Store.extend({
-                adapter: Mediator.ApplicationAdapter
-            });
-            var container = new Ember.Container();
-            container.register('model:group', Mediator.Group);
-            container.register('model:groupset', Mediator.Groupset);
-            container.register('model:source', Mediator.Source);
-            container.register('model:connection', Mediator.Connection);
-            container.register('model:result', Mediator.Result);
-            container.register('model:picture', Mediator.Picture);
-            container.register('model:link', Mediator.Link);
-            // an empty object will act as our PostsController
-            container.register('controller:groupset', { });
-
-            controller = Mediator.GroupsetController.create({
-                container: container
-            });
-
-            store = Mediator.ApplicationStore.create({
-                container: container
-            });
-        });
-
-        after(function () {
-            store = null;
-        });
-
-        describe('Similarities between objects ', function () {
             it('should recognize identical picture urls.', function(){
-                Ember.run( function() {
+            //    Ember.run( function() {
+
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
 
                     var testPRItem1 = store.createRecord('result',{'title':"test1"});
                     testPRItem1.get('pictures').pushObjects([
@@ -59,11 +65,20 @@
                             )
                     ).to.be.equal(true);
 
-                })
+            //    });
             });
 
             it('should recognize not identical picture urls.', function(){
-                Ember.run( function() {
+            //    Ember.run( function() {
+
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
 
                     var testPRItem1 = store.createRecord('result',{'title':"test1"});
                     testPRItem1.get('pictures').pushObject(
@@ -82,14 +97,24 @@
                             )
                     ).to.be.equal(false,"Veranstaltung nicht aehnlich");
 
-                })
+             //   });
             });
 
             it('should recognize similar datasets', function(){
-                Ember.run( function() {
+                // Ember.run( function() {
 
-                    var testPRItem1 = store.createRecord('result',{'title':'test1'});
-                    var testPRItem2 = store.createRecord('result',{'title':'test2'});;
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+
+                  var controller = this.subject();
+
+                  var testPRItem1 = store.createRecord('result',{'title':'test1'});
+                    var testPRItem2 = store.createRecord('result',{'title':'test2'});
 
                     var item1 = store.createRecord('group');
                     var item2 = store.createRecord('group');
@@ -104,8 +129,8 @@
                     testPRItem1.set('title',"PUNSCHIGEL / STOP DANCING IF YOU CAN!!!");
                     testPRItem2.set('title',"PUNSCHIGEL");
 
-                    testPRItem1.set('location',"Altes Wettb�ro");
-                    testPRItem2.set('location',"Altes Wettb�ro");
+                    testPRItem1.set('location',"Altes Wettbüro");
+                    testPRItem2.set('location',"Altes Wettbüro");
 
                     expect(controller.__isSimilar(item1,item2)).to.be.equal(true,"Veranstaltung aehnlich");
 
@@ -125,16 +150,22 @@
                     debugDescription += "qgram:"+ smQGram.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+" | ";
                     debugDescription += "smithWaterman:"+ smSmithWaterman.similarity(item1.get("reducedSummary"), item2.get("reducedSummary"))+"\n";
 
-                    controller.__isSimilar(item1,item2).should.be.equal(true,debugDescription);
-                });
+                    expect(controller.__isSimilar(item1,item2)).to.be.equal(true,debugDescription);
+               // });
             });
-        });
-
-        describe('Combining similar result groups', function () {
 
             it('should combine groupSets with similar groups', function(){
-                Ember.run( function() {
-                    var model = store.createRecord('groupset',{});
+             //   Ember.run( function() {
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
+
+                  var model = store.createRecord('groupset',{});
                     controller.set('model',model);
 
                     var groupItem1 = store.createRecord('group', {});
@@ -160,8 +191,8 @@
                     expect(groups.get('length')).to.be.equal(0);
                     assert.isFunction(groups.pushObject);
                     expect(controller.get('groups.length')).to.be.equal(0);
-                    expect(groupItem1).to.be.an.instanceOf(Mediator.Group);
-                    expect(groupItem2).to.be.an.instanceOf(Mediator.Group);
+                    expect(groupItem1).to.be.an.instanceOf(DS.Model);
+                    expect(groupItem2).to.be.an.instanceOf(DS.Model);
                     expect(controller.__isSimilar(testPRItem1,testPRItem2)).to.equal(true);
 
                     groupItem1.set('groupset', model);
@@ -171,7 +202,7 @@
                     model.get('groups').pushObject(groupItem2);
 
                     model.enumerableContentDidChange();
-                    model.toArray().should.have.length(2, "before clean up");
+                    expect(model.toArray()).to.have.length(2, "before clean up");
 
                     assert.isFunction(controller.cleanUp);
 
@@ -179,14 +210,24 @@
                     model.enumerableContentDidChange();
 
                     // reduce items to one group
-                    model.toArray().should.have.length(1, "after clean-up");
-                    model.get('firstObject').toArray().should.have.length(2, "groups per set");
-                })
+                    expect(model.toArray()).to.have.length(1, "after clean-up");
+                    expect(model.get('firstObject').toArray()).to.have.length(2, "groups per set");
+            //    });
 
             });
 
             it('should not combine groupSets with unsimilar groups', function(){
-                Ember.run( function() {
+            //    Ember.run( function() {
+
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
+
                     var model = store.createRecord('groupset',{});
                     controller.set('model', model);
 
@@ -207,22 +248,28 @@
 
                     groups.pushObjects([item1, item3]);
                     model.enumerableContentDidChange();
-                    model.toArray().should.have.length(2);
+                    expect(model.toArray()).to.have.length(2);
 
                     controller.cleanUp();
 
-                    model.toArray().should.have.length(2);
-                    model.get('firstObject').toArray().should.have.length(1, "groups per set");
-                    model.get('lastObject').toArray().should.have.length(1, "groups per set");
-                })
+                    expect(model.toArray()).to.have.length(2);
+                    expect(model.get('firstObject').toArray()).to.have.length(1, "groups per set");
+                    expect(model.get('lastObject').toArray()).to.have.length(1, "groups per set");
+            //    });
             });
 
-        });
+            it('should recognize new results and travers connections', function() {
 
-        describe('recognize new results ', function () {
-            it('should travers connections', function() {
+            //    Ember.run( function() {
 
-                Ember.run( function() {
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
 
                     var connection1 = store.createRecord('connection',{ status: Mediator.ConnectionStatus.IDLE});
                     var connection2 = store.createRecord('connection',{ status: Mediator.ConnectionStatus.WAITING});
@@ -246,12 +293,22 @@
                         expect(connection3.get("status")).to.be.equal(Mediator.ConnectionStatus.IDLE);
                         expect(connection4.get("status")).to.be.equal(null);
 
-                    });
+                  // });
                 });
 
-                it('for new results and put those as new groups into the set', function(){
+                it('should recognize new results and and put those as new groups into the set', function(){
 
-                    Ember.run( function() {
+                //    Ember.run( function() {
+
+                      Mediator.ApplicationStore = DS.Store.extend({
+                        adapter: DS.MochaAdapter
+                      });
+
+                      var store = Mediator.ApplicationStore.create({
+                        container: this.container
+                      });
+                      var controller = this.subject();
+
                         controller.set('store', store);
                         var model = store.createRecord('groupset',{});
                         controller.set('model', model);
@@ -269,23 +326,30 @@
                                 expect(model.toArray().to.have.length(1));
                                 expect(model.get("firstObject.results.firstObject")).to.be.equal(testResult);
                             });
-                        });
+                  //      });
 
-                    })
+                    });
                 });
             });
 
             it('should return a group with the given result in the first step', function() {
-                Ember.run( function() {
+                //Ember.run( function() {
+
+                  Mediator.ApplicationStore = DS.Store.extend({
+                    adapter: DS.MochaAdapter
+                  });
+
+                  var store = Mediator.ApplicationStore.create({
+                    container: this.container
+                  });
+                  var controller = this.subject();
+
                     controller.set('store', store);
                     var resultItem = store.createRecord('result',{'title':'test1'});
                     var returned = controller.__produceNewGroupForResult(resultItem);
 
-                    returned.toArray().should.have.length(1, "results per group");
+                    expect(returned.toArray()).to.have.length(1, "results per group");
                     expect(returned.toArray()).to.have.members([resultItem]);
-                })
-            })
+               // });
+            });
         });
-
-    });
-})();

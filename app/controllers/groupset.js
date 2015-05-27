@@ -1,7 +1,10 @@
 import Ember from 'ember';
-import Mediator from 'app';
-import smSmithWaterman from 'smSmithWaterman';
-import smQGram from 'smQGramDistance';
+import Mediator from '../app';
+// import smSmithWaterman from 'bower_components/simmetrix-smithwaterman/lib/simmetrix.smithwaterman';
+// import smQGram from 'smQGramDistance';
+
+/* global smSmithWaterman */
+/* global smQGram */
 
 export default Ember.ObjectController.extend({
 
