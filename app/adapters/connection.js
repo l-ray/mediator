@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import Mediator from 'app';
+import Mediator from '../app';
 
 export default DS.RESTAdapter.extend({
 

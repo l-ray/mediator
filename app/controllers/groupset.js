@@ -1,16 +1,14 @@
 import Ember from 'ember';
 import Mediator from '../app';
-// import smSmithWaterman from 'bower_components/simmetrix-smithwaterman/lib/simmetrix.smithwaterman';
-// import smQGram from 'smQGramDistance';
 
 /* global smSmithWaterman */
 /* global smQGram */
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
 
     addResultsAsGroups: function() {
-        var groups = this.get("groups");
-        this.get('connections').forEach(
+        var groups = this.get("model.groups");
+        this.get('model.connections').forEach(
             function(connection) {
                 if(connection.get('status') === Mediator.ConnectionStatus.RECEIVING) {
                     connection.get('results').forEach(
@@ -33,7 +31,7 @@ export default Ember.ObjectController.extend({
 
     processFreshIncomingResults: function(){
         Ember.run.once(this, 'addResultsAsGroups');
-    }.observes('connections.@each.status'),
+    }.observes('model.connections.@each.status'),
 
     __produceNewGroupForResult: function(result) {
         var store = this.store;
@@ -74,7 +72,7 @@ export default Ember.ObjectController.extend({
 
     cleanUp: function() {
         Ember.run.once(this, 'processSimilarityMeasurement');
-    }.observes('groups.length'),
+    }.observes('model.groups.length'),
 
     // retrieves similarity of two given groups
     __isSimilar: function(patternResultGroup1, patternResultGroup2) {

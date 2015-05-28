@@ -4,9 +4,7 @@ import Ember from 'ember';
 import Mediator from '../../../app';
 import {
   describeModule,
-  it,
-  before,
-  after
+  it
 } from 'ember-mocha';
 
 /* global smSmithWaterman */
@@ -190,7 +188,7 @@ describeModule(
 
                     expect(groups.get('length')).to.be.equal(0);
                     assert.isFunction(groups.pushObject);
-                    expect(controller.get('groups.length')).to.be.equal(0);
+                    expect(controller.get('model.groups.length')).to.be.equal(0);
                     expect(groupItem1).to.be.an.instanceOf(DS.Model);
                     expect(groupItem2).to.be.an.instanceOf(DS.Model);
                     expect(controller.__isSimilar(testPRItem1,testPRItem2)).to.equal(true);
