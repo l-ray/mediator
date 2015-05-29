@@ -32,7 +32,7 @@ export default DS.RESTAdapter.extend({
                             'links' : {'results':resultUrl}
                         };
 
-                        var tmpConnection = store.createRecord(Mediator.Connection, connectionObject);
+                        var tmpConnection = store.createRecord("connection", connectionObject);
                         rootSource.get('connections').then(function(c){c.pushObject(tmpConnection);});
 
                         results.push(connectionObject);

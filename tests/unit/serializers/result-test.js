@@ -12,7 +12,10 @@ describeModule(
   {
     needs: [
       'model:result',
-      'model:picture'
+      'model:picture',
+      'model:connection',
+      'model:group',
+      'model:link',
     ]
   },
   function() {
@@ -32,6 +35,7 @@ describeModule(
       var store = Mediator.ApplicationStore.create({
         container: this.container
       });
+
       expect(
         serializer.extractArray(
           store,
@@ -39,6 +43,20 @@ describeModule(
           {"results":[]}
         )
       ).to.be.an.instanceOf(Array).and.have.lengthOf(0);
+      expect(
+        serializer.extractArray(
+          store,
+          store.modelFor('result'),
+          {"results":{}}
+        )
+      ).to.be.an.instanceOf(Array).and.have.lengthOf(1);
+      expect(
+        serializer.extractArray(
+          store,
+          store.modelFor('result'),
+          {"results":[{},{}]}
+        )
+      ).to.be.an.instanceOf(Array).and.have.lengthOf(2);
     });
 
 });

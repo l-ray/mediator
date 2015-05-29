@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import moment from 'moment';
 
-function formatDate(date, pattern) {
+/* global moment */
+
+export function formatDate(date, pattern) {
     if (typeof pattern === "string") {
         return moment(date).format(pattern);
     } else {

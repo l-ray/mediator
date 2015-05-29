@@ -1,15 +1,16 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
-export default  DS.FixtureAdapter.extend({
+export default  DS.Adapter.extend({
 
      // generate the complete groupset for the given ID including
      // connections
+     // TODO: rewrite like findAll
      find: function(store, type, id) {
 
          var splitDate = id.split("-");
 
-         var newGroupset = store.createRecord('groupset', {
+         var newGroupset = store.createRecord( type, {
              date : new Date(splitDate[0],splitDate[1],splitDate[2]),
              id: id
          });
@@ -36,16 +37,11 @@ export default  DS.FixtureAdapter.extend({
              }, function(data) { console.log("Could not retrieve connection."+data);}
          );
 
-         return this.simulateRemoteCall(function() {
-             return  newGroupset;
-         }, this);
+         return new Ember.RSVP.Promise(function(resolve) {resolve(newGroupset);});
      },
 
      // generate Groupsets for the next x days in advance
-     findAll: function(store, type) {
-
-        var fixtures = this.fixturesForType(type);
-        var results = [];
+     findAll: function(store) {
 
          var DAYS_INTO_THE_PAST = 2;
          var CALENDAR_SIZE = 16;
@@ -65,45 +61,26 @@ export default  DS.FixtureAdapter.extend({
 
          console.log("Sure, My calendar says: "+calendar);
 
-         calendar.forEach(function(item) {
+         var proxyArrays = calendar.map(function(item) {
 
              var itemId = item.toISOString().substr(0,10);
 
-             var newGroupset = store.createRecord('groupset', {
-                date : item,
-                id: itemId
-            });
-
-
             console.log("finding connections for groupset "+itemId);
 
-            var promiseArray = store.find('connection',{ 'startDate': itemId });
+            return store.find('connection',{ 'startDate': itemId });
+         });
 
-            promiseArray.then(
-                function(connections){
-                    console.log("Got the following connections:"+connections);
+         // Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
 
-                    connections.forEach(
-                        function(connection) {
-
-                            newGroupset.get('connections').then(function(n) {
-                                console.log("pushed connection |"+connection+"| with source |"+connection.get('source')+"| into groupset "+newGroupset);
-                                n.pushObject(connection);
-                                connection.set('groupset', newGroupset);
-                            });
-                        }
-                    );
-                }, function(data) { console.log("Could not retrieve connection."+data);}
-            );
-
-            results.push(newGroupset);
-        });
-
-         Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
-
-         console.log("Groupset all-find");
-
-         return results;
+       return new Ember.RSVP.map(proxyArrays,function(connections) {
+           var startDates = connections.objectAtContent(0).get('startDate').toISOString().substr(0,10);
+           var connectionsAsId = connections.map(function(con){return con.get('id');});
+           return {
+             'date' : startDates,
+             'id'   : startDates,
+             'connections': connectionsAsId
+           };
+       });
      }
 
 });
