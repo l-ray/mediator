@@ -3,6 +3,9 @@ import Ember from 'ember';
 
 export default  DS.Adapter.extend({
 
+     DAYS_INTO_THE_PAST : 2,
+     CALENDAR_SIZE : 16,
+
      // generate the complete groupset for the given ID including
      // connections
      // TODO: rewrite like findAll
@@ -43,15 +46,14 @@ export default  DS.Adapter.extend({
      // generate Groupsets for the next x days in advance
      findAll: function(store) {
 
-         var DAYS_INTO_THE_PAST = 2;
-         var CALENDAR_SIZE = 16;
+
 
         var firstDayOfCalendar = new Date();
-         firstDayOfCalendar.setDate(new Date().getDate() - DAYS_INTO_THE_PAST);
+         firstDayOfCalendar.setDate(new Date().getDate() - this.DAYS_INTO_THE_PAST);
 
          console.log("CReated "+firstDayOfCalendar);
 
-         var calendar = Array.apply(null, new Array(CALENDAR_SIZE))
+         var calendar = Array.apply(null, new Array(this.CALENDAR_SIZE))
              .map(function(cur,index){
                  var newDay = new Date();
                  newDay.setDate(firstDayOfCalendar.getDate()+index);
@@ -70,9 +72,9 @@ export default  DS.Adapter.extend({
             return store.find('connection',{ 'startDate': itemId });
          });
 
-         // Ember.assert("Unable to find fixtures for model type "+type.toString(), fixtures);
 
        return new Ember.RSVP.map(proxyArrays,function(connections) {
+           Ember.assert("Multiple connections for every start date ", connections.get('length') > 0);
            var startDates = connections.objectAtContent(0).get('startDate').toISOString().substr(0,10);
            var connectionsAsId = connections.map(function(con){return con.get('id');});
            return {
