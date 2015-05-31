@@ -74,6 +74,8 @@ describeModule(
           expect(result.connections).to.have.length(2);
           result.connections.forEach(function(c){
             expect(c).to.have.a.property("source").that.be.instanceOf(DS.Model);
+            expect(c).to.have.a.property("startDate").that.be.a('date');
+            expect(c.startDate.toISOString()).to.contain("2014-01-02");
             expect(c).to.have.a.property("links").that.have.a.property("results");
             expect(c.links.results).to.be.a("string").and.be.not.empty;
           });

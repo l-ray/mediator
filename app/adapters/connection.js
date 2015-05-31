@@ -7,8 +7,7 @@ export default DS.RESTAdapter.extend({
     findQuery: function(store, type, query, array) {
 
         var startDateString = query.startDate;
-        var startDateArray= startDateString.split("-");
-        var startDate = new Date(startDateArray[0],startDateArray[1],startDateArray[2]);
+        var startDate = new Date(startDateString);
         console.log("Asking for connections with startDate "+query.startDate+" and array " + array + " from store " + store);
 
         return new Ember.RSVP.Promise(function(resolve, reject){
