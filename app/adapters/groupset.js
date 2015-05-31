@@ -12,12 +12,12 @@ export default  DS.Adapter.extend({
      find: function(store, type, id) {
 
        // fill up with connections
-       var promiseArray = store.find('connection',{ 'startDate': id });
+       var promiseArray = store.findQuery('connection',{ 'startDate': id });
 
        var wrapConnectionsIntoGroupset = this.wrapConnectionsIntoGroupset;
          return new Ember.RSVP.Promise(
            function(resolve) {
-             resolve(wrapConnectionsIntoGroupset(promiseArray));
+             promiseArray.then(function(a){resolve(wrapConnectionsIntoGroupset(a));});
            }
          );
      },
@@ -40,9 +40,9 @@ export default  DS.Adapter.extend({
 
             var itemId = item.toISOString().substr(0,10);
             return store.find('connection',{ 'startDate': itemId });
-         }).map(this.wrapConnectionsIntoGroupset);
+         });
 
-       return new Ember.RSVP.Promise(function(resolve){resolve(proxyArrays);});
+       return new Ember.RSVP.map(proxyArrays,this.wrapConnectionsIntoGroupset);
      },
 
      wrapConnectionsIntoGroupset:function(connections) {

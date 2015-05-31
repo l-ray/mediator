@@ -16,13 +16,13 @@ describe('FormatDateHelper', function() {
   });
 
   it('returns correct relative date ', function() {
-    expect(formatDate(new Date()),"as relative current date").to.be.equal("a few seconds ago");
-    expect(formatDate(new Date(0)),"as relative date in the past").to.match(/years ago$/);
+    expect(formatDate([new Date()]),"as relative current date").to.be.equal("a few seconds ago");
+    expect(formatDate([new Date(0)]),"as relative date in the past").to.match(/years ago$/);
 
   });
 
   it('returns correct country pattern date ', function() {
-    expect(formatDate(new Date(0),"dd"),"as day").to.equal("Th");
-    expect(formatDate(new Date(0),"DD"),"as weekday").to.equal("01");
+    expect(formatDate([new Date(0),"dd"]),"as day").to.equal("Th");
+    expect(formatDate([new Date(0),"DD"]),"as weekday").to.equal("01");
   });
 });
