@@ -1,81 +1,83 @@
 <h1>ResultGroups</h1>
 
     <ul class="result_groups">
-        {{#each }}
-            {{#if enabled}}
-                <li>
 
+      {{#each group in model}}
+
+            {{#if group.enabled}}
+                <li>
                     <section class="event">
 
                         <ul class="administration">
-                            <li class="item_to_top" {{action 'increaseUserPriority' this}}><span>top</span></li>
+                            <li class="item_to_top" {{action 'increaseUserPriority' group}}><span>top</span></li>
 
-                            <li class="item_to_bottom" {{action 'decreaseUserPriority' this}}><span>bottom</span></li>
+                            <li class="item_to_bottom" {{action 'decreaseUserPriority' group}}><span>bottom</span></li>
 
-                            {{#if recycled }}
-                                <li {{action 'markRestored' this}} class="derecycle_item" ><span>w</span></li>
+                            {{#if group.recycled }}
+                                <li {{action 'markRestored' group}} class="derecycle_item" ><span>w</span></li>
                             {{else}}
-                                <li {{action 'markRecycled' this}} class="recycle_item" ><span>x</span></li>
+                                <li {{action 'markRecycled' group}} class="recycle_item" ><span>x</span></li>
                             {{/if}}
                         </ul>
 
-                        {{pictures-array pictures=pictures classNames="pictures"}}
+                        {{pictures-array pictures=group.pictures classNames="pictures"}}
 
-                        {{#if categories}}
+                        {{#if group.categories}}
                             <ul title="categories" class="categories">
-                                {{#each categories }}
-                                    <li>{{ this }}</li>
+                                {{#each category in group.categories}}
+                                    <li>{{ category }}</li>
                                 {{/each}}
                             </ul>
                         {{/if}}
 
-                        <h1 class="title">{{ title }}</h1>
-                        {{#if subtitle}}
-                            <h2 class="subtitle">{{ subtitle }}</h2>
+                        <h1 class="title">{{ group.title }}</h1>
+                        {{#if group.subtitle}}
+                            <h2 class="subtitle">{{ group.subtitle }}</h2>
                         {{/if}}
-                        {{#if description}}
-                            <div class="description">{{ description }}</div>
+                        {{#if group.description}}
+                            <div class="description">{{ group.description }}</div>
                         {{/if}}
                         <time class="date">
-                            {{#if startDate}}
-                                {{ format-date startDate "DD.MM.YYYY" }}
+                            {{#if group.startDate}}
+                                {{ format-date group.startDate "DD.MM.YYYY" }}
                             {{else}}
                                 no start date
                             {{/if}}
                         </time>
-                        <span class="location">{{#if location}} {{location}} {{else}}no location{{/if}}</span>
-                        <span class="price">{{#if price }}{{ price }}{{else}}no price{{/if}}</span>
+                        <span class="location">{{#if group.location}} {{group.location}} {{else}}no location{{/if}}</span>
+                        <span class="price">{{#if group.price }}{{ group.price }}{{else}}-{{/if}}</span>
 
                         <ul class="links">
-                            {{#each links}}
+                            {{#each link in group.links}}
                                 <li title="Link">
-                                    <a {{bind-attr href=url}} target="_blank">
-                                        <img class="event_info_source_icon" {{bind-attr title=name src=result.connection.source.icon}} />
-                                    </a>{{result.connection.source.id}}
+                                    <a {{bind-attr href=link.url}} target="_blank">
+                                        <img class="event_info_source_icon" {{bind-attr title=link.name src=link.result.connection.source.icon}} />
+                                    </a>{{link.result.connection.source.id}}
                                 </li>
                             {{/each}}
                         </ul>
 
                         <ul class="sources">
-                            {{#each results }}
+                            {{#each result in group.enabledResults}}
                                 <li title="Source">
-                                    <a {{bind-attr href=resultUrl}} target="_blank">
-                                        <img class="event_info_source_icon" {{bind-attr title=name src=connection.source.icon}} />
-                                    </a><span class="debug"> S:{{connection.source.id}} Prio:{{connection.priority}} {{connection.ignorePriority}} r:{{id}}</span>
+                                    <a {{bind-attr href=result.resultUrl}} target="_blank">
+                                        <img class="event_info_source_icon" {{bind-attr title=result.name src=result.connection.source.icon}} />
+                                    </a><span class="debug"> S:{{result.connection.source.id}} Prio:{{result.connection.priority}} {{result.connection.ignorePriority}} r:{{result.id}}</span>
                                 </li>
                             {{/each}}
                         </ul>
 
                         <div class="debug">
-                            <span class="priorityRuleset">RS-prio{{ priorityByRuleSet }}</span>
-                            <span class="priority">sum-prio{{ priority }}</span>
-                            <span>{{#link-to 'group' this}}{{id}}{{/link-to}}</span>
+                            <span class="priorityRuleset">RS-prio{{ group.priorityByRuleSet }}</span>
+                            <span class="priority">sum-prio{{ group.priority }}</span>
+                            <span>{{#link-to 'group' group}}{{group.id}}{{/link-to}}</span>
                         </div>
                     </section>
 
                 </li>
             {{/if}}
         {{/each}}
+
     </ul>
 
 {{outlet}}

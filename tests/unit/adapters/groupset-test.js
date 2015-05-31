@@ -124,7 +124,7 @@ describeModule(
 
       adapter.findAll(store).then(
         function (results) {
-          assert.lengthOf(results,3,"calendar length");
+          expect(results,"calendar length").to.have.length(3);
           results.forEach(function(result,idx){
             expect(result).to.be.instanceOf(Object);
             expect(result.date).to.be.a('string').and.equal("2014-01-0"+(idx+1));

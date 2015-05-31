@@ -1,8 +1,9 @@
 <div>
     <div class="col-md-3">
         <div class="well sidebar-nav">
+            Connections {{ model.connections.length }}
             <ul class="list-group">
-                {{#each connection in connections}}
+                {{#each connection in model.connections}}
                     {{connection-details connection=connection tagName="li" classNames="list-group-item" }}
                 {{/each}}
             </ul>
@@ -12,10 +13,10 @@
         <h1>groupSet</h1>
 
         <dl>
-            <dt>event Date:</dt> <dd>{{ format-date date 'dddd, DD. MMMM YYYY' }}</dd>
+            <dt>event Date:</dt> <dd>{{ format-date model.date 'dddd, DD. MMMM YYYY' }}</dd>
         </dl>
 
-        {{ render 'groups' groups }}
+        {{ render 'groups' model.groups }}
 
         {{outlet}}
 

@@ -29,23 +29,4 @@ describeModule(
         expect(controller).to.be.ok;
       });
 
-
-      it("works on individual connection and sets the edit mode properly.", function () {
-
-            Mediator.ApplicationStore = DS.Store.extend({
-              adapter: DS.MochaAdapter
-            });
-
-            var store = Mediator.ApplicationStore.create({
-              container: this.container
-            });
-
-            var model = store.createRecord('connection',{});
-              var controller = this.subject();
-              controller.send('edit',model);
-              expect(model.get('editMode')).to.be.equal(true);
-              controller.send('doneEditing',model);
-              expect(model.get('editMode')).to.be.equal(false);
-
-        });
     });

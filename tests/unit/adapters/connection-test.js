@@ -19,7 +19,7 @@ describeModule(
       'model:groupset',
       'model:picture',
       'model:link'
-    ],
+    ]
   },
   function() {
 

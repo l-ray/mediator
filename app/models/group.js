@@ -18,7 +18,11 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
     groupset: DS.belongsTo('groupset'),
 
-    priorityBySystem: function() {
+    enabledResults: function() {
+      return this.get('results').filter(function(r){return r.get('enabled');});
+    }.property('results.@each.enabled'),
+
+      priorityBySystem: function() {
         return (this.get('results').get('length') === 0) ?
             0 :
             new Ember.Set(this.get('results'))

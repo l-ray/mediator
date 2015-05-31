@@ -6,8 +6,10 @@ var app = new EmberApp({
   compassOptions: {
     outputStyle: 'expanded',
     relativeAssets: false,
-    imagesDir: 'public/assets/images',
-    fontsDir: 'public/assets/fonts'
+    imagesDir: 'assets/images',
+    fontsDir: 'assets/fonts',
+    appDir: 'public',
+    sassDir: '../app/styles'
   }
 });
 

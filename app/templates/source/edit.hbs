@@ -1,8 +1,8 @@
 <fieldset>
     <legend>settings</legend>
     priority:
-    {{view Mediator.RangeField valueBinding=priority type="range" min="-150" max="150"}} <br />
-    additional: {{input type=checkbox checked=additional}}
+  {{input type="range" class="range" name="range" min="-250" max="250" value=model.priority}} <br />
+    additional: {{input checked=model.additional type="checkbox" }}
 </fieldset>
 
 {{outlet}}

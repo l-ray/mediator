@@ -50,6 +50,27 @@ describeModel(
                 expect(item.toArray()).to.have.length(1);
 
         });
+
+        it('should show enabled results', function(){
+          var store = this.store();
+          var item = store.createRecord('group',{});
+
+          var firstResult = store.createRecord('result',{
+              connection : store.createRecord('connection',{active:true })
+          });
+          var secondResult = store.createRecord('result',{
+            connection : store.createRecord('connection',{active:false })
+          });
+          var results = item.get('results');
+
+          results.pushObjects([firstResult,secondResult]);
+          item.enumerableContentDidChange();
+          expect(item.toArray()).to.have.length(2);
+          expect(item.get('results'),"all results").to.have.length(2);
+          expect(item.get('enabledResults'),"enabled results only").to.have.length(1);
+
+        });
+
         it('should on standard have an empty title', function(){
           var store = this.store();
           var item = store.createRecord('group',{});
