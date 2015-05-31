@@ -39,7 +39,6 @@ describeModule(
       expect(adapter).to.be.ok;
     });
 
-
      it("returns single groupset according the given type id via finder-method.", function () {
 
          Mediator.ApplicationStore = DS.Store.extend({

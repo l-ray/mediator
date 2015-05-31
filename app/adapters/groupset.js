@@ -13,7 +13,7 @@ export default  DS.Adapter.extend({
 
        // fill up with connections
        var promiseArray = store.find('connection',{ 'startDate': id });
-       
+
        var wrapConnectionsIntoGroupset = this.wrapConnectionsIntoGroupset;
          return new Ember.RSVP.Promise(
            function(resolve) {

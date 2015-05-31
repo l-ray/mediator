@@ -43,12 +43,13 @@ export default DS.RESTAdapter.extend({
                 resolve({"connections":results});
             },reject);
         });
-    },
-
-    findHasMany: function(store, record, url) {
-        console.log("Called findHasMany with record |"+record+"| and url |"+url+"|");
-        var result = DS.RESTAdapter.prototype.findHasMany(store, record, url);
-        return result;
     }
+
+  /**
+  findHasMany: function(store, record, url) {
+        console.log("Called findHasMany with record |"+record+"| and url |"+url+"|");
+      return DS.RESTAdapter.prototype.findHasMany(store, record, url);
+    }
+   **/
 
 });
