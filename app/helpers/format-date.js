@@ -2,9 +2,9 @@ import Ember from 'ember';
 
 /* global moment */
 
-export function formatDate(parameter, options) {
-  var date = parameter[0]; //= Ember.getPath(this, parameter);
-  var pattern = parameter[1];//= Ember.getPath(this, parameter);
+export function formatDate(parameter) {
+  var date = parameter[0];
+  var pattern = parameter[1];
 
   if (typeof pattern === "string") {
         return moment(date).format(pattern);
