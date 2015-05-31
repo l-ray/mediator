@@ -18,6 +18,7 @@
     "simmetrix-smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
     "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git",
     "momentjs": "~2.5.1",
-    "ember-mocha": "~0.7.0"
+    "ember-mocha": "~0.7.0",
+    "bootstrap": "~3.3.4"
   }
 }

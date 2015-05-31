@@ -27,5 +27,7 @@ app.import('bower_components/momentjs/moment.js');
 app.import('bower_components/simmetrix-smithwaterman/lib/simmetrix.smithwaterman.js');
 app.import('bower_components/simmetrix-qgram/lib/simmetrix.qgram.js');
 
+app.import('bower_components/bootstrap/dist/js/bootstrap.js');
+app.import('bower_components/bootstrap/dist/css/bootstrap.css');
 
 module.exports = app.toTree();
