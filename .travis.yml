@@ -1,28 +1,28 @@
----
 language: node_js
 node_js:
-  - "0.12"
-
+- '0.12'
 sudo: false
-
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 before_install:
-  - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
-  - "gem install sass"
-  - "gem install compass"
-
+- export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
+- npm config set spin false
+- npm install -g npm@^2
+- gem install sass
+- gem install compass
 install:
-  - npm install -g bower
-  - npm install
-  - bower install
-
+- npm install -g bower
+- npm install
+- bower install
 script:
-  - npm test
-
+- npm test
 notifications:
-  irc: "chat.freenode.net#l-ray"
+  irc: chat.freenode.net#l-ray
+deploy:
+  provider: heroku
+  api_key:
+    secure: ZPZNWByC/YctY6mq4EP+jvFVwCkUn4e2TGh55quGUvwwL8oI81a1CPySEfjHjhkLEhOn8OxNCuAM9pREL6FghHy1I0T2XnPw64HmUZ8v7noRu6dDCtQo0o855k0gtKNtId2FX0hRt3zgXMLjCQWbumSUgBMizUOa8Ps4AlUFgPc=
+  app: salty-basin-7606
+  on:
+    repo: l-ray/mediator
