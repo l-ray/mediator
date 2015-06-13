@@ -24,28 +24,39 @@ export default  DS.Adapter.extend({
 
      // generate Groupsets for the next x days in advance
      findAll: function(store) {
-
-       var firstDayOfCalendar = new Date(this.TODAY.getTime());
-       firstDayOfCalendar.setDate(this.TODAY.getDate() - this.DAYS_INTO_THE_PAST);
-
-       var calendar = Array.apply(null, new Array(this.CALENDAR_SIZE))
-             .map(function(cur,index){
-                 var newDay = new Date(firstDayOfCalendar.getTime());
-                 newDay.setDate(firstDayOfCalendar.getDate()+index);
-                 return  newDay;
-             }
+         return this.createGroupsetCalendar(
+           store,
+           this.TODAY,
+           this.CALENDAR_SIZE,
+           this.DAYS_INTO_THE_PAST,
+           this.wrapConnectionsIntoGroupset
          );
-
-         var proxyArrays = calendar.map(function(item) {
-
-            var itemId = item.toISOString().substr(0,10);
-            return store.find('connection',{ 'startDate': itemId });
-         });
-
-       return new Ember.RSVP.map(proxyArrays,this.wrapConnectionsIntoGroupset);
      },
 
-     wrapConnectionsIntoGroupset:function(connections) {
+    // generate Groupsets for the next x days in advance
+    createGroupsetCalendar: function(store, today, calendarSize, relativeStartDaysInPast, callback) {
+      var firstDayOfCalendar = new Date(today.getTime());
+      firstDayOfCalendar.setDate(today.getDate() - relativeStartDaysInPast);
+
+      var calendar = Array.apply(null, new Array(calendarSize))
+        .map(function(cur,index){
+          var newDay = new Date(firstDayOfCalendar.getTime());
+          newDay.setDate(firstDayOfCalendar.getDate()+index);
+          return  newDay;
+        }
+      );
+
+      var proxyArrays = calendar.map(function(item) {
+
+        var itemId = item.toISOString().substr(0,10);
+        return store.find('connection',{ 'startDate': itemId });
+      });
+
+      return new Ember.RSVP.map(proxyArrays,callback);
+    },
+
+
+    wrapConnectionsIntoGroupset:function(connections) {
 
        Ember.assert("Multiple connections for every start date ", connections.get('length') > 0);
        var startDates = connections.objectAtContent(0).get('startDate').toISOString().substr(0, 10);
