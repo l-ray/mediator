@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 DS.RESTAdapter.reopen({
-  namespace: 'api'
+  // namespace: 'api'
 });
 
 export default DS.RESTAdapter;
