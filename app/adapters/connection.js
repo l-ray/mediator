@@ -20,7 +20,7 @@ export default DS.RESTAdapter.extend({
 
                         var calculatedId = rootSource.get('id') + "-"+startDateString;
                         var isActive = rootSource.get('active');
-                        var resultUrl = "/results/"+rootSource.get('id')+"/"+startDateString+"/";
+                        var resultUrl = "/api"+"/results/"+rootSource.get('id')+"/"+startDateString+"/";
 
                         var connectionObject = {
                             'id': calculatedId,
