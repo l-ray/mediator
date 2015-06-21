@@ -6,7 +6,8 @@ import Mediator from '../app';
 Mediator.ConnectionStatus = {
     IDLE: "idle",
     WAITING: "waiting",
-    RECEIVING: "receiving"
+    RECEIVING: "receiving",
+    FINISHED: "finished"
 };
 
 var ConnectionModel = DS.Model.extend(Ember.Enumerable, {

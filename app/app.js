@@ -18,14 +18,8 @@ Mediator.constants = Ember.Object.create({
      _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
      _CONST_QGRAM_RATIO : 0.61,
      _CONST_QGRAM_LEVEL1_RATIO : 0.5,
-    _RESULT_CATEGORY_SPLITTER: ','
+     _RESULT_CATEGORY_SPLITTER: ','
 });
-
-Mediator.ConnectionStatus = {
-  IDLE: "idle",
-  WAITING: "waiting",
-  RECEIVING: "receiving"
-};
 
 loadInitializers(Mediator, config.modulePrefix);
 
