@@ -1,4 +1,4 @@
-<ul class="list-group">
+<ul class="list-group" id="connectionsListing">
  {{#each model}}
    <li class="list-group-item">{{checked}}
      {{input type="checkbox" checked=active}}
@@ -14,10 +14,10 @@
      {{ render 'connection' this }}
 
      {{#if this.editMode}}
-         <button {{action 'doneEditing' this}}>Done</button>
+         <button {{action 'doneEditing' this}}><span>Done</span></button>
          {{render 'source.edit' source}}
      {{else}}
-         <button {{action 'edit' this}}>edit</button>
+         <button class="edit" {{action 'edit' this}}><span>edit</span></button>
      {{/if}}
    </li>
   {{/each}}

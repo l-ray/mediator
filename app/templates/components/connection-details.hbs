@@ -1,3 +1,12 @@
+<div class="administration">
+  {{#if connection.editMode}}
+      <button {{action 'doneEditing' connection}} class="doneEdit"><span>Done</span></button>
+  {{else}}
+      <button {{action 'edit' connection}} class="edit"><span>edit me</span></button>
+  {{/if}}
+</div>
+
+<div class="info">
 {{input type="checkbox" checked=connection.active}}
 <img {{bind-attr src=connection.source.icon}} class="connectionSource_Icon" />
 <span class="connectionSource">
@@ -13,9 +22,7 @@
 
 {{ render 'connection' connection }}
 
-{{#if connection.editMode}}
-    <button {{action 'doneEditing' connection}}>Done</button>
+  {{#if connection.editMode}}
     {{render 'source.edit' connection.source}}
-{{else}}
-    <button {{action 'edit' connection}}>edit me</button>
-{{/if}}
+  {{/if}}
+</div>

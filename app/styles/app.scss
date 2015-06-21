@@ -9,6 +9,23 @@ html, body {
 .connectionId,
 .connectionPriority { display: none; }
 
+#connectionsListing {
+  .administration {
+    button.edit,
+    button.doneEdit {
+      width: 12px;
+      height: 12px;
+      border: 0;
+      float:right;
+      background: transparent image-url("icons/info_klein_blau.gif") no-repeat left top;
+      span { display: none; }
+    }
+  }
+  .info {
+    width: 90%;
+  }
+}
+
 ul.dates {
 
   overflow: hidden;

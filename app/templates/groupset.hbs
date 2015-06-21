@@ -1,8 +1,7 @@
 <div>
     <div class="col-md-3">
         <div class="well sidebar-nav">
-            Connections {{ model.connections.length }}
-            <ul class="list-group">
+            <ul class="list-group" id="connectionsListing">
                 {{#each connection in model.connections}}
                     {{connection-details connection=connection tagName="li" classNames="list-group-item" }}
                 {{/each}}
