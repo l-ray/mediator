@@ -6,6 +6,7 @@ import Mediator from '../app';
 
 export default Ember.Controller.extend({
 
+    /*
     addResultsAsGroups: function() {
         var groups = this.get("model.groups");
         this.get('model.connections').forEach(
@@ -33,6 +34,7 @@ export default Ember.Controller.extend({
         Ember.run.once(this, 'addResultsAsGroups');
     }.observes('model.connections.@each.status'),
 
+
     __produceNewGroupForResult: function(result) {
         var store = this.store;
         var tmpGroup = store.createRecord('group');
@@ -41,6 +43,7 @@ export default Ember.Controller.extend({
         result.set('group', tmpGroup);
         return tmpGroup;
     },
+     */
 
     processSimilarityMeasurement: function() {
 
