@@ -3,6 +3,7 @@ import Ember from 'ember';
 
 export default DS.RESTSerializer.extend({
 
+
     extractArray: function (store, type, payload) {
 
         // in case there is only one result in the json, this will be delivered

@@ -83,16 +83,6 @@ export default DS.RESTAdapter.extend({
         });
       });
     });
-  },
-
-
-  /**
-   * Should manage the lazy retrieval of the results and add a group to every record
-   */
-  findBelongsTo: function(store, snapshot, url, relationship) {
-    console.log("Called connection findBelongsTo with snapshot |"+snapshot +
-      "| and url |"+url+"| and relationship |"+relationship+"|");
-    return this._super(store, snapshot, url, relationship);
   }
 
 });
