@@ -15,11 +15,11 @@ export default  DS.Adapter.extend({
        var promiseArray = store.findQuery('connection',{ 'startDate': id });
 
        var wrapConnectionsIntoGroupset = this.wrapConnectionsIntoGroupset;
-         return new Ember.RSVP.Promise(
-           function(resolve) {
-             promiseArray.then(function(a){resolve(wrapConnectionsIntoGroupset(a));});
-           }
-         );
+       return new Ember.RSVP.Promise(
+         function(resolve) {
+           promiseArray.then(function(a){resolve(wrapConnectionsIntoGroupset(a));});
+         }
+       );
      },
 
      // generate Groupsets for the next x days in advance

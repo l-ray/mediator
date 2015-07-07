@@ -9,8 +9,9 @@ export default DS.Store.extend({
   push: function(modelNameArg, dataArg) {
 
     var result = this._super(modelNameArg, dataArg);
-    console.log("pushing "+modelNameArg);
+    console.log("pushing " + modelNameArg);
 
+    /*jslint eqeq: true*/
     if (modelNameArg == "mediator@model:result:") {
       console.log("Calling processSimilatiryMeasure with group/-set "+result.get('group')+result.get('group.groupset')+result+" from data arg group"+dataArg.group);
       result.set("group", dataArg.group);

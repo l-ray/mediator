@@ -2,6 +2,8 @@ import DS from 'ember-data';
 import Ember from 'ember';
 import Mediator from '../app';
 
+/* global smUtilities */
+
 var GroupModel = DS.Model.extend( Ember.Enumerable,
     {
 
@@ -13,7 +15,7 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
-    // results are pushed manually into group, so there is no asynchronisity here
+    // results are pushed manually into group, so there is no asynchronity here
     results: DS.hasMany('result'),
 
     groupset: DS.belongsTo('groupset'),
@@ -114,22 +116,16 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
         return selected ? selected.get('start') : "";
     }.property('results.@each.start'),
 
-    _returnCompareString: function(myString) {
-        return myString.toLowerCase().replace(/[^a-zäöü0-9]+/g," ").trim();
-    },
-
     reducedLocation: function() {
-        return this._returnCompareString(this.get('location'));
+        return smUtilities.returnCompareString(this.get('location'));
     }.property('location'),
 
     reducedTitle: function() {
-        return this._returnCompareString(this.get('title'));
+        return smUtilities.returnCompareString(this.get('title'));
     }.property('title'),
 
     reducedSummary: function() {
-        return new Ember.Set(this._returnCompareString(this.get('title')+" "+this.get('location'))
-            .split(" ")).filter(function(s) {return s.length > 1;})
-            .join(" ");
+        return smUtilities.reducedSummary(this.get('title'),this.get('location'));
     }.property('title','location'),
 
     connections: function() {

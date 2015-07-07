@@ -47,7 +47,8 @@ var ResultModel = DS.Model.extend({
     enabled: Ember.computed.alias('connection.active'),
 
     toString: function () {
-        return "[Title:"+this.get('title') + ", Location:" + this.get('location') + ", start:" + this.get('start')+"]";
+        return "[Title:"+this.get('title') + ", Location:" + this.get('location') +
+          ", start:" + this.get('start')+", group:"+this.get('group')+"]";
     },
 
     sourceName: function() {

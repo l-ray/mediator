@@ -1,23 +1,23 @@
 <ul class="list-group" id="connectionsListing">
- {{#each model}}
-   <li class="list-group-item">{{checked}}
-     {{input type="checkbox" checked=active}}
-     <img {{bind-attr src=source.icon}} class="connectionSource_Icon" />
+ {{#each model as |con|}}
+   <li class="list-group-item">{{con.checked}}
+     {{input type="checkbox" checked=con.active}}
+     <img {{bind-attr src=con.source.icon}} class="connectionSource_Icon" />
      <span class="connectionSource">
-         {{#link-to 'source' this.source}}
-             {{source.name}}
+         {{#link-to 'source' con.source}}
+             {{con.source.name}}
          {{/link-to}}
      </span>
-     <span class="connectionStatus">{{this.status}}</span>
-     <span class="connectionResults">Size: {{this.length}}</span>
+     <span class="connectionStatus">{{con.status}}</span>
+     <span class="connectionResults">Size: {{con.length}}</span>
 
-     {{ render 'connection' this }}
+     {{ render 'connection' con }}
 
-     {{#if this.editMode}}
-         <button {{action 'doneEditing' this}}><span>Done</span></button>
-         {{render 'source.edit' source}}
+     {{#if con.editMode}}
+         <button {{action 'doneEditing' con}}><span>Done</span></button>
+         {{render 'source.edit' con.source}}
      {{else}}
-         <button class="edit" {{action 'edit' this}}><span>edit</span></button>
+         <button class="edit" {{action 'edit' con}}><span>edit</span></button>
      {{/if}}
    </li>
   {{/each}}

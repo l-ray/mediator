@@ -17,6 +17,7 @@
     "simmetrix-qgram": "https://github.com/l-ray/simmetrix_qgram.git",
     "simmetrix-smithwaterman": "https://github.com/l-ray/simmetrix_smithwaterman.git",
     "simmetrix-longestsubstring": "https://github.com/l-ray/simmetrix_longestsubstring.git",
+    "simmetrix-utilities": "https://github.com/l-ray/simmetrix_util.git",
     "momentjs": "~2.5.1",
     "ember-mocha": "~0.7.0",
     "bootstrap": "~3.3.4"

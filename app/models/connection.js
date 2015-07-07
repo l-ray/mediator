@@ -36,13 +36,15 @@ var ConnectionModel = DS.Model.extend(Ember.Enumerable, {
 
     results: DS.hasMany('result', {'async':true}),
 
-    setStatusToLoaded: function() {
+  /*
+  setStatusToLoaded: function() {
         console.log("connection set status to loaded from current "+ this.get("status"));
         if (this.get("status") !== Mediator.ConnectionStatus.RECEIVING) {
             this.set("status", Mediator.ConnectionStatus.RECEIVING);
         }
       console.log("new status"+this.get("status"));
     }.observes("results.length"),
+*/
 
     nextObject: function(index) {
       var results = this.get('results');
