@@ -84,5 +84,60 @@ describeModule(
           throw "promise returned error: " + error.message;
         });
     });
+
+    it("reloads lazy results payload correctly by adding group object.", function () {
+
+      Mediator.ApplicationStore = DS.Store.extend({
+        adapter: DS.MochaAdapter
+      });
+
+      var store = Mediator.ApplicationStore.create({
+        container: this.container,
+
+        findHasMany: function(store, snapshot, url, relationship) {
+            return new Ember.RSVP.Promise(
+              function(resolve){
+                resolve(
+                  Ember.ArrayProxy.create({
+                    content: [
+                      store.createRecord("result", {
+                        "id": "1", "name": "bar", "url": "http://bar.de/",
+                        "icon": "http://bar.de/ico/favicon.ico",
+                        "additional": "true", "priority": "100", "active": "true"
+                      }),
+                      store.createRecord("result", {
+                        "id": "2", "name": "foo", "url": "http://salsa.ie/",
+                        "icon": "http://salsa.ie/favicon.ico",
+                        "additional": "false", "priority": "100", "active": "true"
+                      })
+                    ],
+                    objectAtContent: function (idx) {
+                      return this.get('content').objectAt(idx);
+                    }
+                  })
+                );
+              });
+        }
+      });
+      var adapter = this.subject();
+      var snapshot = {
+        belongsTo: function(n,m){
+          console.log("IN THE BELONGS TO FUNCTION");
+          return "12345";
+        }
+      };
+      var relationship = {type:"mediator@model:result:"};
+      var url = "whatever";
+      console.log("BEFORE CALL OF FINDHASMANY");
+      adapter.findHasMany(store, snapshot, url, relationship).then(
+        function (n) {
+          console.log("IN THE N FUNCTION");
+          expect(n).to.have.length(4);
+          n.forEach(function(item) {
+            expect(item.group).to.be.ok;
+          });
+        });
+
+    });
   }
 );

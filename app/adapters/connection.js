@@ -48,41 +48,42 @@ export default DS.RESTAdapter.extend({
    * Should manage the lazy retrieval of the results and add a group to every record
    */
   findHasMany: function(store, snapshot, url, relationship) {
-    console.log("Called connection findHasMany with snapshot |"+snapshot+
-      "| and url |"+url+"| and relationship |"+relationship+"|");
+
+    // console.log("in FINDHASMANY with snapshot "+snapshot.type+" url "+url+"relationship "+relationship.type);
     var initialPromise =  this._super(store, snapshot, url, relationship);
-    return new Ember.RSVP.Promise(function (resolve) {
-      //var store = this.store;
-      initialPromise.then(function (something) {
-        var groupSetId = snapshot.belongsTo('groupset', {id: true});
-        var groupSet = store.find('groupset', groupSetId);
 
-        groupSet.then(function (gs) {
-
-          console.log("groupset " + gs + " with something " + something);
-
+     /*jslint eqeq: true*/
+    if (relationship.type != "mediator@model:result:") {
+      return initialPromise;
+    }
+     else {
+      return new Ember.RSVP.Promise(function (resolve) {
+        // console.log("in new promise");
+        initialPromise.then(function (something) {
+          // console.log("in solving of initialPromise");
+          var groupSetId = snapshot.belongsTo('groupset', {id: true});
           something.results.map(
             function (result) {
-              console.log("working on result:" + result.id + " with group " + result.group);
-              if (Ember.isEmpty(result.group)) {
-                console.log("group is empty");
-                var newGroupId = result.id;
-                var group = store.push('group',{
-                  "id":newGroupId,
-                  "groupset":groupSetId
 
+              if (Ember.isEmpty(result.group)) {
+
+                var newGroupId = result.id;
+
+                var group = store.push('group', {
+                  "id": newGroupId,
+                  "groupset": groupSetId
                 });
 
-                console.log("pushed updated group");
                 result.group = group;
-                console.log("added group to groups "+result.group+" with group "+group.get('id'));
                 return result;
               }
             });
+          // console.log("Resolving soething now");
           resolve(something);
+
         });
       });
-    });
+    }
   }
 
 });
