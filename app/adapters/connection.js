@@ -49,7 +49,7 @@ export default DS.RESTAdapter.extend({
    */
   findHasMany: function(store, snapshot, url, relationship) {
 
-    // console.log("in FINDHASMANY with snapshot "+snapshot.type+" url "+url+"relationship "+relationship.type);
+    console.log("in FINDHASMANY with snapshot "+snapshot.type+" url "+url+"relationship "+relationship.type);
     var initialPromise =  this._super(store, snapshot, url, relationship);
 
      /*jslint eqeq: true*/
@@ -57,11 +57,14 @@ export default DS.RESTAdapter.extend({
       return initialPromise;
     }
      else {
+      console.log("creating new promise for snapshot "+snapshot.id);
       return new Ember.RSVP.Promise(function (resolve) {
         // console.log("in new promise");
         initialPromise.then(function (something) {
-          // console.log("in solving of initialPromise");
+
+          something.results = Ember.makeArray(something.results);
           var groupSetId = snapshot.belongsTo('groupset', {id: true});
+
           something.results.map(
             function (result) {
 
