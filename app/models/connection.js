@@ -1,22 +1,12 @@
 import DS from 'ember-data';
-import Mediator from '../app';
 
 /*global Ember*/
-
-Mediator.ConnectionStatus = {
-    IDLE: "idle",
-    WAITING: "waiting",
-    RECEIVING: "receiving",
-    FINISHED: "finished"
-};
 
 var ConnectionModel = DS.Model.extend(Ember.Enumerable, {
 
     startDate: DS.attr('date'),
 
     endDate: DS.attr('date'),
-
-    status: DS.attr('string', {defaultValue: Mediator.ConnectionStatus.IDLE}),
 
     editMode: Boolean(false),
 
@@ -38,17 +28,12 @@ var ConnectionModel = DS.Model.extend(Ember.Enumerable, {
 
     nextObject: function(index) {
       var results = this.get('results');
-      console.log("returning next result"+results);
       return results.nextObject(index);
     },
 
     name: function() {
-        return this.get('source.name');
+      return this.get('source.name');
     }.property('source.name'),
-
-    disabled: function() {
-        return ([Mediator.ConnectionStatus.WAITING, Mediator.ConnectionStatus.RECEIVING].contains(this.get('status'))).property('status');
-    },
 
     toString: function() {
         return "[Connection id:"+this.get('id')+"]";
@@ -69,8 +54,6 @@ ConnectionModel.reopenClass({
 
       active: Boolean.true,
 
-      status: Mediator.ConnectionStatus.WAITING,
-
       source: 0,
 
       results: ['0']
@@ -85,8 +68,6 @@ ConnectionModel.reopenClass({
       endDate: new Date(),
 
       active: true,
-
-      status: Mediator.ConnectionStatus.IDLE,
 
       source: 1,
 

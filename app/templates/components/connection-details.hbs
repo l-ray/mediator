@@ -14,7 +14,11 @@
         {{connection.source.name}}
     {{/link-to}}
 </span>
-<span class="connectionStatus">{{connection.status}}</span>
+    <span class="connectionStatus">
+      {{#if connection.results.isPending}}pending{{/if}}
+      {{#if connection.results.isFulfilled}}done{{/if}}
+      {{#if connection.results.isRejected}}error:{{connection.results.reason}}{{/if}}
+    </span>
 <span class="connectionResults">Size: {{connection.length}}</span>
 <span class="connectionId">Id: {{connection.id}}</span>
 

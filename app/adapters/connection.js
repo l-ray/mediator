@@ -1,6 +1,5 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import Mediator from '../app';
 
 export default DS.RESTAdapter.extend({
 
@@ -27,7 +26,6 @@ export default DS.RESTAdapter.extend({
                             'source': rootSource,
                             'active': isActive,
                             'startDate': startDate,
-                            'status'   : Mediator.ConnectionStatus.IDLE,
                             'links' : {'results':resultUrl}
                         };
 
@@ -50,7 +48,7 @@ export default DS.RESTAdapter.extend({
   findHasMany: function(store, snapshot, url, relationship) {
 
     console.log("in FINDHASMANY with snapshot "+snapshot.type+" url "+url+"relationship "+relationship.type);
-    var initialPromise =  this._super(store, snapshot, url, relationship);
+     var initialPromise =  this._super(store, snapshot, url, relationship);
 
      /*jslint eqeq: true*/
     if (relationship.type != "mediator@model:result:") {
