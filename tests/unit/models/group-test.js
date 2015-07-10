@@ -322,7 +322,7 @@ describeModel(
 
                 expect(item.get('pictures')).that.is.not.undefined;
                 expect(item.get('pictures')).to.be.an('array');
-                expect(item.get("pictures")).to.be.empty;
+                expect(item.get("pictures"),"there are no items in here").to.be.empty;
         });
 
         it('should show all nested pictures)', function(){

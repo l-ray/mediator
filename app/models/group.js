@@ -27,7 +27,8 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
       priorityBySystem: function() {
         return (this.get('results').get('length') === 0) ?
             0 :
-            new Ember.Set(this.get('results'))
+            this.get('results')
+                .uniq()
                 .reduce(
                     function (currentMax, n){
                         return Math.max(currentMax,n.get('priority'));
@@ -129,43 +130,44 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('title','location'),
 
     connections: function() {
-        return this.get('results').map(function(n){return n.get('connection');}).filter(function(n) {return n instanceof Mediator.Connection;});
+        return this.get('results')
+          .map(function(n){return n.get('connection');})
+          .filter(function(n) {return n instanceof Mediator.Connection;});
     }.property('results.@each.connection'),
 
     pictures: function() {
-        var localPictures = new Ember.Set();
-        this.get('results').forEach(function(n) {
-            if (n.get('pictures.length') > 0) {
-                localPictures.addEach(n.get('pictures').toArray());
-            }
-        });
-        return localPictures.toArray();
+      return this.flattenProperties(this.get('results.@each.pictures'));
     }.property('results.@each.pictures'),
 
     links: function() {
-        var localLinks = new Ember.Set();
-        this.get('results').forEach(function(n) {localLinks.addEach(n.get('links'));});
-        return localLinks.toArray();
+      return this.flattenProperties(this.get('results.@each.links'));
     }.property('results.@each.links'),
 
     categories: function() {
-        var itemSet = new Ember.Set();
-        this.get('results').forEach(
-            function(n) {
-                try {
-                    itemSet.addEach(n.get('categories').split(Mediator.constants._RESULT_CATEGORY_SPLITTER));
-                } catch (e) {
-                    // expected object
-                }
-            }
-        );
-        return itemSet.toArray();
+      return this.flattenProperties(this.get('results.@each.categories').map(
+        function(n) {
+          try {
+            return n.split(Mediator.constants._RESULT_CATEGORY_SPLITTER);
+          } catch (e) {
+            return [];
+          }
+        })
+      );
     }.property('results.@each.categories'),
 
+    flattenProperties: function(propertyEnum) {
+      var result = propertyEnum
+        .map(function(n){return n.toArray();})
+        .filter(function(n){return !Ember.isEmpty(n);});
+      return result.length > 0 ? result.reduce(this.flattenArray).uniq():result;
+    },
+
+    flattenArray : function(a, b) {return a.concat(b);},
+
     priority: function() {
-        return (this.get('priorityByRuleSet') +
-            this.get('priorityBySystem') +
-            this.get('priorityByUser'));
+      return (this.get('priorityByRuleSet') +
+          this.get('priorityBySystem') +
+          this.get('priorityByUser'));
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
 
     enabled: function() {
@@ -224,3 +226,4 @@ GroupModel.reopenClass({
 });
 
 export default GroupModel;
+
