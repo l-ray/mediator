@@ -157,8 +157,8 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
     flattenProperties: function(propertyEnum) {
       var result = propertyEnum
-        .map(function(n){return n.toArray();})
-        .filter(function(n){return !Ember.isEmpty(n);});
+        .filter(function(n){return !Ember.isEmpty(n);})
+        .map(function(n){return n.toArray();});
       return result.length > 0 ? result.reduce(this.flattenArray).uniq():result;
     },
 
