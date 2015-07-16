@@ -136,15 +136,15 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('results.@each.connection'),
 
     pictures: function() {
-      return this.flattenProperties(this.get('results.@each.pictures'));
+      return this.flattenProperties(this.get('results').mapProperty('pictures'));
     }.property('results.@each.pictures'),
 
     links: function() {
-      return this.flattenProperties(this.get('results.@each.links'));
+      return this.flattenProperties(this.get('results').mapProperty('links'));
     }.property('results.@each.links'),
 
     categories: function() {
-      return this.flattenProperties(this.get('results.@each.categories').map(
+      return this.flattenProperties(this.get('results').mapProperty('categories').map(
         function(n) {
           try {
             return n.split(Mediator.constants._RESULT_CATEGORY_SPLITTER);
@@ -156,8 +156,9 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('results.@each.categories'),
 
     flattenProperties: function(propertyEnum) {
+      console.log("Property enum is a "+propertyEnum+" with promise "+propertyEnum.then);
       var result = propertyEnum
-        .filter(function(n){return !Ember.isEmpty(n);})
+        .filter(function(m){return !Ember.isEmpty(m);})
         .map(function(n){return n.toArray();});
       return result.length > 0 ? result.reduce(this.flattenArray).uniq():result;
     },
