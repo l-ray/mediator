@@ -4,10 +4,10 @@ html, body {
     margin: 30px 0;
 }
 
-/*.debug,
-.connectionResults,
+.debug,
+.connectionResults /*,
 .connectionId,
-.connectionPriority { display: none; }*/
+.connectionPriority*/ { display: none; }
 
 #connectionsListing {
   .administration {
