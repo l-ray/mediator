@@ -83,7 +83,7 @@ describeModule(
 
          var adapter = this.subject();
 
-         adapter.find(store, 'groupset', "2014-01-02").then(
+         adapter.findRecord(store, 'groupset', "2014-01-02").then(
            function (result) {
              expect(result).to.be.instanceOf(Object);
              expect(result.date).to.equal("2014-01-02");

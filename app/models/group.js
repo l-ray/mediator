@@ -166,9 +166,11 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     flattenArray : function(a, b) {return a.concat(b);},
 
     priority: function() {
-      return (this.get('priorityByRuleSet') +
+      var priority = (this.get('priorityByRuleSet') +
           this.get('priorityBySystem') +
           this.get('priorityByUser'));
+      console.log("Changed priority to "+priority);
+      return priority;
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
 
     enabled: function() {
@@ -179,51 +181,6 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
       return !this.get('recycled') && anySubEnabled;
     }.property('recycled','results.@each.enabled')
 
-});
-
-// delete below here if you do not want fixtures
-GroupModel.reopenClass({
-  FIXTURES : [
-
-  {
-    id: 0,
-
-    /*title: 'foo',*/
-
-    recycled: false,
-
-    initialized: false,
-
-    priorityByRuleSet: 100,
-
-    priorityByUser: 100,
-
-    priorityBySystem: 100,
-
-    results: [1,2]
-
-  },
-
-  {
-    id: 1,
-
-   /* title: 'foo',*/
-
-    recycled: 'foo',
-
-    initialized: 'foo',
-
-    priorityByRuleSet: 'foo',
-
-    priorityByUser: 'foo',
-
-    priorityBySystem: 'foo',
-
-    results: undefined
-
-  }
-
-]
 });
 
 export default GroupModel;

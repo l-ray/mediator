@@ -12,7 +12,7 @@ import {
 /* global smUtilities */
 
 describeModule(
-  'store:application',
+  'controller:connections',
   'Application store',
   {
     // Specify the other units that are required for this test.
@@ -29,14 +29,14 @@ describeModule(
   function() {
 
           it('exists', function() {
-                  var controller = this.subject();
+                  var controller = this.subject().get('store');
                   console.log("The store is ..."+controller);
                   expect(controller).to.be.ok;
                 });
 
             it('should recognize identical picture urls.', function(){
 
-                  var store = this.subject();
+                  var store = this.subject().get('store');
 
                   expect(
                     store.__isSimilarBecauseOfIdenticalPictures(
@@ -50,7 +50,7 @@ describeModule(
             it('should recognize not identical picture urls.', function(){
             //    Ember.run( function() {
 
-                  var store = this.subject();
+                  var store = this.subject().get('store');
 
                   expect(
                     store.__isSimilarBecauseOfIdenticalPictures(
@@ -64,7 +64,7 @@ describeModule(
 
             it('should recognize similar datasets', function(){
 
-                  var store = this.subject();
+                  var store = this.subject().get('store');
 
                   expect(smUtilities).to.be.ok;
                   expect(smUtilities.reducedSummary).to.be.ok;
@@ -148,7 +148,7 @@ describeModule(
             });
 
             it('should combine groupSets with similar groups', function(){
-                  var store = this.subject();
+                  var store = this.subject().get('store');
 
                   var model = store.createRecord('groupset',{});
 
@@ -214,7 +214,7 @@ describeModule(
 
             it('should not combine groupSets with unsimilar groups', function(){
 
-                  var store = this.subject();
+                  var store = this.subject().get('store');
 
                     var model = store.createRecord('groupset',{});
 

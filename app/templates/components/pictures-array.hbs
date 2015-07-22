@@ -1,6 +1,6 @@
          {{#if pictures}}
             <ul>
-                {{#each picture in pictures}}
+                {{#each pictures as |picture|}}
                     <li><img {{bind-attr src=picture.src}} /></li>
                 {{/each}}
             </ul>

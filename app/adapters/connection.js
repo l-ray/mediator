@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 export default DS.RESTAdapter.extend({
 
-    findQuery: function(store, type, query, array) {
+    query: function(store, type, query, array) {
 
         var startDateString = query.startDate;
         var startDate = new Date(startDateString);
@@ -55,11 +55,13 @@ export default DS.RESTAdapter.extend({
       return initialPromise;
     }
      else {
-      console.log("creating new promise for snapshot "+snapshot.id);
-      return new Ember.RSVP.Promise(function (resolve) {
-        // console.log("in new promise");
-        initialPromise.then(function (something) {
 
+      console.log("creating new promise for snapshot "+snapshot.id);
+
+      return new Ember.RSVP.Promise(function (resolve) {
+        console.log("in new promise "+initialPromise.then);
+        initialPromise.then(function (something) {
+          console.log("in initialPromise");
           something.results = Ember.makeArray(something.results);
           var groupSetId = snapshot.belongsTo('groupset', {id: true});
 
@@ -79,7 +81,7 @@ export default DS.RESTAdapter.extend({
                 return result;
               }
             });
-          // console.log("Resolving soething now");
+          console.log("Resolving something now");
           resolve(something);
 
         });

@@ -1,5 +1,5 @@
 <ul>
- {{#each result in model}}
+ {{#each model as |result|}}
 <!-- keep the bind-attribute to allow synchronizing with result list ... why ever that is needed -->
  <li {{bind-attr title=result.connectionPriority alt=result.connectionIgnorePriority description=result.enabled}}>{{#link-to 'result' result}}
      {{result.id}} {{result.title}}

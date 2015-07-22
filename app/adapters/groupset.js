@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
-export default  DS.Adapter.extend({
+export default DS.Adapter.extend({
 
      DAYS_INTO_THE_PAST : 2,
      CALENDAR_SIZE : 16,
@@ -9,7 +9,7 @@ export default  DS.Adapter.extend({
 
      // generate the complete groupset for the given ID including
      // connections
-     find: function(store, type, id) {
+     findRecord: function(store, type, id) {
 
        // fill up with connections
        var promiseArray = store.findQuery('connection',{ 'startDate': id });

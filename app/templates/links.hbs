@@ -1,9 +1,8 @@
 <h1>Links</h1>
 
 <ul>
-
-    {{#each model}}
-     <li><a {{bind-attr href=this.url}} target="_blank">name {{link.name}}</a></li>
+  {{#each model as |link|}}
+     <li><a {{bind-attr href=link.url}} target="_blank">name {{link.name}}</a></li>
   {{/each}}
 </ul>
 

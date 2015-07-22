@@ -1,8 +1,8 @@
-<h1>ResultGroups</h1>
+<h1>ResultGroups {{model}}</h1>
 
     <ul class="result_groups">
 
-      {{#each group in model}}
+      {{#each model as |group|}}
 
             {{#if group.enabled}}
                 <li>
@@ -24,7 +24,7 @@
 
                         {{#if group.categories}}
                             <ul title="categories" class="categories">
-                                {{#each category in group.categories}}
+                                {{#each in group.categories as |category|}}
                                     <li>{{ category }}</li>
                                 {{/each}}
                             </ul>
@@ -48,19 +48,19 @@
                         <span class="price">{{#if group.price }}{{ group.price }}{{else}}-{{/if}}</span>
 
                         <ul class="links">
-                            {{#each link in group.links}}
+                            {{#each group.links as |link| }}
                                 <li title="Link">
-                                    <a {{bind-attr href=link.url}} target="_blank">
-                                        <img class="event_info_source_icon" {{bind-attr title=link.name src=link.result.connection.source.icon}} />
+                                    <a href={{link.url}} target="_blank">
+                                        <img class="event_info_source_icon" title={{link.name}} src={{link.result.connection.source.icon}} />
                                     </a>{{link.result.connection.source.id}}
                                 </li>
                             {{/each}}
                         </ul>
 
                         <ul class="sources">
-                            {{#each result in group.enabledResults}}
+                            {{#each group.enabledResults as |result|}}
                                 <li title="Source">
-                                    <a {{bind-attr href=result.resultUrl}} target="_blank">
+                                    <a href={{result.resultUrl}} target="_blank">
                                         <img class="event_info_source_icon" {{bind-attr title=result.name src=result.connection.source.icon}} />
                                     </a><span class="debug"> S:{{result.connection.source.id}} Prio:{{result.connection.priority}} {{result.connection.ignorePriority}} r:{{result.id}}</span>
                                 </li>

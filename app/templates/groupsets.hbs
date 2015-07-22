@@ -1,5 +1,5 @@
 <ul class="dates">
-    {{#each eventDate in this}}
+    {{#each this as |eventDate| }}
         <li {{bind-attr class=":day eventDate.isSaturday:saturday eventDate.isSunday:sunday" }}>
             {{#link-to 'groupset' eventDate}}
                 <span class="name">

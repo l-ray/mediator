@@ -2,7 +2,7 @@
  {{#each model as |con|}}
    <li class="list-group-item">{{con.checked}}
      {{input type="checkbox" checked=con.active}}
-     <img {{bind-attr src=con.source.icon}} class="connectionSource_Icon" />
+     <img src={{con.source.icon}} class="connectionSource_Icon" />
      <span class="connectionSource">
          {{#link-to 'source' con.source}}
              {{con.source.name}}
