@@ -12,7 +12,7 @@ export default DS.Adapter.extend({
      findRecord: function(store, type, id) {
 
        // fill up with connections
-       var promiseArray = store.findQuery('connection',{ 'startDate': id });
+       var promiseArray = store.query('connection',{ 'startDate': id });
 
        var wrapConnectionsIntoGroupset = this.wrapConnectionsIntoGroupset;
        return new Ember.RSVP.Promise(
@@ -35,6 +35,7 @@ export default DS.Adapter.extend({
 
     // generate Groupsets for the next x days in advance
     createGroupsetCalendar: function(store, today, calendarSize, relativeStartDaysInPast, callback) {
+
       var firstDayOfCalendar = new Date(today.getTime());
       firstDayOfCalendar.setDate(today.getDate() - relativeStartDaysInPast);
 
@@ -49,7 +50,7 @@ export default DS.Adapter.extend({
       var proxyArrays = calendar.map(function(item) {
 
         var itemId = item.toISOString().substr(0,10);
-        return store.find('connection',{ 'startDate': itemId });
+        return store.query('connection',{ 'startDate': itemId });
       });
 
       return new Ember.RSVP.map(proxyArrays,callback);
@@ -58,7 +59,7 @@ export default DS.Adapter.extend({
 
     wrapConnectionsIntoGroupset:function(connections) {
 
-       Ember.assert("Multiple connections for every start date ", connections.get('length') > 0);
+       Ember.assert("expect multiple connections for every start date ", connections.get('length') > 0);
        var startDates = connections.objectAtContent(0).get('startDate').toISOString().substr(0, 10);
        var connectionsAsId = connections.map(function (con) {return con.get('id');});
 

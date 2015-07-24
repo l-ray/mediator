@@ -10,7 +10,7 @@ export default  Ember.ArrayController.extend({
         select: function(date,event) {
             console.log("selected date "+date+" and event "+event);
             this.selected = date;
-        },
+        }
     }
 
 });

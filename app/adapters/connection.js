@@ -12,7 +12,7 @@ export default DS.RESTAdapter.extend({
         return new Ember.RSVP.Promise(function(resolve, reject){
             var results = [];
 
-            store.find('source').then(function(sources) {
+            store.findAll('source').then(function(sources) {
                 console.log("found |"+sources.get('length')+"| sources ");
                 sources.forEach(
                     function (rootSource) {

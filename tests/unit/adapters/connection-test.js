@@ -37,7 +37,7 @@ describeModule(
         var store = Mediator.ApplicationStore.create({
           container: this.container,
 
-          find: function (type) {
+          findAll: function (type) {
             if (type === "source") {
               console.log("asking for a source");
               var store = this;

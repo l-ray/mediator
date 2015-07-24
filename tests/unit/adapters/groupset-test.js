@@ -48,19 +48,7 @@ describeModule(
        var store = Mediator.ApplicationStore.create({
          container: this.container,
 
-         find: function (type, options) {
-           console.log("Searching for "+type+" with options "+options);
-           return Ember.ArrayProxy.create({
-             content: [
-               this.createRecord(type, {
-                 startDate: new Date(Date.parse(options.startDate))
-               })],
-             objectAtContent: function (idx) {
-               return this.get('content').objectAt(idx);
-             }
-           });
-         },
-         findQuery: function(type, query, array) {
+         query: function(type, query, array) {
            console.log("Searching query for:"+type+" and query "+query+" and array "+array);
            assert.equal(type,'connection',"get callback for connections only");
            var store = this;

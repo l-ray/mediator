@@ -135,6 +135,7 @@ describeModule(
                 comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
                 comparisonModel.get('results').pushObject(resultModel);
 
+                console.log("getting controller "+controller.get('content'));
                 controller.get('model').pushObject(comparisonModel);
                 controller.get('model').pushObject(actionModel);
 
