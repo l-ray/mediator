@@ -1,5 +1,5 @@
-<h1>ResultGroups {{model}}</h1>
-
+<h1>ResultGroups</h1>
+{{ log "resultgroup count" model model.length}}
     <ul class="result_groups">
 
       {{#each model as |group|}}
@@ -61,7 +61,7 @@
                             {{#each group.enabledResults as |result|}}
                                 <li title="Source">
                                     <a href={{result.resultUrl}} target="_blank">
-                                        <img class="event_info_source_icon" {{bind-attr title=result.name src=result.connection.source.icon}} />
+                                        <img class="event_info_source_icon" title={{result.name}} src={{result.connection.source.icon}} />
                                     </a><span class="debug"> S:{{result.connection.source.id}} Prio:{{result.connection.priority}} {{result.connection.ignorePriority}} r:{{result.id}}</span>
                                 </li>
                             {{/each}}
@@ -80,4 +80,4 @@
 
     </ul>
 
-{{outlet}}
+{{!-- outlet --}}

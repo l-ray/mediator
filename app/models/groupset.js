@@ -5,7 +5,7 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
 
     date: DS.attr('date'),
 
-    groups: DS.hasMany('group'),
+    groups: DS.hasMany('group', { async: false }),
 
     // as connections rely on sources, that has to be loaded asynchronous, this might have to async
     connections: DS.hasMany('connection', { async: true }),

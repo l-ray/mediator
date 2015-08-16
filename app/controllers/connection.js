@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  // Implement your controller here.
-});
 
+  editMode: Boolean(false),
+
+  showResults: Boolean(false)
+
+});

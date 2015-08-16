@@ -20,7 +20,17 @@ html, body {
       background: transparent image-url("icons/info_klein_blau.gif") no-repeat left top;
       span { display: none; }
     }
+
+    button.toggleResults{
+      width: 12px;
+      height: 12px;
+      border: 0;
+      padding: 0px;
+      float: right;
+      span { font-size: 8px; }
+    }
   }
+
   .info {
     width: 90%;
   }

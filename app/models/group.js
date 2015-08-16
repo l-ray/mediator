@@ -16,7 +16,7 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
     // results are pushed manually into group, so there is no asynchronity here
-    results: DS.hasMany('result'),
+    results: DS.hasMany('result', { async: false }),
 
     groupset: DS.belongsTo('groupset'),
 

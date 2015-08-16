@@ -85,7 +85,7 @@ describeModule(
         });
     });
 
-    it("reloads lazy results payload correctly by adding group object.", function () {
+    it.skip("reloads lazy results payload correctly by adding group object.", function () {
 
       Mediator.ApplicationStore = DS.Store.extend({
         adapter: DS.MochaAdapter
@@ -128,15 +128,15 @@ describeModule(
       };
       var relationship = {type:"mediator@model:result:"};
       var url = "whatever";
-      //adapter.findHasMany(store, snapshot, url, relationship);
-        /*.then(
+      adapter.findHasMany(store, snapshot, url, relationship)
+        .then(
         function (n) {
           console.log("IN THE N FUNCTION");
           expect(n).to.have.length(4);
           n.forEach(function(item) {
             expect(item.group).to.be.ok;
           });
-        });*/
+        });
 
     });
   }

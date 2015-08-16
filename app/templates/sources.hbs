@@ -3,7 +3,7 @@
 <ul>
  {{#each model as |item|}}
  <li id="source_{{item.id}}">
-     <img src={{item.icon}} class="connectionSource_Icon" />
+     <img src={{bind-attr src=icon}} class="connectionSource_Icon" />
      <span class="connectionSource">{{#link-to 'source' item}}{{item.name}}{{/link-to}}</span>
  </li>
   {{/each}}

@@ -1,14 +1,17 @@
 <div class="administration">
+
   {{#if connection.editMode}}
       <button {{action 'doneEditing' connection}} class="doneEdit"><span>Done</span></button>
   {{else}}
       <button {{action 'edit' connection}} class="edit"><span>edit me</span></button>
   {{/if}}
+
+  <button {{action 'toggleResults' connection}} class="toggleResults"><span>SR</span></button>
 </div>
 
 <div class="info">
 {{input type="checkbox" checked=connection.active}}
-<img {{bind-attr src=connection.source.icon}} class="connectionSource_Icon" />
+<img src={{connection.source.icon}} class="connectionSource_Icon" />
 <span class="connectionSource">
     {{#link-to 'source' connection.source}}
         {{connection.source.name}}
@@ -22,11 +25,14 @@
 <span class="connectionResults">Size: {{connection.length}}</span>
 <span class="connectionId">Id: {{connection.id}}</span>
 
-{{render 'results' connection.results class="connectionResults" }}
-
-{{ render 'connection' connection }}
+  {{render 'connection' connection }}
 
   {{#if connection.editMode}}
     {{render 'source.edit' connection.source}}
   {{/if}}
+
+  {{# if connection.showResults}}
+    {{render 'results' connection.results class="connectionResults"}}
+  {{/if}}
+
 </div>

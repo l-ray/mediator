@@ -1,6 +1,6 @@
 <ul class="dates">
-    {{#each this as |eventDate| }}
-        <li {{bind-attr class=":day eventDate.isSaturday:saturday eventDate.isSunday:sunday" }}>
+    {{#each model as |eventDate| }}
+        <li class="day {{if eventDate.isSaturday 'saturday'}} {{if eventDate.isSunday 'sunday'}}">
             {{#link-to 'groupset' eventDate}}
                 <span class="name">
                     {{ format-date eventDate.date 'dd' }}
@@ -13,4 +13,4 @@
     {{/each}}
 </ul>
 
-{{outlet}}
+{{!-- outlet --}}

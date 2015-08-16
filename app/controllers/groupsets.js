@@ -12,5 +12,4 @@ export default  Ember.ArrayController.extend({
             this.selected = date;
         }
     }
-
 });

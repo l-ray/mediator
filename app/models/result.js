@@ -21,15 +21,15 @@ var ResultModel = DS.Model.extend({
 
     url: DS.attr('string'),
 
-    connection: DS.belongsTo('connection'),
+    connection: DS.belongsTo('connection', {async:false}),
 
-    group: DS.belongsTo('group'),
+    group: DS.belongsTo('group',{async:false}),
 
-    pictures: DS.hasMany('picture'),
+    pictures: DS.hasMany('picture', {async: false }),
 
     categories: DS.attr('string'),
 
-    links: DS.hasMany('link'),
+    links: DS.hasMany('link', {async: false }),
 
     priority: function() {
         var tmpPriority = 0;

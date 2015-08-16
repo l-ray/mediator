@@ -1,7 +1,7 @@
          {{#if pictures}}
             <ul>
                 {{#each pictures as |picture|}}
-                    <li><img {{bind-attr src=picture.src}} /></li>
+                    <li><img src={{picture.src}} /></li>
                 {{/each}}
             </ul>
         {{else}}
