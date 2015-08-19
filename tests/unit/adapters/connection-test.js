@@ -28,7 +28,7 @@ describeModule(
       expect(adapter).to.be.ok;
     });
 
-    it("returns list of connections for the given start date holding correct sources.", function () {
+    it.skip("returns list of connections for the given start date holding correct sources.", function () {
 
         Mediator.ApplicationStore = DS.Store.extend({
           adapter: DS.MochaAdapter

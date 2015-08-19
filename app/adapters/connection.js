@@ -61,10 +61,7 @@ export default DS.RESTAdapter.extend({
       console.log("creating new promise for snapshot " + snapshot.id);
 
       return new Ember.RSVP.Promise(function (resolve) {
-        console.log("in new promise " + initialPromise.then);
         initialPromise.then(function (something) {
-          console.log("in initialPromise");
-
 
           if (typeof something.results !== "undefined") {
             something.results = Ember.makeArray(something.results);

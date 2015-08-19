@@ -91,7 +91,7 @@ describeModule(
       var store = Mediator.ApplicationStore.create({
         container: this.container,
 
-        find: function (type, options) {
+        query: function (type, options) {
           return Ember.ArrayProxy.create({
             content: [
               this.createRecord(type, {
