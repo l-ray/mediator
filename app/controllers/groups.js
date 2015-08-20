@@ -1,9 +1,7 @@
 import Ember from 'ember';
 
-export default Ember.ArrayController.extend({
+export default Ember.Controller.extend({
 
-    sortProperties: ['priority','title'],
-    sortAscending: false,
     actions: {
         markRecycled: function (item) {
             item.set("recycled", true);
@@ -12,15 +10,15 @@ export default Ember.ArrayController.extend({
             item.set("recycled", false);
         },
         decreaseUserPriority: function (item) {
-            item.set(
+          item.set(
                 "priorityByUser",
                     item.get("priorityByUser") - 1000
             );
         },
         increaseUserPriority: function (item) {
-            item.set(
+          item.set(
                 "priorityByUser",
-                    item.get("priorityByUser") + 1000
+                item.get("priorityByUser") + 1000
             );
         }
     }

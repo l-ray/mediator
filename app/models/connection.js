@@ -8,11 +8,9 @@ var ConnectionModel = DS.Model.extend(Ember.Enumerable, {
 
     endDate: DS.attr('date'),
 
-    editMode: Boolean(false),
-
     active: DS.attr('boolean', {defaultValue: true}),
 
-    source: DS.belongsTo('source'),
+    source: DS.belongsTo('source', { async: false }),
 
     length: Ember.computed.alias('results.length'),
 

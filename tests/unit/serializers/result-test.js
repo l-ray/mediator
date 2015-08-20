@@ -37,25 +37,29 @@ describeModule(
       });
 
       expect(
-        serializer.extractArray(
+        serializer.normalizeArrayResponse(
           store,
           store.modelFor('result'),
           {"results":[]}
-        )
+        ).data,
+        " a normalized array response of an empty array"
       ).to.be.an.instanceOf(Array).and.have.lengthOf(0);
+
       expect(
-        serializer.extractArray(
+        serializer.normalizeArrayResponse(
           store,
           store.modelFor('result'),
           {"results":{}}
-        )
+        ).data,
+        " a normalized array response of an empty object"
       ).to.be.an.instanceOf(Array).and.have.lengthOf(1);
       expect(
-        serializer.extractArray(
+        serializer.normalizeArrayResponse(
           store,
           store.modelFor('result'),
           {"results":[{},{}]}
-        )
+        ).data,
+        "a normalized array response of an array with two empty objects"
       ).to.be.an.instanceOf(Array).and.have.lengthOf(2);
     });
 

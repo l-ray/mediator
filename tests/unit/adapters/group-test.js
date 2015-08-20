@@ -24,10 +24,10 @@ describeModule(
       var createdNewInstance = false;
       var newId = "123";
       var dummyModel = new DS.Model("group",{id:newId});
-      var result = adapter.find(
+      var result = adapter.findRecord(
         // mocked store
         {
-          find:function(type, id){return undefined;},
+          findRecord:function(){return undefined;},
           createRecord:function(type, options) {
             if (options.id === newId) { createdNewInstance = true; return dummyModel;}
           }
@@ -43,12 +43,12 @@ describeModule(
       var adapter = this.subject();
       var newId = "123";
       var dummyModel = new DS.Model("group",{id:newId});
-      var result = adapter.find(
+      var result = adapter.findRecord(
         // mocked store
         {
-          find:function(type, id){return dummyModel;},
+          findRecord:function(){return dummyModel;},
           createRecord:function(type, options) {
-            throw "createRecord should not be called, as correct result was returned earlier";
+            throw "createRecord should not be called, as correct result was returned earlier - %@ %@".fmt(type, options);
           }
         },
         "dummyType",

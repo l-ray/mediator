@@ -1,13 +1,13 @@
 <h1>Link</h1>
 
 <table>
-  {{#each buffer}}
+  {{#each buffer as |item|}}
   <tr>
     <td>
-      <strong>{{key}}:</strong>
+      <strong>{{item.key}}:</strong>
     </td>
     <td>
-      {{input value=value}}
+      {{input value=item.value}}
     </td>
   </tr>
   {{/each}}

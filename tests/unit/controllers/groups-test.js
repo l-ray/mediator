@@ -32,13 +32,8 @@ describeModule(
 
       it("initially holds the recycle mode to false.", function () {
 
-            Mediator.ApplicationStore = DS.Store.extend({
-              adapter: DS.MochaAdapter
-            });
-
-            var store = Mediator.ApplicationStore.create({
-              container: this.container
-            });
+            var controller = this.subject();
+            var store = controller.get('store');
 
             var model = store.createRecord('group', {});
             var resultModel = store.createRecord('result', {
@@ -46,8 +41,7 @@ describeModule(
             });
             model.get('results').pushObject(resultModel);
 
-            var controller = this.subject();
-            controller.get('model').pushObject(model);
+            controller.set('content', [model]);
 
             expect(model.get('recycled')).to.be.equal(false);
             expect(model.get('enabled')).to.be.equal(true);
@@ -135,12 +129,11 @@ describeModule(
                 comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
                 comparisonModel.get('results').pushObject(resultModel);
 
-                controller.get('model').pushObject(comparisonModel);
-                controller.get('model').pushObject(actionModel);
+                controller.set('content', [comparisonModel,actionModel]);
 
                 expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
-                expect(controller.get('model').toArray()[0]).to.be.equal(comparisonModel);
-                expect(controller.get('model').toArray()[1]).to.be.equal(actionModel);
+                expect(controller.get('content').toArray()[0]).to.be.equal(comparisonModel);
+                expect(controller.get('content').toArray()[1]).to.be.equal(actionModel);
               });
 
             });

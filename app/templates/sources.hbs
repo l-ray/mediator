@@ -1,10 +1,10 @@
 <h1>Sources</h1>
 
 <ul>
- {{#each model}}
- <li id="source_{{this.id}}">
-     <img {{bind-attr src=icon}} class="connectionSource_Icon" />
-     <span class="connectionSource">{{#link-to 'source' this}}{{this.name}}{{/link-to}}</span>
+ {{#each model as |item|}}
+ <li id="source_{{item.id}}">
+     <img src={{bind-attr src=icon}} class="connectionSource_Icon" />
+     <span class="connectionSource">{{#link-to 'source' item}}{{item.name}}{{/link-to}}</span>
  </li>
   {{/each}}
 </ul>

@@ -8,7 +8,10 @@ export default Ember.Component.extend({
         },
         doneEditing: function(connection) {
             connection.set('editMode', false);
-        }
+        },
+      toggleResults: function(connection) {
+        connection.set('showResults', !connection.get('showResults'));
+      }
     }
 
 });

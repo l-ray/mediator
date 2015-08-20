@@ -10,7 +10,8 @@
             <a class="navbar-brand" href="#">Event Aggregator</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            {{ render 'groupsets' controller }}
+            {{log 'controller is ' groupset}}
+            {{ render "groupsets"  groupset}}
         </div>
     </nav>
     <div class="container" id="main">

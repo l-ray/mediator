@@ -1,34 +1,32 @@
-import DS from 'ember-data';
 import Ember from 'ember';
 
 /* global smSmithWaterman */
 /* global smQGram */
 
-export default DS.Store.extend({
+export default Ember.Controller.extend({
 
-  push: function(modelNameArg, dataArg) {
+  sortingStrategy: function(a) {return (a.get("priority") instanceof Function)?-a.get("priority"):0;},
 
-    var result = this._super(modelNameArg, dataArg);
-    console.log("pushing " + modelNameArg);
+  groups: function(){
 
-    /*jslint eqeq: true*/
-    if (modelNameArg == "mediator@model:result:") {
-      console.log("Calling processSimilatiryMeasure with group/-set "+result.get('group')+result.get('group.groupset')+result+" from data arg group"+dataArg.group);
-      result.set("group", dataArg.group);
-      Ember.run.throttle({
-        model:result.get("group.groupset"),
-        __isSimilar: this.__isSimilar,
-        __isSimilarBecauseOfIdenticalPictures:this.__isSimilarBecauseOfIdenticalPictures,
-        _CONST_LEVENSHTEIN_RATIO : 0.7,
-        _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
-        _CONST_QGRAM_RATIO : 0.61,
-        _CONST_QGRAM_LEVEL1_RATIO : 0.5,
-        _RESULT_CATEGORY_SPLITTER: ','
-      }, this.processSimilarityMeasurement, 500);
-    }
+    Ember.run.throttle({
 
-    return result;
-  },
+      model:this.get("model"),
+      __isSimilar: this.__isSimilar,
+      __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
+      _CONST_LEVENSHTEIN_RATIO : 0.7,
+      _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
+      _CONST_QGRAM_RATIO : 0.61,
+      _CONST_QGRAM_LEVEL1_RATIO : 0.5,
+      _RESULT_CATEGORY_SPLITTER: ','
+    }, this.processSimilarityMeasurement, 1000);
+
+    return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
+      sortProperties: ['priority','title'],
+      sortAscending: false,
+      content: this.get('model.groups')
+    });
+  }.property('model.groups'),
 
   processSimilarityMeasurement: function() {
 
@@ -46,20 +44,20 @@ export default DS.Store.extend({
           currentJ.get('initialized')) {
           console.log("is similar -> " + currentI.get("results.length") + " und "+currentJ.get("results.length")+" - pictures " + currentI.get('pictures').mapBy('url') + currentJ.get('pictures').mapBy('url'));
           if (this.__isSimilar(
-            {
-              id : currentI.get("id"),
-              summary : currentI.get("reducedSummary"),
-              title : currentI.get("reducedTitle"),
-              location : currentI.get("reducedLocation"),
-              pictures : currentI.get('pictures').mapBy('url').toArray()
-            },
-            {
-              id : currentJ.get("id"),
-              summary : currentJ.get("reducedSummary"),
-              title : currentJ.get("reducedTitle"),
-              location : currentJ.get("reducedLocation"),
-              pictures : currentJ.get('pictures').mapBy('url').toArray()
-            }
+              {
+                id : currentI.get("id"),
+                summary : currentI.get("reducedSummary"),
+                title : currentI.get("reducedTitle"),
+                location : currentI.get("reducedLocation"),
+                pictures : currentI.get('pictures').mapBy('url').toArray()
+              },
+              {
+                id : currentJ.get("id"),
+                summary : currentJ.get("reducedSummary"),
+                title : currentJ.get("reducedTitle"),
+                location : currentJ.get("reducedLocation"),
+                pictures : currentJ.get('pictures').mapBy('url').toArray()
+              }
             )) {
             console.log("Yes, is similar");
             currentI.set('initialized', false);
@@ -142,5 +140,4 @@ export default DS.Store.extend({
 
     return (concatList.uniq().length < concatList.length);
   }
-
 });

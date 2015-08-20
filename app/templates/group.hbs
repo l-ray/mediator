@@ -1,13 +1,13 @@
 <h1>ResultGroup</h1>
 
 <table>
-  {{#each model.attributes}}
+  {{#each model.attributes as item}}
   <tr>
     <td>
-      <strong>{{this.key}}:</strong>
+      <strong>{{item.key}}:</strong>
     </td>
     <td>
-      {{this.value}}
+      {{item.value}}
     </td>
   </tr>
   {{/each}}

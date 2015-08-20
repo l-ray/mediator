@@ -27,7 +27,7 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     priorityByUser: DS.attr('number', {defaultValue: 0 }),
 
     // results are pushed manually into group, so there is no asynchronity here
-    results: DS.hasMany('result'),
+    results: DS.hasMany('result', { async: false }),
 
     groupset: DS.belongsTo('groupset'),
 
@@ -167,9 +167,11 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('results.@each.categories'),
 
     priority: function() {
-      return (this.get('priorityByRuleSet') +
+      var priority = (this.get('priorityByRuleSet') +
           this.get('priorityBySystem') +
           this.get('priorityByUser'));
+      console.log("Changed priority to "+priority);
+      return priority;
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
 
     enabled: function() {
