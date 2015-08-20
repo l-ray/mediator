@@ -62,7 +62,7 @@ describeModule(
                   })
                 );
               });
-            } else throw "mock store does not support "+type;
+            } else { throw "mock store does not support "+type; }
           }
         });
       var adapter = this.subject();
