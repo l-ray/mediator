@@ -16,7 +16,7 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
         return this.get('groups').nextObject(index);
     },
 
-    sortingStrategy: function(a) {return (a.get("priority") instanceof Function)?-a.get("priority"):0;},
+
 
     setElementsWithCategoryToRecycled: function(item) {
         this.groups
@@ -25,10 +25,6 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
                         function(s) {return s.toLowerCase();}
                     ).indexOf(item.toLowerCase()) !== -1;
             }).each(function(n) {n.set("recycled",true);});
-    },
-
-    sort: function() {
-        this.elements = this.get("groups").sortingStrategy(this.sortingStrategy);
     },
 
     isSaturday: function() {

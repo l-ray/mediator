@@ -5,9 +5,12 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
+  sortingStrategy: function(a) {return (a.get("priority") instanceof Function)?-a.get("priority"):0;},
+
   groups: function(){
 
     Ember.run.throttle({
+
       model:this.get("model"),
       __isSimilar: this.__isSimilar,
       __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
@@ -17,7 +20,12 @@ export default Ember.Controller.extend({
       _CONST_QGRAM_LEVEL1_RATIO : 0.5,
       _RESULT_CATEGORY_SPLITTER: ','
     }, this.processSimilarityMeasurement, 1000);
-    return this.get('model.groups');
+
+    return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
+      sortProperties: ['priority','title'],
+      sortAscending: false,
+      content: this.get('model.groups')
+    });
   }.property('model.groups'),
 
   processSimilarityMeasurement: function() {

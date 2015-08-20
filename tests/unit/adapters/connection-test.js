@@ -94,7 +94,7 @@ describeModule(
       var store = Mediator.ApplicationStore.create({
         container: this.container,
 
-        findHasMany: function(store, snapshot, url, relationship) {
+        findHasMany: function(store) {
             return new Ember.RSVP.Promise(
               function(resolve){
                 resolve(
@@ -121,7 +121,7 @@ describeModule(
       });
       var adapter = this.subject();
       var snapshot = {
-        belongsTo: function(n,m){
+        belongsTo: function(){
           console.log("IN THE BELONGS TO FUNCTION");
           return "12345";
         }

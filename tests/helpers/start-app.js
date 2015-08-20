@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Mediator from '../../app';
-import Router from '../../router';
 import config from '../../config/environment';
 
 export default function startApp(attrs) {

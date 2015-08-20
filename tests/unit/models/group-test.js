@@ -6,6 +6,8 @@ import {
   it
 } from 'ember-mocha';
 
+/* global smUtilities */
+
 describeModel(
   'group',
   'Group',

@@ -1,9 +1,7 @@
 import Ember from 'ember';
 
-export default Ember.ArrayController.extend({
+export default Ember.Controller.extend({
 
-    sortProperties: ['priority','title'],
-    sortAscending: false,
     actions: {
         markRecycled: function (item) {
             item.set("recycled", true);
