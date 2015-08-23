@@ -54,4 +54,22 @@ describeModel(
 
             });
 
+    it('should recognize day of the week correctly.', function(){
+
+      var model = this.subject();
+
+      model.set('date',new Date(1980,10,29));
+      expect(model.get('isSaturday'),"is a saturday").to.be.true;
+      expect(model.get('isSunday'),"saturday ain't no sunday.").to.be.false;
+
+      model.set('date',new Date(1980,10,30));
+      expect(model.get('isSaturday'),"sunday ain't no saturday").to.be.false;
+      expect(model.get('isSunday'),"is a sunday").to.be.true;
+
+      model.set('date',new Date(1980,11,1));
+      expect(model.get('isSaturday'),"monday, not saturday").to.be.false;
+      expect(model.get('isSunday'),"monday, not sunday").to.be.false;
+
+    });
+
 });

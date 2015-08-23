@@ -1,6 +1,15 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+const _WEEKDAY = {Saturday:6,Sunday:0};
+
+var isDayOfTheWeek = function(dependentKey, weekday) {
+  return Ember.computed(dependentKey,function handler() {
+    var comparisonDate = Ember.get(this, dependentKey);
+    return comparisonDate.getDay() === weekday;
+  });
+};
+
 var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
 
     date: DS.attr('date'),
@@ -27,15 +36,9 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
             }).each(function(n) {n.set("recycled",true);});
     },
 
-    isSaturday: function() {
-        var day = this.get('date').getDay();
-        return day === 6;
-    }.property('date'),
+    isSaturday: isDayOfTheWeek('date',_WEEKDAY.Saturday),
 
-    isSunday: function() {
-        var day = this.get('date').getDay();
-        return day === 0;
-    }.property('date')
+    isSunday: isDayOfTheWeek('date',_WEEKDAY.Sunday)
 
 });
 

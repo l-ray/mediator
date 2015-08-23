@@ -32,7 +32,7 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     groupset: DS.belongsTo('groupset'),
 
     enabledResults: function() {
-      return this.get('results').filter(function(r){return r.get('enabled');});
+      return this.get('results').filterBy('enabled');
     }.property('results.@each.enabled'),
 
       priorityBySystem: function() {
@@ -142,20 +142,20 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
     connections: function() {
         return this.get('results')
-          .map(function(n){return n.get('connection');})
+          .mapBy('connection')
           .filter(function(n) {return n instanceof Mediator.Connection;});
     }.property('results.@each.connection'),
 
     pictures: function() {
-      return flattenProperties(this.get('results').mapProperty('pictures'));
+      return flattenProperties(this.get('results').mapBy('pictures'));
     }.property('results.@each.pictures'),
 
     links: function() {
-      return flattenProperties(this.get('results').mapProperty('links'));
+      return flattenProperties(this.get('results').mapBy('links'));
     }.property('results.@each.links'),
 
     categories: function() {
-      return flattenProperties(this.get('results').mapProperty('categories').map(
+      return flattenProperties(this.get('results').mapBy('categories').map(
         function(n) {
           try {
             return n.split(Mediator.constants._RESULT_CATEGORY_SPLITTER);
@@ -175,11 +175,7 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
     }.property('priorityByRuleSet', 'priorityBySystem', 'priorityByUser'),
 
     enabled: function() {
-
-      var isEnabled = function(item) {return item.get("enabled");};
-
-      var anySubEnabled = function(results){return results.any(isEnabled);};
-      return anySubEnabled(this.get('results'));
+      return this.get('results').isAny('enabled', true);
     }.property('results.@each.enabled')
 
 });
