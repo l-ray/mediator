@@ -54,9 +54,7 @@ describeModule(
             adapter: DS.MochaAdapter
           });
 
-          var store = Mediator.ApplicationStore.create({
-            container: this.container
-          });
+          var store = this.subject().get('store');
 
           var model = store.createRecord('group', {});
           var resultModel = store.createRecord('result', {
@@ -66,13 +64,11 @@ describeModule(
 
           var controller = this.subject();
 
-            expect(model.get('recycled')).to.be.equal(false);
-            expect(model.get('enabled')).to.be.equal(true);
+          expect(model.get('recycled')).to.be.equal(false);
 
-            controller.send('markRecycled', model);
+          controller.send('markRecycled', model);
 
-              expect(model.get('recycled')).to.be.equal(true);
-              expect(model.get('enabled')).to.be.equal(false);
+          expect(model.get('recycled')).to.be.equal(true);
         });
 
       it(" restores the recycle mode properly.", function () {

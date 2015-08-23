@@ -7,6 +7,9 @@
                 {{/each}}
             </ul>
         </div>
+
+        {{recycled-groups groups=groups tagName="div" classNames="well sidebar-nav recycled_groups"}}
+
     </div>
     <div class="col-md-9">
         <h1>groupSet</h1>
@@ -18,8 +21,6 @@
         {{render 'groups' groups}}
 
         {{outlet}}
-
-        {{recycled-groups groups=groups}}
 
     </div>
 </div>

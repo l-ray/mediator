@@ -1,10 +1,11 @@
 <ul>
  {{#each model as |result|}}
 <!-- keep the bind-attribute to allow synchronizing with result list ... why ever that is needed -->
- <li title={{result.connectionPriority}} alt={{result.connectionIgnorePriority}} description={{result.enabled}}>{{#link-to 'result' result}}
+ <li title={{result.connectionPriority}} alt={{result.connectionIgnorePriority}} description={{result.enabled}}>
+   {{#link-to 'result' result}}
      {{result.id}} {{result.title}} group {{result.group}}
-   {{pictures-array pictures=result.pictures classNames="pictures"}}
- {{/link-to}}</li>
+     {{pictures-array pictures=result.pictures classNames="pictures"}}
+   {{/link-to}}</li>
   {{/each}}
 </ul>
 

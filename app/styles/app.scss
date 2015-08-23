@@ -1,13 +1,15 @@
-
 /* Put your CSS here */
 html, body {
-    margin: 30px 0;
+  margin: 30px 0;
 }
 
 .debug,
 .connectionResults /*,
 .connectionId,
-.connectionPriority*/ { display: none; }
+.connectionPriority*/
+{
+  display: none;
+}
 
 #connectionsListing {
   .administration {
@@ -16,18 +18,22 @@ html, body {
       width: 12px;
       height: 12px;
       border: 0;
-      float:right;
+      float: right;
       background: transparent image-url("icons/info_klein_blau.gif") no-repeat left top;
-      span { display: none; }
+      span {
+        display: none;
+      }
     }
 
-    button.toggleResults{
+    button.toggleResults {
       width: 12px;
       height: 12px;
       border: 0;
       padding: 0px;
       float: right;
-      span { font-size: 8px; }
+      span {
+        font-size: 8px;
+      }
     }
   }
 
@@ -40,9 +46,9 @@ ul.dates {
 
   overflow: hidden;
 
- .day {
-    display:block;
-    float:left;
+  .day {
+    display: block;
+    float: left;
 
     a,
     a:link,
@@ -65,7 +71,7 @@ ul.dates {
       color: #ffffff;
     }
 
-    a.active  {
+    a.active {
       border-right: 1px solid #ff6500;
       border-left: 1px solid #ff6500;
     }
@@ -73,168 +79,179 @@ ul.dates {
     .number, .name {
       display: block;
     }
- }
+  }
 
-  .saturday  {
+  .saturday {
     background-color: #efefef;
   }
 
-  .sunday  {
+  .sunday {
     background-color: #dddddd;
   }
 
 }
 
-  section.event {
+section.event {
 
-    width: 400px;
-    border: 1px lightgray solid;
-    margin: 3px;
-    padding: 3px;
+  width: 400px;
+  border: 1px lightgray solid;
+  margin: 3px;
+  padding: 3px;
 
-    &:before,
-    &:after {
-      content: "";
-      display: table;
-    }
-    &:after {
-      clear: both;
-    }
-    & {
-      zoom: 1; /* IE6&7 */
-    }
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+  & {
+    zoom: 1; /* IE6&7 */
+  }
 
-    .categories {
+  .categories {
 
-      li {
-        display: inline;
-        list-style-type: none;
+    li {
+      display: inline;
+      list-style-type: none;
 
-        &:after {
-          content: " | ";
-        }
-
-        &:last-of-type:after {
-          content: " ";
-        }
-
+      &:after {
+        content: " | ";
       }
 
-    }
-
-    h1.title {
-      text-transform: uppercase;
-      font-size: 11px;
-      padding: 0;
-      margin: 0;
-    }
-
-    h2.subtitle {
-      font-size: 11px;
-      padding: 0;
-      margin: 0;
-      font-style: italic;
-    }
-
-    .pictures {
-      float: left;
-      padding: 2px;
-      width: 125px;
-      height: 140px;
-
-      ul {
-
-        padding: 0;
-
-        li {
-          list-style: none outside none;
-          height: 20px;
-          width: 20px;
-          overflow: hidden;
-          float: left;
-
-          img {
-            height: 20px;
-            width: auto;
-          }
-
-          &:first-of-type {
-            height: 120px;
-            width: 120px;
-
-            img {
-              height: 120px;
-            }
-
-          }
-
-        }
-
+      &:last-of-type:after {
+        content: " ";
       }
 
-      span.noPicturesWarning {
-        vertical-align: middle;
-        font-style: italic;
-      }
-
-    }
-
-    span.location:after,
-    time.date:after {
-      content: " | ";
-    }
-
-    .sources {
-      padding-left: 0;
-      li {
-        list-style: none;
-        display: inline;
-      }
-
-    }
-
-    .administration {
-      float:right;
-
-      li {
-        list-style: none;
-        padding: 0 2px;
-        display: block;
-        float: left;
-        width: 14px;
-        height: 11px;
-        text-decoration: none;
-
-        span {
-          display:none;
-        }
-
-        &:hover {
-          opacity: 0.5;
-        }
-
-        &.recycle_item {
-          background: transparent image-url("icons/to_tray_klein_blau.gif") no-repeat left top;
-        }
-
-        &.derecycle_item {
-          background: transparent image-url("icons/from_tray_klein_blau.gif") no-repeat left top;
-        }
-
-        &.item_to_top {
-          background: transparent image-url("icons/to_top_klein_blau.gif") no-repeat left top;
-        }
-
-        &.item_to_bottom {
-          background: transparent image-url("icons/to_bottom_klein_blau.gif") no-repeat left top;
-        }
-
-      }
     }
 
   }
 
-.result_groups > li {
-  list-style: none;
-  padding-left: 0;
+  h1.title {
+    text-transform: uppercase;
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+  }
+
+  h2.subtitle {
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+  }
+
+  span.location:after,
+  time.date:after {
+    content: " | ";
+  }
+
+  .sources {
+    padding-left: 0;
+    li {
+      list-style: none;
+      display: inline;
+    }
+
+  }
+
+  .administration {
+    float: right;
+
+    li {
+      list-style: none;
+      padding: 0 2px;
+      display: block;
+      float: left;
+      width: 14px;
+      height: 11px;
+      text-decoration: none;
+
+      span {
+        display: none;
+      }
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &.recycle_item {
+        background: transparent image-url("icons/to_tray_klein_blau.gif") no-repeat left top;
+      }
+
+      &.derecycle_item {
+        background: transparent image-url("icons/from_tray_klein_blau.gif") no-repeat left top;
+      }
+
+      &.item_to_top {
+        background: transparent image-url("icons/to_top_klein_blau.gif") no-repeat left top;
+      }
+
+      &.item_to_bottom {
+        background: transparent image-url("icons/to_bottom_klein_blau.gif") no-repeat left top;
+      }
+
+    }
+  }
+
+  .result_groups > li {
+    list-style: none;
+    padding-left: 0;
+  }
+
+}
+
+.recycled_groups {
+  section.event {
+    width: inherit;
+    border: 0;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+}
+
+.pictures {
+  float: left;
+  padding: 2px;
+  width: 125px;
+  height: 140px;
+
+  ul {
+
+    padding: 0;
+
+    li {
+      list-style: none outside none;
+      height: 20px;
+      width: 20px;
+      overflow: hidden;
+      float: left;
+
+      img {
+        height: 20px;
+        width: auto;
+      }
+
+      &:first-of-type {
+        height: 120px;
+        width: 120px;
+
+        img {
+          height: 120px;
+        }
+
+      }
+
+    }
+
+  }
+
+  span.noPicturesWarning {
+    vertical-align: middle;
+    font-style: italic;
+  }
+
 }
