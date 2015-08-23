@@ -2,9 +2,8 @@
 {{ log "resultgroup count" model model.length}}
     <ul class="result_groups">
 
-      {{#each model as |group|}}
+      {{#each controller.enabled as |group|}}
 
-            {{#if group.enabled}}
                 <li>
                     <section class="event">
 
@@ -75,8 +74,10 @@
                     </section>
 
                 </li>
-            {{/if}}
-        {{/each}}
+
+      {{else}}
+              <li>Nothing found yet.</li>
+      {{/each}}
 
     </ul>
 

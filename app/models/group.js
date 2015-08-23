@@ -178,9 +178,9 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
       var isEnabled = function(item) {return item.get("enabled");};
 
-      var anySubEnabled = this.get('results').any(isEnabled);
-      return !this.get('recycled') && anySubEnabled;
-    }.property('recycled','results.@each.enabled')
+      var anySubEnabled = function(results){return results.any(isEnabled)};
+      return anySubEnabled(this.get('results'));
+    }.property('results.@each.enabled')
 
 });
 

@@ -1,0 +1,69 @@
+<h2>recycled ResultGroups</h2>
+{{ log "resultgroup count" groups groups.length}}
+<ul class="result_recycled_groups">
+
+  {{#each groups as |group|}}
+
+    {{#if group.enabled}}
+      {{#if group.recycled}}
+          <li>
+              <section class="event">
+
+                  <ul class="administration">
+                     {{#if group.recycled }}
+                        <li {{action 'markRestored' group}} class="derecycle_item" ><span>w</span></li>
+                    {{else}}
+                        <li {{action 'markRecycled' group}} class="recycle_item" ><span>x</span></li>
+                    {{/if}}
+                  </ul>
+
+                {{#if group.categories}}
+                    <ul title="categories" class="categories">
+                      {{#each in group.categories as |category|}}
+                          <li>{{ category }}</li>
+                      {{/each}}
+                    </ul>
+                {{/if}}
+
+                  <h1 class="title">{{ group.title }}</h1>
+                {{#if group.subtitle}}
+                    <h2 class="subtitle">{{ group.subtitle }}</h2>
+                {{/if}}
+                {{#if group.description}}
+                    <div class="description">{{ group.description }}</div>
+                {{/if}}
+                  <time class="date">
+                    {{#if group.startDate}}
+                      {{ format-date group.startDate "DD.MM.YYYY" }}
+                    {{else}}
+                        no start date
+                    {{/if}}
+                  </time>
+                  <span class="location">{{#if group.location}} {{group.location}} {{else}}no location{{/if}}</span>
+                  <span class="price">{{#if group.price }}{{ group.price }}{{else}}-{{/if}}</span>
+
+                  <ul class="sources">
+                    {{#each group.enabledResults as |result|}}
+                        <li title="Source">
+                            <a href={{result.resultUrl}} target="_blank">
+                                <img class="event_info_source_icon" title={{result.name}} src={{result.connection.source.icon}} />
+                            </a><span class="debug"> S:{{result.connection.source.id}} Prio:{{result.connection.priority}} {{result.connection.ignorePriority}} r:{{result.id}}</span>
+                        </li>
+                    {{/each}}
+                  </ul>
+
+                  <div class="debug">
+                      <span class="priorityRuleset">RS-prio{{ group.priorityByRuleSet }}</span>
+                      <span class="priority">sum-prio{{ group.priority }}</span>
+                      <span>{{#link-to 'group' group}}{{group.id}}{{/link-to}}</span>
+                  </div>
+              </section>
+
+          </li>
+      {{/if}}
+    {{/if}}
+  {{else}}
+    <li>No recycled groups yet.</li>
+  {{/each}}
+
+</ul>

@@ -21,6 +21,16 @@ export default Ember.Controller.extend({
                 item.get("priorityByUser") + 1000
             );
         }
-    }
+    },
+
+    enabled: Ember.computed('model.@each.recycled', function() {
+      let groups = this.get('model');
+      return groups.filter(item => item.get('enabled')&&!item.get('recycled'));
+    }),
+
+    recycled:  Ember.computed('model.@each.recycled', function() {
+      let groups = this.get('model');
+      return groups.filter(item => item.get('enabled')&&item.get('recycled'));
+    })
 });
 
