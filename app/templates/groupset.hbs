@@ -16,6 +16,8 @@
 
         <dl>
             <dt>event Date:</dt> <dd>{{ format-date model.date 'dddd, DD. MMMM YYYY' }}</dd>
+            <dt>categories:</dt> <dd>{{categories.punk}}, {{categories.rock}}, {{categories.pop}}</dd>
+
         </dl>
 
         {{render 'groups' groups}}

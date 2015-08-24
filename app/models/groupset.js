@@ -25,17 +25,6 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
         return this.get('groups').nextObject(index);
     },
 
-
-
-    setElementsWithCategoryToRecycled: function(item) {
-        this.groups
-            .findAll(function(s){
-                    return s.get("categories").collect(
-                        function(s) {return s.toLowerCase();}
-                    ).indexOf(item.toLowerCase()) !== -1;
-            }).each(function(n) {n.set("recycled",true);});
-    },
-
     isSaturday: isDayOfTheWeek('date',_WEEKDAY.Saturday),
 
     isSunday: isDayOfTheWeek('date',_WEEKDAY.Sunday)

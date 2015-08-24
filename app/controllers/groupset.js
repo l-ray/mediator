@@ -3,9 +3,15 @@ import Ember from 'ember';
 /* global smSmithWaterman */
 /* global smQGram */
 
-export default Ember.Controller.extend({
+var flattenProperties =  function(propertyEnum) {
+  var flattenArray = function(a, b) {return a.concat(b);};
+  var result = propertyEnum
+    .filter(function(m){return !Ember.isEmpty(m);})
+    .map(function(n){return n.toArray();});
+  return result.length > 0 ? result.reduce(flattenArray):result;
+};
 
-  sortingStrategy: function(a) {return (a.get("priority") instanceof Function)?-a.get("priority"):0;},
+export default Ember.Controller.extend({
 
   groups: function(){
 
@@ -27,6 +33,25 @@ export default Ember.Controller.extend({
       content: this.get('model.groups')
     });
   }.property('model.groups'),
+
+  setElementsWithCategoryToRecycled: function(item) {
+    this.groups
+      .findAll(function(s){
+        return s.get("categories").collect(
+            function(s) {return s.toLowerCase();}
+          ).indexOf(item.toLowerCase()) !== -1;
+      }).each(function(n) {n.set("recycled",true);});
+  },
+
+  categories: function(){
+    var categories= this.get('model.groups').mapBy('categories');
+    categories = flattenProperties(categories);
+    var counts = {};
+    categories.forEach(function(element) {
+      counts[element] = (counts[element] || 0) + 1;
+    });
+    return counts;
+  }.property('model.groups.@each.categories'),
 
   processSimilarityMeasurement: function() {
 

@@ -1,6 +1,6 @@
 /* jshint expr:true */
 import { expect, assert } from 'chai';
-
+import Ember from 'ember';
 import {
   describeModule,
   it
@@ -240,6 +240,29 @@ describeModule(
 
       expect(model.get('firstObject').toArray()).to.have.length(1, "groups per set");
       expect(model.get('lastObject').toArray()).to.have.length(1, "groups per set");
+    });
+
+    it("should return categories with their number of existence", function() {
+
+      var store = this.subject().get('store');
+
+      var controller = this.subject();
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+
+      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"]});
+      var item2 = store.createRecord('group', {"categories": ["punk"]});
+
+      controller.get('model.groups').pushObjects([item1, item2]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      var underTest = controller.get('categories');
+
+      expect(underTest).to.have.all.keys(['punk', 'folk', 'rock']);
+      expect(underTest).to.have.property("punk",2);
+      expect(underTest).to.have.property("rock",1);
+      expect(underTest).to.have.property("folk",1);
     });
 
   }

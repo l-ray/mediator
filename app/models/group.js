@@ -4,10 +4,7 @@ import Mediator from '../app';
 
 /* global smUtilities */
 
-
-
 var flattenProperties =  function(propertyEnum) {
-  console.log("Property enum is a "+propertyEnum+" with promise "+propertyEnum.then);
   var flattenArray = function(a, b) {return a.concat(b);};
   var result = propertyEnum
     .filter(function(m){return !Ember.isEmpty(m);})
