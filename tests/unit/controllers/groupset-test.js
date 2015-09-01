@@ -244,9 +244,9 @@ describeModule(
 
     it("should return categories with their number of existence", function() {
 
-      var store = this.subject().get('store');
-
       var controller = this.subject();
+      controller.set('doGrouping',false);
+      var store = controller.get('store');
       var model = store.createRecord('groupset', {});
 
       controller.set('model', model);
@@ -258,11 +258,94 @@ describeModule(
       controller.get('model.groups').enumerableContentDidChange();
 
       var underTest = controller.get('categories');
+      expect(underTest).to.be.an('array').and.of.length(3);
+      expect(underTest).to.contain({key:'punk',value: 2,selected:false});
+      expect(underTest).to.contain({key:'rock',value: 1,selected:false});
+      expect(underTest).to.contain({key:'folk',value: 1,selected:false});
 
-      expect(underTest).to.have.all.keys(['punk', 'folk', 'rock']);
-      expect(underTest).to.have.property("punk",2);
-      expect(underTest).to.have.property("rock",1);
-      expect(underTest).to.have.property("folk",1);
+    });
+
+    it('returns empty array for empty categories', function() {
+      var store = this.subject().get('store');
+
+      var controller = this.subject();
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+
+      var underTest = controller.get('categories');
+
+      expect(underTest).to.be.empty;
+
+      var underTestAsModel = controller.get('categories');
+
+      expect(underTestAsModel).to.be.an('array').and.of.length(0);
+    });
+
+    it("should show all groups when no categories are selected", function() {
+
+      var controller = this.subject();
+      controller.set('doGrouping',false);
+      var store = controller.get('store');
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+
+      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"]});
+      var item2 = store.createRecord('group', {"categories": ["punk"]});
+
+      controller.get('model.groups').pushObjects([item1, item2]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      var underTest = controller.get('filteredGroups');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(2);
+      expect(underTest.toArray(), "without set category").to.contain(item1);
+      expect(underTest.toArray(), "without set category").to.contain(item2);
+
+    });
+
+    it("should show only groups with selected categories", function() {
+
+      var controller = this.subject();
+      var store = controller.get('store');
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+
+      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"]});
+      var item2 = store.createRecord('group', {"categories": ["punk"]});
+
+      controller.get('model.groups').pushObjects([item1, item2]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      controller.addSelectedCategory("rock");
+
+      var underTest = controller.get('filteredGroups');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(1);
+      expect(underTest, "with category rock set").to.contain(item1);
+      expect(underTest, "with category rock set").to.not.contain(item2);
+    });
+
+    it("should reset groups after removing selected categories", function() {
+
+      var controller = this.subject();
+      controller.set('doGrouping',false);
+      var store = controller.get('store');
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+      controller.set('selectedCategories',["rock"]);
+
+      var item1 = store.createRecord('group', {title:"123","categories": ["punk","rock","folk"]});
+      var item2 = store.createRecord('group', {title:"987","categories": ["punk"]});
+
+      controller.get('model.groups').pushObjects([item1, item2]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      controller.removeSelectedCategory("rock");
+
+      var underTest = controller.get('filteredGroups');
+      expect(underTest.toArray(),underTest.map(k => k.get('title')).toArray()).to.be.instanceof(Array).and.have.length(2);
     });
 
   }

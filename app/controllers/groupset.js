@@ -11,47 +11,93 @@ var flattenProperties =  function(propertyEnum) {
   return result.length > 0 ? result.reduce(flattenArray):result;
 };
 
+var categoriesAsModel = function(localCategories, selectedCategories) {
+  return Object.keys(localCategories).map(
+    function(k){
+      return {
+        key : k,
+        value : localCategories[k],
+        'selected': selectedCategories.contains(k)
+      };
+    }
+  );
+};
+
+
 export default Ember.Controller.extend({
 
+  selectedCategories: [],
+
+  doGrouping: Boolean(true),
+
+  actions: {
+    recycleCategory(item){
+      this.removeSelectedCategory(item);
+    },
+    selectCategory(item){
+      console.log("in selectCategory");
+      this.addSelectedCategory(item);
+    }
+  },
+
   groups: function(){
-
-    Ember.run.throttle({
-
-      model:this.get("model"),
-      __isSimilar: this.__isSimilar,
-      __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
-      _CONST_LEVENSHTEIN_RATIO : 0.7,
-      _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
-      _CONST_QGRAM_RATIO : 0.61,
-      _CONST_QGRAM_LEVEL1_RATIO : 0.5,
-      _RESULT_CATEGORY_SPLITTER: ','
-    }, this.processSimilarityMeasurement, 1000);
-
     return Ember.ArrayProxy.extend(Ember.SortableMixin).create({
       sortProperties: ['priority','title'],
       sortAscending: false,
-      content: this.get('model.groups')
+      content: this.get('filteredGroups')
     });
-  }.property('model.groups'),
+  }.property('model.filteredGroups','selectedCategories.[]'),
 
-  setElementsWithCategoryToRecycled: function(item) {
-    this.groups
-      .findAll(function(s){
-        return s.get("categories").collect(
-            function(s) {return s.toLowerCase();}
-          ).indexOf(item.toLowerCase()) !== -1;
-      }).each(function(n) {n.set("recycled",true);});
+  updateGroupSorting: Ember.observer('model.groups.[]', function() {
+    if (this.get('doGrouping')) {
+        Ember.run.throttle({
+
+          model: this.get("model"),
+          __isSimilar: this.__isSimilar,
+          __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
+          _CONST_LEVENSHTEIN_RATIO: 0.7,
+          _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE: 0.36,
+          _CONST_QGRAM_RATIO: 0.61,
+          _CONST_QGRAM_LEVEL1_RATIO: 0.5,
+          _RESULT_CATEGORY_SPLITTER: ','
+        }, this.processSimilarityMeasurement, 1000);
+      }
+  }),
+
+  filteredGroups: function(){
+    return this.get('selectedCategories.length')===0 ?
+      this.get('model.groups') :
+      this.get('model.groups').filter(
+          c => this.get('selectedCategories').any(
+              sc => c.get('categories').contains(sc)
+          )
+      );
+  }.property('model.groups','selectedCategories.[]'),
+
+  addSelectedCategory: function(category) {
+    this.get('selectedCategories').pushObject(category);
   },
 
+  removeSelectedCategory: function(category) {
+    this.get('selectedCategories').removeObject(category);
+  },
+/*
+  recycleElementsWithCategory: function(item) {
+    console.log("caught action for recycleElementsWithCategory");
+    var categoryContains = i => s => s.get("categories").contains(i);
+    var groupsToBeRecycled = this.get('groups').filter(categoryContains(item));
+    if (groupsToBeRecycled.length > 0) { groupsToBeRecycled.setEach('recycled',true);}
+  },
+*/
   categories: function(){
-    var categories= this.get('model.groups').mapBy('categories');
+    console.log("CALCULATING CATEGORIES called");
+    var categories= this.get('model.groups')
+      .filterBy('recycled',false).mapBy('categories');
     categories = flattenProperties(categories);
     var counts = {};
-    categories.forEach(function(element) {
-      counts[element] = (counts[element] || 0) + 1;
-    });
-    return counts;
-  }.property('model.groups.@each.categories'),
+    categories.forEach(element => counts[element] = (counts[element] || 0) + 1);
+    return categoriesAsModel(counts, this.get('selectedCategories'));
+  }.property('model.groups.@each.categories','model.groups.@each.recycled','selectedCategories.[]'),
 
   processSimilarityMeasurement: function() {
 
@@ -97,6 +143,7 @@ export default Ember.Controller.extend({
       }
 
     }
+    model.set('groupsNumber',model.get("groups.length"));
   },
 
   // retrieves similarity of two given groups

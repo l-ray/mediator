@@ -521,7 +521,7 @@ describeModel(
           assert.lengthOf(item.get('links'),3);
         });
 
-        it('should on standard have no links', function(){
+        it('should on standard have no categories', function(){
           var store = this.store();
           var item = store.createRecord('group',{});
 
@@ -529,7 +529,7 @@ describeModel(
           expect(item.get('categories')).to.be.an('array').and.to.be.empty;
         });
 
-        it('should show all nested links)', function(){
+        it('should show all nested categories', function(){
           var store = this.store();
           var item = store.createRecord('group',{});
 

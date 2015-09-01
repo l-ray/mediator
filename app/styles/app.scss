@@ -253,5 +253,23 @@ section.event {
     vertical-align: middle;
     font-style: italic;
   }
-
 }
+
+ul.tagcloud {
+  list-style: none;
+
+  li.tag {
+    display: inline;
+  }
+
+  li.inactive {
+    color: #aaaaaa;
+  }
+
+  @for $i from 1 through 10 {
+    .tag-#{$i} {
+      font-size: 10px * $i;
+    }
+  }
+}
+

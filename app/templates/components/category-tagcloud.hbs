@@ -1,0 +1,7 @@
+{{#each items as |item|}}
+      <li class="tag {{if item.selected 'active' 'inactive'}}" {{action 'toggleCategory' item}}>
+          <span class="tag-{{item.value}}">{{item.key}}</span>
+      </li>
+  {{/each}}
+
+{{yield}}
