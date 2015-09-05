@@ -260,10 +260,11 @@ ul.tagcloud {
 
   li.tag {
     display: inline;
+    color: #aaaaaa;
   }
 
-  li.inactive {
-    color: #aaaaaa;
+  li.active, li.allActive {
+    color: #000;
   }
 
   @for $i from 1 through 10 {
