@@ -5,7 +5,8 @@ export default Ember.Component.extend({
   tagName : "ul",
   classNames: ["tagcloud"],
   allSelected: function() {
-    return !this.get('items').mapBy('selected').contains(true);
+    var items = this.get('items');
+    return Ember.isArray(items) ? !items.mapBy('selected').contains(true):false;
   }.property('items'),
 
   actions: {

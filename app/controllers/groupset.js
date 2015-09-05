@@ -81,16 +81,8 @@ export default Ember.Controller.extend({
   removeSelectedCategory: function(category) {
     this.get('selectedCategories').removeObject(category);
   },
-/*
-  recycleElementsWithCategory: function(item) {
-    console.log("caught action for recycleElementsWithCategory");
-    var categoryContains = i => s => s.get("categories").contains(i);
-    var groupsToBeRecycled = this.get('groups').filter(categoryContains(item));
-    if (groupsToBeRecycled.length > 0) { groupsToBeRecycled.setEach('recycled',true);}
-  },
-*/
+
   categories: function(){
-    console.log("CALCULATING CATEGORIES called");
     var categories= this.get('model.groups')
       .filterBy('recycled',false).mapBy('categories');
     categories = flattenProperties(categories);

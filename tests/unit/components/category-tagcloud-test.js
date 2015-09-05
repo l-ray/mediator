@@ -41,13 +41,24 @@ describeComponent(
 
     });
 
-    it(' calculates computed property', function() {
+    it('calculates computed property with elements selected', function() {
       var component = this.subject();
 
       items[1].selected=true;
 
       Ember.run(function() {
         component.set('items', items);
+      });
+
+      expect(component.get('allSelected'), "itemlist with selected item").to.be.false;
+
+    });
+
+    it('calculates computed property when undefined', function() {
+      var component = this.subject();
+
+      Ember.run(function() {
+        component.set('items', undefined);
       });
 
       expect(component.get('allSelected'), "itemlist with selected item").to.be.false;

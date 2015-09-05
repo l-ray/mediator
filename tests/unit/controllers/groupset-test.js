@@ -269,17 +269,27 @@ describeModule(
       var store = this.subject().get('store');
 
       var controller = this.subject();
+      controller.set('doGrouping',false);
       var model = store.createRecord('groupset', {});
-
       controller.set('model', model);
+
+      var item = store.createRecord('group', {});
+
+      controller.get('model.groups').pushObject(item);
+      controller.get('model.groups').enumerableContentDidChange();
 
       var underTest = controller.get('categories');
 
-      expect(underTest).to.be.empty;
+      expect(underTest).to.be.an('array').and.empty;
+    });
 
-      var underTestAsModel = controller.get('categories');
+    it('returns empty array for empty groupset', function() {
+      var store = this.subject().get('store');
 
-      expect(underTestAsModel).to.be.an('array').and.of.length(0);
+      var controller = this.subject();
+      controller.set('model', store.createRecord('groupset', {}));
+
+      expect(controller.get('categories')).to.be.an('array').and.empty;
     });
 
     it("should show all groups when no categories are selected", function() {
