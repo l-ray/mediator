@@ -64,6 +64,7 @@ export default Ember.Controller.extend({
       }
   }),
 
+  // expected, that model.groups.@each.enabled includes add/remove on groups-enumeration
   filteredGroups: function(){
     var enabledGroups = this.get('model.groups').filterBy('enabled');
     return this.get('selectedCategories.length')===0 ?
@@ -73,7 +74,7 @@ export default Ember.Controller.extend({
               sc => c.get('categories').contains(sc)
           )
       );
-  }.property('model.groups','selectedCategories.[]'),
+  }.property('model.groups.@each.enabled','selectedCategories.[]'),
 
   addSelectedCategory: function(category) {
     this.get('selectedCategories').pushObject(category);

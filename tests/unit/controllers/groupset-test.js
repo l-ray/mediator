@@ -381,5 +381,31 @@ describeModule(
 
     });
 
+    it("should show enabled groups after group change, like unselecting all possible web sources.", function() {
+
+      var controller = this.subject();
+      controller.set('doGrouping',false);
+      var store = controller.get('store');
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+      controller.set('selectedCategories', []);
+
+      var item = store.createRecord('group', {"enabled": false});
+
+      controller.get('model.groups').pushObjects([item]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      var underTest = controller.get('filteredGroups');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(0);
+
+      item.set('enabled', true);
+
+      underTest = controller.get('filteredGroups');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(1);
+      expect(underTest.toArray(), "enabled group shown").to.contain(item);
+
+    });
+
   }
 );
