@@ -23,12 +23,12 @@ export default Ember.Controller.extend({
         }
     },
 
-    enabled: Ember.computed('model.@each.recycled', function() {
+    enabled: Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
       let groups = this.get('model');
       return groups.filter(item => item.get('enabled')&&!item.get('recycled'));
     }),
 
-    recycled:  Ember.computed('model.@each.recycled', function() {
+    recycled:  Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
       let groups = this.get('model');
       return groups.filter(item => item.get('enabled')&&item.get('recycled'));
     })

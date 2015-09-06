@@ -37,39 +37,39 @@ describeModule(
 
             var model = store.createRecord('group', {});
             var resultModel = store.createRecord('result', {
-                connection: store.createRecord('connection', {})
+                connection: store.createRecord('connection', {active:true})
             });
             model.get('results').pushObject(resultModel);
 
             controller.set('content', [model]);
 
-            expect(model.get('recycled')).to.be.equal(false);
-            expect(model.get('enabled')).to.be.equal(true);
+            expect(model.get('recycled'),"recycled").to.be.equal(false);
+            expect(model.get('enabled'),"enabled").to.be.equal(true);
 
         });
 
-        it("changes the recycle mode properly.", function () {
+      it("changes the recycle mode properly.", function () {
 
-          Mediator.ApplicationStore = DS.Store.extend({
-            adapter: DS.MochaAdapter
-          });
-
-          var store = this.subject().get('store');
-
-          var model = store.createRecord('group', {});
-          var resultModel = store.createRecord('result', {
-            connection: store.createRecord('connection', {})
-          });
-          model.get('results').pushObject(resultModel);
-
-          var controller = this.subject();
-
-          expect(model.get('recycled')).to.be.equal(false);
-
-          controller.send('markRecycled', model);
-
-          expect(model.get('recycled')).to.be.equal(true);
+        Mediator.ApplicationStore = DS.Store.extend({
+          adapter: DS.MochaAdapter
         });
+
+        var store = this.subject().get('store');
+
+        var model = store.createRecord('group', {});
+        var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {})
+        });
+        model.get('results').pushObject(resultModel);
+
+        var controller = this.subject();
+
+        expect(model.get('recycled')).to.be.equal(false);
+
+        controller.send('markRecycled', model);
+
+        expect(model.get('recycled')).to.be.equal(true);
+      });
 
       it(" restores the recycle mode properly.", function () {
 
@@ -86,119 +86,138 @@ describeModule(
 
         var model = store.createRecord('group', {});
         var resultModel = store.createRecord('result', {
-          connection: store.createRecord('connection', {})
+          connection: store.createRecord('connection', {"active":true})
         });
         model.get('results').pushObject(resultModel);
 
         controller.send('markRestored', model);
 
-        expect(model.get('recycled')).to.be.equal(false);
-        expect(model.get('enabled')).to.be.equal(true);
+        expect(model.get('recycled'),"recycled").to.be.false;
+        expect(model.get('enabled'), "enabled").to.be.true;
       });
 
-            it(" Increasing a dataset works on individual Group, initially holds the priorities in natural order.", function () {
+    it("should show enabled groups only", function() {
 
-              var actionModel, comparisonModel;
-              var controller;
+      var controller = this.subject();
 
-              var container = this.container;
-              controller = this.subject();
+      var store = controller.get('store');
 
-              Ember.run( function() {
+      var item1 = store.createRecord('group', {"enabled": true});
+      var item2 = store.createRecord('group', {"enabled": false});
 
-                Mediator.ApplicationStore = DS.Store.extend({
-                  adapter: DS.MochaAdapter
-                });
+      controller.set('content',[item1, item2]);
 
-                var store = Mediator.ApplicationStore.create({
-                  container: container
-                });
+      var underTest = controller.get('enabled');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(1);
+      expect(underTest.toArray(), "enabled group shown").to.contain(item1);
+      expect(underTest.toArray(), "disabled group hidden").to.not.contain(item2);
 
-                var resultModel = store.createRecord('result', {
-                  connection: store.createRecord('connection', {})
-                });
+    });
 
-                actionModel = store.createRecord('group', {});
-                actionModel.get('results').pushObject(resultModel);
 
-                comparisonModel = store.createRecord('group', {});
-                comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-                comparisonModel.get('results').pushObject(resultModel);
+      it(" Increasing a dataset works on individual Group, initially holds the priorities in natural order.", function () {
 
-                controller.set('content', [comparisonModel,actionModel]);
+        var actionModel, comparisonModel;
+        var controller;
 
-                expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
-                expect(controller.get('content').toArray()[0]).to.be.equal(comparisonModel);
-                expect(controller.get('content').toArray()[1]).to.be.equal(actionModel);
-              });
+        var container = this.container;
+        controller = this.subject();
 
-            });
+        Ember.run( function() {
 
-            it(" Increasing a dataset works on individual Group, updates the list order when increasing one group priority.", function () {
+          Mediator.ApplicationStore = DS.Store.extend({
+            adapter: DS.MochaAdapter
+          });
 
-              var actionModel, comparisonModel;
-              var controller = this.subject();
-              var container = this.container;
+          var store = Mediator.ApplicationStore.create({
+            container: container
+          });
 
-              Ember.run( function() {
+          var resultModel = store.createRecord('result', {
+            connection: store.createRecord('connection', {})
+          });
 
-                Mediator.ApplicationStore = DS.Store.extend({
-                  adapter: DS.MochaAdapter
-                });
+          actionModel = store.createRecord('group', {});
+          actionModel.get('results').pushObject(resultModel);
 
-                var store = Mediator.ApplicationStore.create({
-                  container: container
-                });
+          comparisonModel = store.createRecord('group', {});
+          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+          comparisonModel.get('results').pushObject(resultModel);
 
-                var resultModel = store.createRecord('result', {
-                  connection: store.createRecord('connection', {})
-                });
+          controller.set('content', [comparisonModel,actionModel]);
 
-                actionModel = store.createRecord('group', {});
-                actionModel.get('results').pushObject(resultModel);
+          expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
+          expect(controller.get('content').toArray()[0]).to.be.equal(comparisonModel);
+          expect(controller.get('content').toArray()[1]).to.be.equal(actionModel);
+        });
 
-                comparisonModel = store.createRecord('group', {});
-                comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-                comparisonModel.get('results').pushObject(resultModel);
+      });
 
-                controller.send('increaseUserPriority', actionModel);
-                expect(actionModel.get('priority')).to.be.above(comparisonModel.get('priority'));
-              });
-            });
+      it(" Increasing a dataset works on individual Group, updates the list order when increasing one group priority.", function () {
 
-            it(" Increasing a dataset works on individual Group,  lower the list order when decreasing one groups priority", function () {
+        var actionModel, comparisonModel;
+        var controller = this.subject();
+        var container = this.container;
 
-              var actionModel, comparisonModel;
-              var controller = this.subject();
-              var container = this.container;
+        Ember.run( function() {
 
-              Ember.run( function() {
+          Mediator.ApplicationStore = DS.Store.extend({
+            adapter: DS.MochaAdapter
+          });
 
-                Mediator.ApplicationStore = DS.Store.extend({
-                  adapter: DS.MochaAdapter
-                });
+          var store = Mediator.ApplicationStore.create({
+            container: container
+          });
 
-                var store = Mediator.ApplicationStore.create({
-                  container: container
-                });
+          var resultModel = store.createRecord('result', {
+            connection: store.createRecord('connection', {})
+          });
 
-                var resultModel = store.createRecord('result', {
-                  connection: store.createRecord('connection', {})
-                });
+          actionModel = store.createRecord('group', {});
+          actionModel.get('results').pushObject(resultModel);
 
-                actionModel = store.createRecord('group', {});
-                actionModel.get('results').pushObject(resultModel);
+          comparisonModel = store.createRecord('group', {});
+          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+          comparisonModel.get('results').pushObject(resultModel);
 
-                comparisonModel = store.createRecord('group', {});
-                comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-                comparisonModel.get('results').pushObject(resultModel);
+          controller.send('increaseUserPriority', actionModel);
+          expect(actionModel.get('priority')).to.be.above(comparisonModel.get('priority'));
+        });
+      });
 
-                controller.send('decreaseUserPriority', actionModel);
-                expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
-                /*expect(controller.get('model').toArray()[1]).to.be.equal(comparisonModel);
-                 expect(controller.get('model').toArray()[1]).to.be.equal(actionModel);
-                 */
-              });
-            });
+      it(" Increasing a dataset works on individual Group,  lower the list order when decreasing one groups priority", function () {
+
+        var actionModel, comparisonModel;
+        var controller = this.subject();
+        var container = this.container;
+
+        Ember.run( function() {
+
+          Mediator.ApplicationStore = DS.Store.extend({
+            adapter: DS.MochaAdapter
+          });
+
+          var store = Mediator.ApplicationStore.create({
+            container: container
+          });
+
+          var resultModel = store.createRecord('result', {
+            connection: store.createRecord('connection', {})
+          });
+
+          actionModel = store.createRecord('group', {});
+          actionModel.get('results').pushObject(resultModel);
+
+          comparisonModel = store.createRecord('group', {});
+          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+          comparisonModel.get('results').pushObject(resultModel);
+
+          controller.send('decreaseUserPriority', actionModel);
+          expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
+          /*expect(controller.get('model').toArray()[1]).to.be.equal(comparisonModel);
+           expect(controller.get('model').toArray()[1]).to.be.equal(actionModel);
+           */
+        });
+      });
 
     });

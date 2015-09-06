@@ -74,7 +74,7 @@ export default Ember.Controller.extend({
               sc => c.get('categories').contains(sc)
           )
       );
-  }.property('model.groups.@each.enabled','selectedCategories.[]'),
+  }.property('model.groups','selectedCategories.[]'),
 
   addSelectedCategory: function(category) {
     this.get('selectedCategories').pushObject(category);
