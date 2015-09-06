@@ -65,9 +65,10 @@ export default Ember.Controller.extend({
   }),
 
   filteredGroups: function(){
+    var enabledGroups = this.get('model.groups').filterBy('enabled');
     return this.get('selectedCategories.length')===0 ?
-      this.get('model.groups') :
-      this.get('model.groups').filter(
+      enabledGroups :
+      enabledGroups.filter(
           c => this.get('selectedCategories').any(
               sc => c.get('categories').contains(sc)
           )

@@ -301,8 +301,8 @@ describeModule(
 
       controller.set('model', model);
 
-      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"]});
-      var item2 = store.createRecord('group', {"categories": ["punk"]});
+      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"], enabled:true});
+      var item2 = store.createRecord('group', {"categories": ["punk"], enabled:true});
 
       controller.get('model.groups').pushObjects([item1, item2]);
       controller.get('model.groups').enumerableContentDidChange();
@@ -322,8 +322,8 @@ describeModule(
 
       controller.set('model', model);
 
-      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"]});
-      var item2 = store.createRecord('group', {"categories": ["punk"]});
+      var item1 = store.createRecord('group', {"categories": ["punk","rock","folk"], enabled:true});
+      var item2 = store.createRecord('group', {"categories": ["punk"], enabled:true});
 
       controller.get('model.groups').pushObjects([item1, item2]);
       controller.get('model.groups').enumerableContentDidChange();
@@ -346,8 +346,8 @@ describeModule(
       controller.set('model', model);
       controller.set('selectedCategories',["rock"]);
 
-      var item1 = store.createRecord('group', {title:"123","categories": ["punk","rock","folk"]});
-      var item2 = store.createRecord('group', {title:"987","categories": ["punk"]});
+      var item1 = store.createRecord('group', {title:"123","categories": ["punk","rock","folk"], enabled:true});
+      var item2 = store.createRecord('group', {title:"987","categories": ["punk"], enabled:true});
 
       controller.get('model.groups').pushObjects([item1, item2]);
       controller.get('model.groups').enumerableContentDidChange();
@@ -356,6 +356,29 @@ describeModule(
 
       var underTest = controller.get('filteredGroups');
       expect(underTest.toArray(),underTest.map(k => k.get('title')).toArray()).to.be.instanceof(Array).and.have.length(2);
+    });
+
+    it("should show enabled groups only", function() {
+
+      var controller = this.subject();
+      controller.set('doGrouping',false);
+      var store = controller.get('store');
+      var model = store.createRecord('groupset', {});
+
+      controller.set('model', model);
+      controller.set('selectedCategories', []);
+
+      var item1 = store.createRecord('group', {"enabled": true});
+      var item2 = store.createRecord('group', {"enabled": false});
+
+      controller.get('model.groups').pushObjects([item1, item2]);
+      controller.get('model.groups').enumerableContentDidChange();
+
+      var underTest = controller.get('filteredGroups');
+      expect(underTest.toArray()).to.be.instanceof(Array).and.have.length(1);
+      expect(underTest.toArray(), "enabled group shown").to.contain(item1);
+      expect(underTest.toArray(), "disabled group hidden").to.not.contain(item2);
+
     });
 
   }
