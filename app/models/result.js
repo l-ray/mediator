@@ -17,7 +17,7 @@ var ResultModel = DS.Model.extend({
 
     location: DS.attr('string'),
 
-    price: DS.attr('number'),
+    price: DS.attr('string'),
 
     url: DS.attr('string'),
 
