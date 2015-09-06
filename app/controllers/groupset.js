@@ -137,7 +137,6 @@ export default Ember.Controller.extend({
       }
 
     }
-    model.set('groupsNumber',model.get("groups.length"));
   },
 
   // retrieves similarity of two given groups

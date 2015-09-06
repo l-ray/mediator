@@ -173,7 +173,11 @@ var GroupModel = DS.Model.extend( Ember.Enumerable,
 
     enabled: function() {
       return this.get('results').isAny('enabled', true);
-    }.property('results.@each.enabled')
+    }.property('results.@each.enabled'),
+
+    toString: function () {
+      return "group[%@]".fmt(this.get('id'));
+    }
 
 });
 
