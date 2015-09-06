@@ -6,13 +6,13 @@ const _WEEKDAY = {Saturday:6,Sunday:0};
 var isDayOfTheWeek = function(dependentKey, weekday) {
   return Ember.computed(dependentKey,function handler() {
     var comparisonDate = Ember.get(this, dependentKey);
-    return comparisonDate.getDay() === weekday;
+    return comparisonDate instanceof Date ? comparisonDate.getDay() === weekday : false;
   });
 };
 
 var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
 
-    date: DS.attr('date'),
+    date: DS.attr('date', { async: false }),
 
     groups: DS.hasMany('group', { async: false }),
 

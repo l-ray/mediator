@@ -21,42 +21,46 @@ describeModel(
 
   },
   function() {
-        'use strict';
+      'use strict';
 
-            it('should allow to add results', function(){
-              var store = this.store();
-                    var item = store.createRecord('groupset',{});
+      it('should allow to add results', function(){
+        var store = this.store();
+              var item = store.createRecord('groupset',{});
 
-                    expect(item).to.be.an.instanceOf(DS.Model);
-                    expect(item.get("lastObject")).to.be.an('undefined');
-                    expect(item.get("firstObject")).to.be.an('undefined');
+              expect(item).to.be.an.instanceOf(DS.Model);
+              expect(item.get("lastObject")).to.be.an('undefined');
+              expect(item.get("firstObject")).to.be.an('undefined');
 
-                    var groups = item.get('groups');
-                    groups.pushObject(store.createRecord('group'));
-                    item.enumerableContentDidChange();
-                    expect(item.get('lastObject')).to.be.not.an('undefined');
-                    expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
-            });
-            it('should give correct result set size', function(){
-              var store = this.store();
+              var groups = item.get('groups');
+              groups.pushObject(store.createRecord('group'));
+              item.enumerableContentDidChange();
+              expect(item.get('lastObject')).to.be.not.an('undefined');
+              expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+      });
+      it('should give correct result set size', function(){
+        var store = this.store();
 
-                    var item = store.createRecord('groupset',{});
-                    expect(item).to.be.an.instanceOf(DS.Model);
-                    assert.lengthOf(item.toArray(),0);
+              var item = store.createRecord('groupset',{});
+              expect(item).to.be.an.instanceOf(DS.Model);
+              assert.lengthOf(item.toArray(),0);
 
-                    var firstResult = store.createRecord('group',{});
-                    var groups = item.get('groups');
-                    groups.pushObject(firstResult);
+              var firstResult = store.createRecord('group',{});
+              var groups = item.get('groups');
+              groups.pushObject(firstResult);
 
-                    item.enumerableContentDidChange();
+              item.enumerableContentDidChange();
 
-                    assert.lengthOf(item.toArray(),1);
+              assert.lengthOf(item.toArray(),1);
 
-            });
+      });
 
     it('should recognize day of the week correctly.', function(){
 
       var model = this.subject();
+
+      model.set('date',undefined);
+      expect(model.get('isSaturday'),"monday, not saturday").to.be.false;
+      expect(model.get('isSunday'),"monday, not sunday").to.be.false;
 
       model.set('date',new Date(1980,10,29));
       expect(model.get('isSaturday'),"is a saturday").to.be.true;
