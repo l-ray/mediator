@@ -24,77 +24,64 @@ describeModule(
   },
   function() {
 
-      it('exists', function() {
-        var controller = this.subject();
-        expect(controller).to.be.ok;
+    it('exists', function() {
+      var controller = this.subject();
+      expect(controller).to.be.ok;
+    });
+
+    it("initially holds the recycle mode to false.", function () {
+
+      var controller = this.subject();
+      var store = controller.get('store');
+
+      var model = store.createRecord('group', {});
+      var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {active:true})
+      });
+      model.get('results').pushObject(resultModel);
+
+      controller.set('content', [model]);
+
+      expect(model.get('recycled'),"recycled").to.be.equal(false);
+      expect(model.get('enabled'),"enabled").to.be.equal(true);
+
       });
 
+    it("changes the recycle mode properly.", function () {
 
-      it("initially holds the recycle mode to false.", function () {
+      var store = this.subject().get('store');
 
-            var controller = this.subject();
-            var store = controller.get('store');
-
-            var model = store.createRecord('group', {});
-            var resultModel = store.createRecord('result', {
-                connection: store.createRecord('connection', {active:true})
-            });
-            model.get('results').pushObject(resultModel);
-
-            controller.set('content', [model]);
-
-            expect(model.get('recycled'),"recycled").to.be.equal(false);
-            expect(model.get('enabled'),"enabled").to.be.equal(true);
-
-        });
-
-      it("changes the recycle mode properly.", function () {
-
-        Mediator.ApplicationStore = DS.Store.extend({
-          adapter: DS.MochaAdapter
-        });
-
-        var store = this.subject().get('store');
-
-        var model = store.createRecord('group', {});
-        var resultModel = store.createRecord('result', {
-          connection: store.createRecord('connection', {})
-        });
-        model.get('results').pushObject(resultModel);
-
-        var controller = this.subject();
-
-        expect(model.get('recycled')).to.be.equal(false);
-
-        controller.send('markRecycled', model);
-
-        expect(model.get('recycled')).to.be.equal(true);
+      var model = store.createRecord('group', {});
+      var resultModel = store.createRecord('result', {
+        connection: store.createRecord('connection', {})
       });
+      model.get('results').pushObject(resultModel);
 
-      it(" restores the recycle mode properly.", function () {
+      var controller = this.subject();
 
-        var container = this.container;
-        var controller = this.subject();
+      expect(model.get('recycled')).to.be.equal(false);
 
-          Mediator.ApplicationStore = DS.Store.extend({
-            adapter: DS.MochaAdapter
-          });
+      controller.send('markRecycled', model);
 
-          var store = Mediator.ApplicationStore.create({
-            container: container
-          });
+      expect(model.get('recycled')).to.be.equal(true);
+    });
 
-        var model = store.createRecord('group', {});
-        var resultModel = store.createRecord('result', {
-          connection: store.createRecord('connection', {"active":true})
-        });
-        model.get('results').pushObject(resultModel);
+    it(" restores the recycle mode properly.", function () {
 
-        controller.send('markRestored', model);
+      var controller = this.subject();
 
-        expect(model.get('recycled'),"recycled").to.be.false;
-        expect(model.get('enabled'), "enabled").to.be.true;
+      var store = controller.get('store');
+      var model = store.createRecord('group', {});
+      var resultModel = store.createRecord('result', {
+        connection: store.createRecord('connection', {"active":true})
       });
+      model.get('results').pushObject(resultModel);
+
+      controller.send('markRestored', model);
+
+      expect(model.get('recycled'),"recycled").to.be.false;
+      expect(model.get('enabled'), "enabled").to.be.true;
+    });
 
     it("should show enabled groups only", function() {
 
@@ -120,36 +107,25 @@ describeModule(
         var actionModel, comparisonModel;
         var controller;
 
-        var container = this.container;
         controller = this.subject();
 
-        Ember.run( function() {
-
-          Mediator.ApplicationStore = DS.Store.extend({
-            adapter: DS.MochaAdapter
-          });
-
-          var store = Mediator.ApplicationStore.create({
-            container: container
-          });
-
-          var resultModel = store.createRecord('result', {
-            connection: store.createRecord('connection', {})
-          });
-
-          actionModel = store.createRecord('group', {});
-          actionModel.get('results').pushObject(resultModel);
-
-          comparisonModel = store.createRecord('group', {});
-          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-          comparisonModel.get('results').pushObject(resultModel);
-
-          controller.set('content', [comparisonModel,actionModel]);
-
-          expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
-          expect(controller.get('content').toArray()[0]).to.be.equal(comparisonModel);
-          expect(controller.get('content').toArray()[1]).to.be.equal(actionModel);
+        var store = controller.get('store');
+        var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {})
         });
+
+        actionModel = store.createRecord('group', {});
+        actionModel.get('results').pushObject(resultModel);
+
+        comparisonModel = store.createRecord('group', {});
+        comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+        comparisonModel.get('results').pushObject(resultModel);
+
+        controller.set('content', [comparisonModel,actionModel]);
+
+        expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
+        expect(controller.get('content').toArray()[0]).to.be.equal(comparisonModel);
+        expect(controller.get('content').toArray()[1]).to.be.equal(actionModel);
 
       });
 
@@ -157,67 +133,46 @@ describeModule(
 
         var actionModel, comparisonModel;
         var controller = this.subject();
-        var container = this.container;
 
-        Ember.run( function() {
-
-          Mediator.ApplicationStore = DS.Store.extend({
-            adapter: DS.MochaAdapter
-          });
-
-          var store = Mediator.ApplicationStore.create({
-            container: container
-          });
-
-          var resultModel = store.createRecord('result', {
-            connection: store.createRecord('connection', {})
-          });
-
-          actionModel = store.createRecord('group', {});
-          actionModel.get('results').pushObject(resultModel);
-
-          comparisonModel = store.createRecord('group', {});
-          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-          comparisonModel.get('results').pushObject(resultModel);
-
-          controller.send('increaseUserPriority', actionModel);
-          expect(actionModel.get('priority')).to.be.above(comparisonModel.get('priority'));
+        var store = controller.get('store');
+        var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {})
         });
+
+        actionModel = store.createRecord('group', {});
+        actionModel.get('results').pushObject(resultModel);
+
+        comparisonModel = store.createRecord('group', {});
+        comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+        comparisonModel.get('results').pushObject(resultModel);
+
+        controller.send('increaseUserPriority', actionModel);
+        expect(actionModel.get('priority')).to.be.above(comparisonModel.get('priority'));
       });
 
       it(" Increasing a dataset works on individual Group,  lower the list order when decreasing one groups priority", function () {
 
         var actionModel, comparisonModel;
         var controller = this.subject();
-        var container = this.container;
 
-        Ember.run( function() {
+        var store = controller.get('store');
 
-          Mediator.ApplicationStore = DS.Store.extend({
-            adapter: DS.MochaAdapter
-          });
-
-          var store = Mediator.ApplicationStore.create({
-            container: container
-          });
-
-          var resultModel = store.createRecord('result', {
-            connection: store.createRecord('connection', {})
-          });
-
-          actionModel = store.createRecord('group', {});
-          actionModel.get('results').pushObject(resultModel);
-
-          comparisonModel = store.createRecord('group', {});
-          comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
-          comparisonModel.get('results').pushObject(resultModel);
-
-          controller.send('decreaseUserPriority', actionModel);
-          expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
-          /*expect(controller.get('model').toArray()[1]).to.be.equal(comparisonModel);
-           expect(controller.get('model').toArray()[1]).to.be.equal(actionModel);
-           */
+        var resultModel = store.createRecord('result', {
+          connection: store.createRecord('connection', {})
         });
+
+        actionModel = store.createRecord('group', {});
+        actionModel.get('results').pushObject(resultModel);
+
+        comparisonModel = store.createRecord('group', {});
+        comparisonModel.set('priorityByUser', comparisonModel.get('priorityByUser') + 1);
+        comparisonModel.get('results').pushObject(resultModel);
+
+        controller.send('decreaseUserPriority', actionModel);
+        expect(actionModel.get('priority')).to.be.below(comparisonModel.get('priority'));
+        /*expect(controller.get('model').toArray()[1]).to.be.equal(comparisonModel);
+         expect(controller.get('model').toArray()[1]).to.be.equal(actionModel);
+         */
       });
 
     });
