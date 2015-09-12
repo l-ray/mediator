@@ -1,46 +1,48 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+var generateConnectionsForDate = function(store, startDateString) {
+
+  var startDate =new Date(startDateString);
+
+  return function (rootSource) {
+
+    var calculatedId = rootSource.get('id') + "-" + startDateString;
+    var isActive = rootSource.get('active');
+    var resultUrl = "/api" + "/results/" + rootSource.get('id') + "/" + startDateString + "/";
+
+    var connectionObject = {
+      'id': calculatedId,
+      'source': rootSource.get('id'),
+      'active': isActive,
+      'startDate': startDate,
+      'links': {'results': resultUrl}
+    };
+
+    var tmpConnection = store.createRecord("connection", connectionObject);
+    rootSource.get('connections').then(c => c.pushObject(tmpConnection));
+
+    return connectionObject;
+  };
+};
+
 export default DS.RESTAdapter.extend({
 
   query: function (store, type, query, array) {
 
-    var startDateString = query.startDate;
-    var startDate = new Date(startDateString);
+    var toConnectionByDate = generateConnectionsForDate(store, query.startDate);
+
     console.log("Asking for connections with startDate " + query.startDate + " and array " + array + " from store " + store);
 
     return new Ember.RSVP.Promise(function (resolve, reject) {
-      var results = [];
 
-      store.findAll('source').then(function (sources) {
-        console.log("found |" + sources.get('length') + "| sources ");
-        sources.forEach(
-          function (rootSource) {
+        store.findAll('source', { reload: false }).then(
+          function (sources) {
+            console.log("found |" + sources.get('length') + "| sources ");
+            var results = sources.map(toConnectionByDate);
+            resolve({"connections": results});
+          }, reject);
 
-            var calculatedId = rootSource.get('id') + "-" + startDateString;
-            var isActive = rootSource.get('active');
-            var resultUrl = "/api" + "/results/" + rootSource.get('id') + "/" + startDateString + "/";
-
-            var connectionObject = {
-              'id': calculatedId,
-              'source': rootSource.get('id'),
-              'active': isActive,
-              'startDate': startDate,
-              'links': {'results': resultUrl}
-            };
-
-            var tmpConnection = store.createRecord("connection", connectionObject);
-            rootSource.get('connections').then(function (c) {
-              c.pushObject(tmpConnection);
-            });
-
-            results.push(connectionObject);
-            console.log("[" + results.length + "] foreach created |" + rootSource + "| on date |" + startDate + "|from source" + rootSource);
-          }
-        );
-
-        resolve({"connections": results});
-      }, reject);
     });
   },
 
@@ -70,8 +72,6 @@ export default DS.RESTAdapter.extend({
 
             something.results.map(
               function (result) {
-
-                console.log("adapters.connection: result is %@".fmt(result));
 
                 if (Ember.isEmpty(result.group)) {
 

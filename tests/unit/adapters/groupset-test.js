@@ -106,9 +106,7 @@ describeModule(
 
       // var model = store.createRecord('connection',{});
       var adapter = this.subject();
-      adapter.TODAY = new Date("2014-01-02");
-      adapter.DAYS_INTO_THE_PAST = 1;
-      adapter.CALENDAR_SIZE = 3;
+      adapter.setCalendarProperties(new Date("2014-01-02"), 1, 3);
 
       adapter.findAll(store).then(
         function (results) {
