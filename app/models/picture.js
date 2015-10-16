@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import makeUrlAbsolute from 'mediator/utils/make-url-absolute';
 
 var PictureModel = DS.Model.extend({
 
@@ -14,9 +15,13 @@ var PictureModel = DS.Model.extend({
 
     result: DS.belongsTo('result'),
 
+    absoluteThumbnailUrl: makeUrlAbsolute('thumbnailUrl',"result.resultUrl"),
+
+    absoluteUrl: makeUrlAbsolute("url","result.resultUrl"),
+
     src: (function(){
-            return this.get('thumbnailUrl') || this.get('url');
-         }).property('thumbnailUrl','url')
+      return this.get('absoluteThumbnailUrl') || this.get('absoluteUrl');
+     }).property('absoluteThumbnailUrl','absoluteUrl')
 });
 
 PictureModel.reopenClass({

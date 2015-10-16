@@ -22,25 +22,41 @@ describeModel(
 
   },
   function() {
-        'use strict';
+    'use strict';
 
-          it('should return the given parameters correctly', function(){
-            var store = this.store();
+    it('should return the given parameters correctly', function(){
+      var store = this.store();
 
-                  var item = store.createRecord(
-                        'link',
-                        {
-                            url:"http://myUrl.de",
-                            result: store.createRecord(
-                                'result',
-                                {
-                                    'sourceName':'testName'
-                                }
-                            )
-                        });
+      var item = store.createRecord(
+        'link',
+        {
+            url:"http://myUrl.de",
+            result: store.createRecord(
+                'result',
+                {
+                    'sourceName':'testName'
+                }
+            )
+      });
 
-                  expect(item.get("name")).to.be.a('string').and.equal("testName");
-                  expect(item.get("url")).to.be.a('string').and.equal("http://myUrl.de");
-              });
+      expect(item.get("name")).to.be.a('string').and.equal("testName");
+      expect(item.get("url")).to.be.a('string').and.equal("http://myUrl.de");
+      expect(item.get("absoluteUrl")).to.be.a('string').and.equal(item.get("url"));
+    });
 
+    it('should convert relative into absolute path', function(){
+      var item = mockLinkWithRelativeUrl(this.store(),"http://whatever.com/");
+      expect(item.get("url")).to.be.a('string').and.equal("myUrl");
+      expect(item.get("absoluteUrl")).to.be.a('string').and.equal("http://whatever.com/myUrl");
+    });
+
+    function mockLinkWithRelativeUrl(store, externalResultUrl) {
+      return store.createRecord('link',
+        {
+          url:"myUrl",
+          result: store.createRecord('result',{ resultUrl: externalResultUrl })
         });
+    }
+
+
+  });
