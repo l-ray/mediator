@@ -13,7 +13,7 @@ var PictureModel = DS.Model.extend({
 
     priority: DS.attr('number'),
 
-    result: DS.belongsTo('result'),
+    result: DS.belongsTo('result', { async: false }),
 
     absoluteThumbnailUrl: makeUrlAbsolute('thumbnailUrl',"result.resultUrl"),
 

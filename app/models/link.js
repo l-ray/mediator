@@ -3,7 +3,7 @@ import makeUrlAbsolute from 'mediator/utils/make-url-absolute';
 
 var LinkModel = DS.Model.extend({
     url: DS.attr('string'),
-    result: DS.belongsTo('result'),
+    result: DS.belongsTo('result', { async: false }),
     name: (function(){
         return this.get('result').get('sourceName');
     }).property('result'),
