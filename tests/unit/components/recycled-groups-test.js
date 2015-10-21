@@ -8,7 +8,9 @@ import {
 describeComponent(
   'recycled-groups',
   'Integration: RecycledGroupsComponent',
-  { },
+  {
+    unit: true
+  },
   function() {
 
     it(' toggles results ', function() {

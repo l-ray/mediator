@@ -19,6 +19,7 @@
     "simmetrix-utilities": "https://github.com/l-ray/simmetrix_util.git",
     "momentjs": "~2.5.1",
     "ember-mocha": "~0.8.1",
-    "bootstrap": "~3.3.4"
+    "bootstrap": "~3.3.4",
+    "sinonjs": "~1.17.1"
   }
 }

@@ -13,11 +13,6 @@ describeModule(
     // needs: ['serializer:foo']
   },
   function() {
-    // Replace this with your real tests.
-    it('exists', function() {
-      var adapter = this.subject();
-      expect(adapter).to.be.ok;
-    });
 
     it('creates new instance in case none exists', function() {
       var adapter = this.subject();

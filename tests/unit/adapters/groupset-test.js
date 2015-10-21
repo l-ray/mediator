@@ -39,7 +39,7 @@ describeModule(
       expect(adapter).to.be.ok;
     });
 
-     it("returns single groupset according the given type id via finder-method.", function () {
+     it("returns single groupset according the given type id via finder-method.", function (done) {
 
          Mediator.ApplicationStore = DS.Store.extend({
          adapter: DS.MochaAdapter
@@ -69,24 +69,20 @@ describeModule(
          }
        });
 
-         var adapter = this.subject();
-
-         adapter.findRecord(store, 'groupset', "2014-01-02").then(
-           function (result) {
-             expect(result).to.be.instanceOf(Object);
-             expect(result.date).to.equal("2014-01-02");
-             expect(result.connections).to.have.length(1);
-           },
-           function (error) {
-             throw "promise returned error: " + error.message;
-           });
+       var adapter = this.subject();
+       adapter.findRecord(store, 'groupset', "2014-01-02").then(
+         function (result) {
+           expect(result).to.be.instanceOf(Object);
+           expect(result.date).to.equal("2014-01-02");
+           expect(result.connections).to.have.length(1);
+           done();
+         },
+         function (error) {
+           throw "promise returned error: " + error.message;
+         });
      });
 
-    it("returns array of groupsets via findAll-method.", function () {
-
-      Mediator.ApplicationStore = DS.Store.extend({
-        adapter: DS.MochaAdapter
-      });
+    it("returns array of groupsets via findAll-method.", function (done) {
 
       var store = Mediator.ApplicationStore.create({
         container: this.container,
@@ -116,6 +112,7 @@ describeModule(
             expect(result.date).to.be.a('string').and.equal("2014-01-0"+(idx+1));
             expect(result.connections).to.have.length(1);
           });
+          done();
         },
         function (error) {
           throw "promise returned error: " + error.message;

@@ -53,30 +53,24 @@ export default DS.RESTAdapter.extend({
 
     console.log("in FINDHASMANY with snapshot " + snapshot.type + " url " + url + "relationship " + relationship.type);
     var initialPromise = this._super(store, snapshot, url, relationship);
-
     /*jslint eqeq: true*/
     if (relationship.type != "result") {
       return initialPromise;
     }
     else {
 
-      console.log("creating new promise for snapshot " + snapshot.id);
-
       return new Ember.RSVP.Promise(function (resolve) {
         initialPromise.then(function (something) {
-
+          console.log("creating new promise for snapshot with "+something.results+"("+something.results.toArray().length+")");
           if (typeof something.results !== "undefined") {
-            something.results = Ember.makeArray(something.results);
-
+            // something.results = Ember.makeArray(something.results);
             var groupSetId = snapshot.belongsTo('groupset', {id: true});
 
             something.results.map(
               function (result) {
-
                 if (Ember.isEmpty(result.group)) {
 
                   var newGroupId = result.id;
-
                   store.push({
                     data: {
                       id: newGroupId,
@@ -88,10 +82,12 @@ export default DS.RESTAdapter.extend({
                       }
                     }
                   });
-
                   //debugger
                   result.group = newGroupId;
                   return result;
+                }
+                else {
+                  console.log("Group is not empty")
                 }
               });
           }
