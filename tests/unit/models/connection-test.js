@@ -29,7 +29,7 @@ describeModel(
       expect(model).to.be.ok;
     });
 
-          it('should allow to add results', function(){
+          it('should allow to add results', function(done){
              var store = this.store();
 
               var item = store.createRecord('connection',{});
@@ -38,17 +38,18 @@ describeModel(
 
               item.get('results').then(function(n) {
 
-                  var currentLength = n.get('length');
-                  n.pushObject(store.createRecord('result'));
-                  item.enumerableContentDidChange();
-                  expect(item.get('length')).to.be.equal(currentLength + 1);
-                  expect(item.get('lastObject')).to.be.an.instanceOf(DS.Model);
-                  expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                var currentLength = n.get('length');
+                n.pushObject(store.createRecord('result'));
+                item.enumerableContentDidChange();
+                expect(item.get('length')).to.be.equal(currentLength + 1);
+                expect(item.get('lastObject')).to.be.an.instanceOf(DS.Model);
+                expect(item.get('firstObject')).to.be.equal(item.get('lastObject'));
+                done();
               });
 
           });
 
-          it('should give correct result set size', function(){
+          it('should give correct result set size', function(done){
 
                 var store = this.store();
                 var item = store.createRecord('connection',{});
@@ -56,9 +57,10 @@ describeModel(
 
                 var firstResult = store.createRecord('result',{connection:item});
                 item.get('results').then(function(n) {
-                    n.pushObject(firstResult);
-                    item.enumerableContentDidChange();
-                    expect(item.get('length')).to.be.one;
+                  n.pushObject(firstResult);
+                  item.enumerableContentDidChange();
+                  expect(item.get('length')).to.be.one;
+                  done();
                 });
             });
 

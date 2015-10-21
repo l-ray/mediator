@@ -87,7 +87,7 @@ export default DS.RESTAdapter.extend({
                   return result;
                 }
                 else {
-                  console.log("Group is not empty")
+                  console.log("Group is not empty");
                 }
               });
           }
