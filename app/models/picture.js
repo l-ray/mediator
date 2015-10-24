@@ -15,9 +15,9 @@ var PictureModel = DS.Model.extend({
 
     result: DS.belongsTo('result', { async: false }),
 
-    absoluteThumbnailUrl: makeUrlAbsolute('thumbnailUrl',"result.resultUrl"),
+    absoluteThumbnailUrl: makeUrlAbsolute('thumbnailUrl',"result.sourceBaseUrl"),
 
-    absoluteUrl: makeUrlAbsolute("url","result.resultUrl"),
+    absoluteUrl: makeUrlAbsolute("url","result.sourceBaseUrl"),
 
     src: (function(){
       return this.get('absoluteThumbnailUrl') || this.get('absoluteUrl');

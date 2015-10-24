@@ -72,16 +72,16 @@ describeModel(
           expect(item.get("absoluteThumbnailUrl")).to.be.a('string').and.equal("http://whatever.com/myThumbnail");
         });
 
-        it('should updated on a changed resultUrl', function(){
+        it('should updated on a changed source base url', function(){
           var item = mockPictureWithRelativeUrl(this.store(),"http://whatever.com/");
           item.set("thumbnailUrl","myThumbnail");
-          item.set("result.resultUrl","http://alternative.url/");
+          item.set("result.sourceBaseUrl","http://alternative.url/");
           expect(item.get("absoluteThumbnailUrl")).to.be.a('string').and.equal("http://alternative.url/myThumbnail");
           expect(item.get("absoluteUrl")).to.be.a('string').and.equal("http://alternative.url/myUrl");
         });
 
         it('should show absolute url as src if no thumbnail exists', function(){
-                  var item = mockPictureWithRelativeUrl(this.store(),"http://whatever.com/");
+             var item = mockPictureWithRelativeUrl(this.store(),"http://whatever.com/");
              expect(item.get("src")).to.be.a('string').and.equal("http://whatever.com/myUrl");
         });
 
@@ -97,7 +97,11 @@ describeModel(
               name:"myName",
               url:"myUrl",
               result: store.createRecord('result',{
-                resultUrl: externalResultUrl
+                connection: store.createRecord('connection', {
+                  source:store.createRecord('source',{
+                    url:externalResultUrl
+                  })
+                })
               }),
               "description":"myDescription",
               "priority":"myPriority"

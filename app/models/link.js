@@ -7,7 +7,7 @@ var LinkModel = DS.Model.extend({
     name: (function(){
         return this.get('result').get('sourceName');
     }).property('result'),
-    absoluteUrl: makeUrlAbsolute('url', 'result.resultUrl')
+    absoluteUrl: makeUrlAbsolute('url', 'result.sourceBaseUrl')
 });
 
 // delete below here if you do not want fixtures

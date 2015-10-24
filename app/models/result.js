@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import makeUrlAbsolute from 'mediator/utils/make-url-absolute';
 
 var ResultModel = DS.Model.extend({
 
@@ -59,11 +60,9 @@ var ResultModel = DS.Model.extend({
         }
     }.property('connection'),
 
-    resultUrl: function() {
-        var url = this.get('url');
-        var sourceUrl = this.get('connection') ? this.get('connection').get('sourceUrl'): '';
-        return url ? url : sourceUrl;
-    }.property('connection')
+    resultUrl: makeUrlAbsolute('url','connection.sourceUrl'),
+
+    sourceBaseUrl: Ember.computed.alias('connection.sourceUrl')
 
 });
 

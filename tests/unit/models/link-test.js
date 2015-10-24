@@ -54,7 +54,13 @@ describeModel(
       return store.createRecord('link',
         {
           url:"myUrl",
-          result: store.createRecord('result',{ resultUrl: externalResultUrl })
+          result: store.createRecord('result',{
+            connection: store.createRecord('connection', {
+              source:store.createRecord('source',{
+                url:externalResultUrl
+              })
+            })
+          })
         });
     }
 
