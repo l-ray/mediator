@@ -96,7 +96,7 @@ export default Ember.Controller.extend({
   processSimilarityMeasurement: function() {
 
     var model = this.model;
-    console.log("Starting similarity measurement with "+model.get('groups.length') );
+    // console.log("Starting similarity measurement with "+model.get('groups.length') );
     for (var i=0; i < model.get('groups.length'); i++) {
 
       var currentI = model.get("groups").toArray()[i];
@@ -104,10 +104,10 @@ export default Ember.Controller.extend({
       for (var j=0; j < model.get('groups.length'); j++) {
 
         var currentJ = model.get("groups").toArray()[j];
-        console.log("Is similar " + (i !== j) + " - " + currentJ.get('initialized') );
+        // console.log("Is similar " + (i !== j) + " - " + currentJ.get('initialized') );
         if (i !== j &&
           currentJ.get('initialized')) {
-          console.log("is similar -> " + currentI.get("results.length") + " und "+currentJ.get("results.length")+" - pictures " + currentI.get('pictures').mapBy('url') + currentJ.get('pictures').mapBy('url'));
+          // console.log("is similar -> " + currentI.get("results.length") + " und "+currentJ.get("results.length")+" - pictures " + currentI.get('pictures').mapBy('url') + currentJ.get('pictures').mapBy('url'));
           if (this.__isSimilar(
               {
                 id : currentI.get("id"),
@@ -124,7 +124,7 @@ export default Ember.Controller.extend({
                 pictures : currentJ.get('pictures').mapBy('url').toArray()
               }
             )) {
-            console.log("Yes, is similar");
+            // console.log("Yes, is similar");
             currentI.set('initialized', false);
             currentI.pushObjects(currentJ.get('results').toArray());
             currentI.enumerableContentDidChange();
@@ -152,7 +152,7 @@ export default Ember.Controller.extend({
       return true;
     }
 
-    console.log("Comparing summary |"+patternResultGroup1.summary+"| und |"+patternResultGroup2.summary+"|");
+    // console.log("Comparing summary |"+patternResultGroup1.summary+"| und |"+patternResultGroup2.summary+"|");
     var coarseGrain1 = smQGram.similarity(
       patternResultGroup1.summary,
       patternResultGroup2.summary
@@ -190,7 +190,7 @@ export default Ember.Controller.extend({
               patternResultGroup2.location)
           ) /2 );
       }
-      console.log("similarity ratio: "+ ratio + " with Levenshtein setting: "+this._CONST_LEVENSHTEIN_RATIO);
+      // console.log("similarity ratio: "+ ratio + " with Levenshtein setting: "+this._CONST_LEVENSHTEIN_RATIO);
       return (ratio > this._CONST_LEVENSHTEIN_RATIO);
     }
   },
