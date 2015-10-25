@@ -1,6 +1,6 @@
 <ul class="dates">
     {{#each sortedGroupsets as |eventDate| }}
-        <li class="day {{if eventDate.isSaturday 'saturday'}} {{if eventDate.isSunday 'sunday'}}" >
+        <li class="day {{if eventDate.isSaturday 'saturday'}} {{if eventDate.isSunday 'sunday'}} {{if eventDate.isToday 'today'}}" >
             {{#link-to 'groupset' eventDate}}
                 <span class="name">
                     {{ format-date eventDate.date 'dd' }}

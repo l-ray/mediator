@@ -27,7 +27,13 @@ var GroupSetModel =  DS.Model.extend(Ember.Enumerable,{
 
     isSaturday: isDayOfTheWeek('date',_WEEKDAY.Saturday),
 
-    isSunday: isDayOfTheWeek('date',_WEEKDAY.Sunday)
+    isSunday: isDayOfTheWeek('date',_WEEKDAY.Sunday),
+
+    isToday: function() {
+      var givenDate = this.get("date");
+      var reducedToDay = function(date){return ~~(date.getTime()/(1000*60*60*24));};
+      return givenDate instanceof Date ? reducedToDay(givenDate) === reducedToDay(new Date()) : false;
+    }.property('date')
 
 });
 

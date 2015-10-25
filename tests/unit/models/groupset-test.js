@@ -76,4 +76,23 @@ describeModel(
 
     });
 
+    it('should recognize today correctly.', function(){
+
+      var model = this.subject();
+      var today = new Date();
+
+      model.set('date',undefined);
+      expect(model.get('isToday'),"for undefined").to.be.false;
+
+      model.set('date',new Date(today.getUTCFullYear(),today.getUTCMonth(), today.getUTCDate()));
+      expect(model.get('isToday'),"is today").to.be.true;
+
+      model.set('date',new Date(today.getUTCFullYear(),today.getUTCMonth(), today.getUTCDate()-1));
+      expect(model.get('isToday'),"is yesterday").to.be.false;
+
+      model.set('date',new Date(today.getUTCFullYear(),today.getUTCMonth(), today.getUTCDate()+1));
+      expect(model.get('isToday'),"is tomoroow").to.be.false;
+
+    });
+
 });
