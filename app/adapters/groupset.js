@@ -20,10 +20,7 @@ var wrapConnectionsIntoGroupset = function(connections) {
 };
 
 // generate Groupsets for the next x days in advance
-var createGroupsetCalendar = function(store, today, calendarSize, relativeStartDaysInPast, callback) {
-
-  var firstDayOfCalendar = new Date(today.getTime());
-  firstDayOfCalendar.setDate(today.getDate() - relativeStartDaysInPast);
+var createGroupsetCalendar = function(store, firstDayOfCalendar, calendarSize, callback) {
 
   var calendar = Array.apply(null, new Array(calendarSize))
     .map(function(cur,index){
@@ -49,23 +46,38 @@ export default DS.Adapter.extend({
      findRecord: function(store, type, id) {
 
        // fill up with connections
-       var promiseArray = store.query('connection',{ 'startDate': id });
+       var conPromise = store.query('connection',{ 'startDate': id });
 
        return new Ember.RSVP.Promise(
          function(resolve) {
-           promiseArray.then(function(a){resolve(wrapConnectionsIntoGroupset(a));});
+           conPromise.then(function(a){resolve(wrapConnectionsIntoGroupset(a));});
          }
+       );
+     },
+
+     query:function(store, type, query) {
+
+       Ember.assert("expect startDate as part of the query ", query.startDate !== undefined);
+       Ember.assert("expect calendarSize as part of the query ", query.calendarSize !== undefined);
+
+       return createGroupsetCalendar(
+         store,
+         query.startDate,
+         query.calendarSize,
+         wrapConnectionsIntoGroupset
        );
      },
 
      // generate Groupsets for the next x days in advance
      findAll: function(store) {
 
-        return createGroupsetCalendar(
+       var firstDayOfCalendar = new Date(TODAY.getTime());
+       firstDayOfCalendar.setDate(TODAY.getDate() - DAYS_INTO_THE_PAST);
+
+       return createGroupsetCalendar(
            store,
-           TODAY,
+           firstDayOfCalendar,
            CALENDAR_SIZE,
-           DAYS_INTO_THE_PAST,
            wrapConnectionsIntoGroupset
          );
      },
