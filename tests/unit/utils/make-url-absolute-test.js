@@ -48,4 +48,10 @@ describe('makeUrlAbsolute', function() {
     expect(_underTest.get('absolutePath')).to.be.equal(_tstAbsolute);
   });
 
+  it('throws exception in case of needed base-url that is invalid.', function() {
+    var _underTest = TestObject.create();
+    _underTest.set('baseUrl',"invalid");
+    expect(function(){_underTest.get('absolutePath');}).to.throw(/URI is not valid/);
+  });
+
 });
