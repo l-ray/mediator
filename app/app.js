@@ -19,7 +19,10 @@ Mediator.constants = Ember.Object.create({
      _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
      _CONST_QGRAM_RATIO : 0.61,
      _CONST_QGRAM_LEVEL1_RATIO : 0.5,
-     _RESULT_CATEGORY_SPLITTER: ','
+     _RESULT_CATEGORY_SPLITTER: ',',
+     _CALENDAR_DAYS_INTO_THE_PAST : 2,
+     _CALENDAR_SIZE : 16,
+    _TODAY : new Date()
 });
 
 loadInitializers(Mediator, config.modulePrefix);

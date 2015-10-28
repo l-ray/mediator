@@ -1,9 +1,7 @@
 /* jshint expr:true */
 import { expect,assert } from 'chai';
 import Ember from 'ember';
-import sinon from 'sinon';
 import Mediator from '../../../app';
-// import SourceModel from '../../../app/models/source.js';
 import {
   describeModule,
   it
@@ -33,6 +31,7 @@ describeModule(
     it("returns list of connections for the given start date holding correct sources.", function (done) {
 
       var store = {
+        hasRecordForId: function(type,id){return false;},
         createRecord : function(type, content) {
            if (type === "connection") {
              return Ember.Object.create(content);
@@ -40,28 +39,29 @@ describeModule(
              throw "unknown type";
            }
          },
-        findAll : function() {
-        return new Ember.RSVP.Promise(
-          function (resolve) {
-            resolve(Ember.ArrayProxy.create({
-                content: [
-                  Ember.Object.create({
-                    "id": "1", "name": "bar", "url": "http://bar.de/",
-                    "icon": "http://bar.de/ico/favicon.ico",
-                    "additional": "true", "priority": "100", "active": "true",
-                    "connections":new Ember.RSVP.Promise(function (r) {r(new Ember.A());})}),
-                  Ember.Object.create({
-                    "id": "2", "name": "foo", "url": "http://salsa.ie/",
-                    "icon": "http://salsa.ie/favicon.ico",
-                    "additional": "false", "priority": "100", "active": "true",
-                    "connections":new Ember.RSVP.Promise(function (r) {r(new Ember.A());})})
-                ],
-                objectAtContent: function (idx) {
-                  return this.get('content').objectAt(idx);
-                }
-              })
-            );
-          });
+        findAll : function(type) {
+          return new Ember.RSVP.Promise(
+            function (resolve) {
+              resolve(Ember.ArrayProxy.create({
+                  content: [
+                    Ember.Object.create({
+                      "id": "1", "name": "bar", "url": "http://bar.de/",
+                      "icon": "http://bar.de/ico/favicon.ico",
+                      "additional": "true", "priority": "100", "active": "true",
+                      "connections":new Ember.RSVP.Promise(function (r) {r(new Ember.A());})}),
+                    Ember.Object.create({
+                      "id": "2", "name": "foo", "url": "http://salsa.ie/",
+                      "icon": "http://salsa.ie/favicon.ico",
+                      "additional": "false", "priority": "100", "active": "true",
+                      "connections":new Ember.RSVP.Promise(function (r) {r(new Ember.A());})})
+                  ],
+                  objectAtContent: function (idx) {
+                    return this.get('content').objectAt(idx);
+                  }
+                })
+              );
+            }
+          );
         }
       };
 
@@ -88,9 +88,70 @@ describeModule(
         });
     });
 
+    it("uses existing connection if already existing.", function (done) {
+      var mockedConnectionsInSource = new Ember.A();
+      var mockedSource = Ember.Object.create({
+        "id": "1", "name": "bar", "url": "http://bar.de/",
+        "icon": "http://bar.de/ico/favicon.ico",
+        "additional": "true", "priority": "100", "active": "true",
+        "connections":new Ember.RSVP.Promise(function (r) {r(mockedConnectionsInSource);})});
+      var store = {
+        hasRecordForId: function(type,id){return true;},
+        findRecord: function(type,id) {
+          console.log("returning record with id "+id);
+          return new Ember.RSVP.Promise(
+             function (resolve) {
+               var mockedConnection = Ember.Object.create({
+                 "id":id,
+                 name:'testCorrect',
+                 source:mockedSource
+               });
+               mockedConnection.set('name','testCorrect');
+               mockedConnection.set('source',mockedSource);
+               resolve(mockedConnection);
+             }
+           );
+        },
+        findAll : function() {
+          return new Ember.RSVP.Promise(
+            function (resolve) {
+              resolve(Ember.ArrayProxy.create({
+                  content: [
+                    mockedSource
+                  ],
+                  objectAtContent: function (idx) {
+                    return this.get('content').objectAt(idx);
+                  }
+                })
+              );
+            }
+          );
+        }
+      };
+
+      var adapter = this.subject();
+
+      adapter.query(store, 'connection', {startDate:"2014-01-02"}).then(
+        function (result) {
+          expect(result).to.have.a.property('connections').that.is.an('array');
+          expect(result.connections).to.have.length(1);
+          expect(result.connections[0]).to.have.property('id');
+          expect(result.connections[0]).to.have.property('source');
+          expect(result.connections[0]).to.have.property('active');
+          expect(result.connections[0]).to.have.property('startDate');
+          expect(result.connections[0]).to.have.property('links');
+
+          done();
+        });
+
+      console.log("survived to the end of the test");
+    });
+
+
     it("reloads lazy results payload correctly by adding group object.", function (done) {
 
       var store = {
+        hasRecordForId: function(type,id){return false;},
         findHasMany: function() {
           return new Ember.RSVP.Promise(
             function(resolve){

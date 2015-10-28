@@ -1,10 +1,10 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import Mediator from '../app';
 
-
-var DAYS_INTO_THE_PAST = 2;
-var CALENDAR_SIZE = 16;
-var TODAY = new Date();
+var DAYS_INTO_THE_PAST = Mediator.constants._CALENDAR_DAYS_INTO_THE_PAST;
+var CALENDAR_SIZE = Mediator.constants._CALENDAR_SIZE;
+var TODAY = Mediator.constants._TODAY;
 
 var wrapConnectionsIntoGroupset = function(connections) {
 

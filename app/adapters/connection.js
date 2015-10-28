@@ -6,21 +6,36 @@ var generateConnectionsForDate = function(store, startDateString) {
   var startDate =new Date(startDateString);
 
   return function (rootSource) {
-
-    var calculatedId = rootSource.get('id') + "-" + startDateString;
+    var rootSourceId = rootSource.get('id');
+    var calculatedId = rootSourceId + "-" + startDateString;
     var isActive = rootSource.get('active');
-    var resultUrl = "/api" + "/results/" + rootSource.get('id') + "/" + startDateString + "/";
+    var resultUrl = "/api" + "/results/" + rootSourceId + "/" + startDateString + "/";
 
     var connectionObject = {
       'id': calculatedId,
-      'source': rootSource.get('id'),
+      'source': rootSourceId,
       'active': isActive,
       'startDate': startDate,
       'links': {'results': resultUrl}
     };
 
-    var tmpConnection = store.createRecord("connection", connectionObject);
-    rootSource.get('connections').then(c => c.pushObject(tmpConnection));
+    // in case record already exists, retrieve it from cache.
+    var tmpConnection = null;
+
+    if (store.hasRecordForId("connection", calculatedId)) {
+      tmpConnection = store.findRecord("connection", calculatedId);
+    } else {
+      tmpConnection = store.createRecord("connection", connectionObject);
+    }
+
+    var rootSourceConnectionsPromise = rootSource.get('connections');
+    var fillRootSource = tmpCon => rootSourceConnectionsPromise.then(c => c.pushObject(tmpCon));
+
+    if (tmpConnection instanceof Ember.RSVP.Promise){
+      tmpConnection.then(fillRootSource);
+    } else {
+      fillRootSource(tmpConnection);
+    }
 
     return connectionObject;
   };
