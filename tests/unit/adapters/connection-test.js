@@ -212,5 +212,58 @@ describeModule(
         });
 
     });
+
+
+    it("reloads single lazy results payload correctly by adding group object.", function (done) {
+
+      var store = {
+        hasRecordForId: function(type,id){return false;},
+        findHasMany: function() {
+          return new Ember.RSVP.Promise(
+            function(resolve){
+              resolve(
+                { "results" :
+
+                      Ember.Object.create({
+                        "id": "s1-3", "start": "2014-05-15",
+                        "end": "2014-05-15", "title": "foo",
+                        "subtitle": "foo", "abstract": "foo",
+                        "description": "foo", "price": "50",
+                        "url": "foo", "location": "foo-woanders",
+                        "categories": "block,floete,punk,rock,folk"
+                      })
+                }
+              );
+            });
+        },
+        push: function(data) {
+          expect(data,"JSON data object").to.have.property('data').and.to.have.a.deep.property("type","group");
+        }
+      };
+      var adapter = this.subject();
+      adapter.reopen({
+        _super:store.findHasMany
+      });
+      var snapshot = {
+        belongsTo: function(){
+          return "12345";
+        }
+      };
+      var relationship = {type:"result"};
+      var url = "result";
+      adapter.findHasMany(store, snapshot, url, relationship)
+        .then(
+        function (n) {
+          expect(n).to.have.property("results");
+          expect(n.results.toArray()).to.have.length(1);
+          n.results.toArray().forEach(function(item) {
+            console.log("item group"+item+ " holding "+item.group);
+            expect(item.group).to.be.ok;
+          });
+          done();
+        });
+
+    });
+
   }
 );

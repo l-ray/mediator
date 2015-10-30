@@ -76,9 +76,13 @@ export default DS.RESTAdapter.extend({
 
       return new Ember.RSVP.Promise(function (resolve) {
         initialPromise.then(function (something) {
-          console.log("creating new promise for snapshot with "+something.results+"("+something.results.toArray().length+")");
+          // console.log("creating new promise for snapshot with "+something.results);
           if (typeof something.results !== "undefined") {
-            // something.results = Ember.makeArray(something.results);
+
+            if (!(Ember.isArray(something.results))) {
+              something.results = Ember.makeArray(something.results);
+            }
+
             var groupSetId = snapshot.belongsTo('groupset', {id: true});
 
             something.results.map(
