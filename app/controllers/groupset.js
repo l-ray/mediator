@@ -30,6 +30,8 @@ export default Ember.Controller.extend({
 
   doGrouping: Boolean(true),
 
+  showDetails: Boolean(false),
+
   actions: {
     recycleCategory(item){
       this.removeSelectedCategory(item);
@@ -37,6 +39,10 @@ export default Ember.Controller.extend({
     selectCategory(item){
       console.log("in selectCategory");
       this.addSelectedCategory(item);
+    },
+    chooseComponent(item){
+      console.log("in chooseComponent");
+      this.set("groupset-details",item === "details");
     }
   },
 
@@ -49,20 +55,24 @@ export default Ember.Controller.extend({
   }.property('model.filteredGroups','selectedCategories.[]'),
 
   updateGroupSorting: Ember.observer('model.groups.[]', function() {
+    console.log("group count in updateGroupSorting "+this.get("model.groups.length"));
     if (this.get('doGrouping')) {
-        Ember.run.throttle({
-
-          model: this.get("model"),
-          __isSimilar: this.__isSimilar,
-          __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
-          _CONST_LEVENSHTEIN_RATIO: 0.7,
-          _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE: 0.36,
-          _CONST_QGRAM_RATIO: 0.61,
-          _CONST_QGRAM_LEVEL1_RATIO: 0.5,
-          _RESULT_CATEGORY_SPLITTER: ','
-        }, this.processSimilarityMeasurement, 1000);
+        Ember.run.debounce(this.get("similarityContext"), this.processSimilarityMeasurement, 1000);
       }
   }),
+
+  similarityContext: function(){
+    return {
+      model: this.get("model"),
+      __isSimilar: this.__isSimilar,
+      __isSimilarBecauseOfIdenticalPictures: this.__isSimilarBecauseOfIdenticalPictures,
+      _CONST_LEVENSHTEIN_RATIO: 0.7,
+      _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE: 0.36,
+      _CONST_QGRAM_RATIO: 0.61,
+      _CONST_QGRAM_LEVEL1_RATIO: 0.5,
+      _RESULT_CATEGORY_SPLITTER: ','
+    };
+  }.property('model'),
 
   // expected, that model.groups.@each.enabled includes add/remove on groups-enumeration
   filteredGroups: function(){
@@ -104,7 +114,7 @@ export default Ember.Controller.extend({
       for (var j=0; j < model.get('groups.length'); j++) {
 
         var currentJ = model.get("groups").toArray()[j];
-        // console.log("Is similar " + (i !== j) + " - " + currentJ.get('initialized') );
+        // console.log("Check for not identical and not yet initialized " + (i !== j) + " - " + currentJ.get('initialized') );
         if (i !== j &&
           currentJ.get('initialized')) {
           // console.log("is similar -> " + currentI.get("results.length") + " und "+currentJ.get("results.length")+" - pictures " + currentI.get('pictures').mapBy('url') + currentJ.get('pictures').mapBy('url'));
@@ -142,12 +152,16 @@ export default Ember.Controller.extend({
   // retrieves similarity of two given groups
   __isSimilar: function(patternResultGroup1, patternResultGroup2) {
 
-    if (patternResultGroup1.id === patternResultGroup2.id) {
+    // console.log("check for identical ID "+patternResultGroup1.id+" and "+patternResultGroup2.id);
+    if (patternResultGroup1.id !== undefined &&
+        patternResultGroup1.id !== null &&
+        patternResultGroup1.id === patternResultGroup2.id) {
       return true;
     }
 
     var ratio;
 
+    // console.log("check for identical pictures");
     if (this.__isSimilarBecauseOfIdenticalPictures(patternResultGroup1.pictures, patternResultGroup2.pictures)) {
       return true;
     }

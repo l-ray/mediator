@@ -143,6 +143,83 @@ describeModule(
           )
         }
       )).to.be.equal(true,"JULI ZEH & SLUT");
+
+      expect(controller.__isSimilar.call(context,
+        {
+          id:"1",
+          title:"PRETTY BEAST",
+          location:"The Workmans Club",
+          summary: smUtilities.reducedSummary(
+            "PRETTY BEAST",
+            "The Workmans Club"
+          )
+        },
+        {
+          id:"2",
+          title: "Pretty Beast",
+          location:"The Workman's Club",
+          summary: smUtilities.reducedSummary(
+            "PRETTY BEAST",
+            "The Workman's Club"
+          )
+        }
+      )).to.be.equal(true,"Pretty Beast");
+
+    });
+
+    function createGroupWithTitleAndLocationAndPic(store,title, location, pic) {
+
+      var groupItem1 = store.createRecord('group', {});
+      var testPRItem1 = store.createRecord('result',{'title':title, 'location':location});
+      testPRItem1.get('pictures').pushObject(
+        store.createRecord('picture',{url:pic})
+      );
+
+      var results = groupItem1.get('results');
+      results.pushObject(testPRItem1);
+
+      return groupItem1;
+    }
+
+
+    it('should trigger group combining after results got added', function(done) {
+
+      var updateProgressTriggered = false;
+
+      var controller = this.subject();
+
+      controller.reopen({
+        processSimilarityMeasurement: function() {
+          console.log("IN PROCESS SIMILLARITY-MEASURE with model "+this.model+" and group count "+this.model.get("groups.length"));
+          updateProgressTriggered = true;
+        }
+      });
+
+      var store = this.subject().get('store');
+
+      var model = store.createRecord('groupset', {});
+      controller.set('model',model);
+
+      expect(controller.get('doGrouping')).to.be.true;
+
+      var groupItem1 = createGroupWithTitleAndLocationAndPic(store, 'test1', undefined, '"http://test.de/lol.jpg"');
+
+      var groupItem2 = createGroupWithTitleAndLocationAndPic(store, 'test2', undefined, '"http://test.de/lol.jpg"');
+
+      var groups = controller.get('groups');
+
+      updateProgressTriggered = false;
+
+      [groupItem1,groupItem2].forEach(gi => {gi.set('groupset', model);});
+      controller.get('groups').pushObjects([groupItem1,groupItem2]);
+
+      expect(updateProgressTriggered).to.equal(false,"update process got triggered synchronously");
+
+      Ember.run.later(function(){
+        expect(updateProgressTriggered).to.equal(true,"update process got triggered");
+        expect(controller.get('groups').toArray()).to.have.length(2);
+        done();
+      }, 1000);
     });
 
     it('should combine groupSets with similar groups', function(){
@@ -152,41 +229,26 @@ describeModule(
 
       var model = store.createRecord('groupset',{});
 
-      expect(model).to.be.ok;
-      expect(model.get).to.be.ok;
+      assert.isFunction(model.get);
 
-      var groupItem1 = store.createRecord('group', {});
-      var testPRItem1 = store.createRecord('result',{'title':'test1'});
-      testPRItem1.get('pictures').pushObject(
-        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'})
-      );
+      expect(controller.get('doGrouping')).to.be.true;
+      expect(controller.get('model')).to.be.okay;
 
-      var results = groupItem1.get('results');
-      results.pushObject(testPRItem1);
+      var groupItem1 = createGroupWithTitleAndLocationAndPic(store,'test1',undefined, '"http://test.de/lol.jpg"');
 
-
-      var groupItem2 = store.createRecord('group', {});
-      var testPRItem2 = store.createRecord('result',{'title':'test2'});
-      testPRItem2.get('pictures').pushObject(
-        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'})
-      );
-
-      var otherResults = groupItem2.get('results');
-      otherResults.pushObject(testPRItem2);
+      var groupItem2 = createGroupWithTitleAndLocationAndPic(store,'test2',undefined, '"http://test.de/lol.jpg"');
 
       var groups = model.get('groups');
 
-      expect(groups.get('length')).to.be.equal(0);
+      expect(groups.get('length')).to.be.equal(0,"groups returns length");
+      expect(model.get('groups.length')).to.be.equal(0,"groups stepwise returns length");
       assert.isFunction(groups.pushObject);
-      expect(model.get('groups.length')).to.be.equal(0);
-      expect(groupItem1).to.be.an.instanceOf(DS.Model);
-      expect(groupItem2).to.be.an.instanceOf(DS.Model);
 
-      groupItem1.set('groupset', model);
-      groupItem2.set('groupset', model);
-
-      model.get('groups').pushObject(groupItem1);
-      model.get('groups').pushObject(groupItem2);
+      [groupItem1,groupItem2].forEach(gi => {
+        expect(gi).to.be.an.instanceOf(DS.Model);
+        gi.set('groupset', model);
+        model.get('groups').pushObject(gi);
+      });
 
       model.enumerableContentDidChange();
       expect(model.toArray()).to.have.length(2, "before clean up");
@@ -215,28 +277,36 @@ describeModule(
     it('should not combine groupSets with unsimilar groups', function(){
 
       var store = this.subject().get('store');
+      var controller = this.subject();
 
       var model = store.createRecord('groupset',{});
 
-      var item1 = store.createRecord('group');
-      var testPRItem1 = store.createRecord('result',{'title':'test1'});
-      testPRItem1.get('pictures').pushObject(
-        store.createRecord('picture',{url:'"http://test.de/lol.jpg"'})
-      );
-      var results = item1.get('results');
-      results.pushObject(testPRItem1);
+      var item1 = createGroupWithTitleAndLocationAndPic(store,'test1','Toast to be grilled','"http://test.de/lol.jpg"');
 
-      var item3 = store.createRecord('group');
-      var testPRItem3 = store.createRecord('result',{'title':"Larifari", 'location':"Lasterfahri"});
-
-      var otherResults = item3.get('results');
-      otherResults.pushObject(testPRItem3);
+      var item3 = createGroupWithTitleAndLocationAndPic(store,"Larifari","Lasterfahri",undefined);
 
       var groups = model.get('groups');
 
       groups.pushObjects([item1, item3]);
       model.enumerableContentDidChange();
-      expect(model.toArray()).to.have.length(2);
+      expect(model.toArray()).to.have.length(2, "before clean up");
+
+      controller.processSimilarityMeasurement.call(
+        {
+          model:model,
+          __isSimilar: controller.__isSimilar,
+          __isSimilarBecauseOfIdenticalPictures:controller.__isSimilarBecauseOfIdenticalPictures,
+          _CONST_LEVENSHTEIN_RATIO : 0.7,
+          _CONST_LEVENSHTEIN_RATIO_SECOND_CHANCE : 0.36,
+          _CONST_QGRAM_RATIO : 0.61,
+          _CONST_QGRAM_LEVEL1_RATIO : 0.5,
+          _RESULT_CATEGORY_SPLITTER: ','
+        }
+
+      );
+      model.enumerableContentDidChange();
+
+      expect(model.toArray()).to.have.length(2,"after processing similarity measure");
 
       expect(model.get('firstObject').toArray()).to.have.length(1, "groups per set");
       expect(model.get('lastObject').toArray()).to.have.length(1, "groups per set");
