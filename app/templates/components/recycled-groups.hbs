@@ -2,7 +2,7 @@
 <button {{action 'toggleShowRecycledGroups'}} class="showRecycled"><span>SR</span></button>
 {{ log "resultgroup count" groups groups.length}}
 {{#if showRecycledGroups}}
-  <ul class="list-group">
+  <ul class="recycled list-group">
 
     {{#each groups as |group|}}
 

@@ -2,35 +2,29 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
-    actions: {
-        markRecycled: function (item) {
-            item.set("recycled", true);
-        },
-        markRestored: function (item) {
-            item.set("recycled", false);
-        },
-        decreaseUserPriority: function (item) {
-          item.set(
-                "priorityByUser",
-                    item.get("priorityByUser") - 1000
-            );
-        },
-        increaseUserPriority: function (item) {
-          item.set(
-                "priorityByUser",
-                item.get("priorityByUser") + 1000
-            );
-        }
+  isDetail: Boolean(false),
+
+  actions:{
+    'selectDetail': function() {
+      this.set('isDetail',true);
     },
+    'unselectDetail': function() {
+      this.set('isDetail',false);
+    }
+  },
 
-    enabled: Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
-      let groups = this.get('model');
-      return groups.filter(item => item.get('enabled')&&!item.get('recycled'));
-    }),
+  selectedComponent:Ember.computed('isDetail', function() {
+    return this.get('isDetail')?'groups-detail-list':'groups-overview-list';
+  }),
 
-    recycled:  Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
-      let groups = this.get('model');
-      return groups.filter(item => item.get('enabled')&&item.get('recycled'));
-    })
+  enabled: Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
+    let groups = this.get('model');
+    return groups.filter(item => item.get('enabled')&&!item.get('recycled'));
+  }),
+
+  recycled:  Ember.computed('model.@each.recycled', 'model.@each.enabled', function() {
+    let groups = this.get('model');
+    return groups.filter(item => item.get('enabled')&&item.get('recycled'));
+  })
 });
 

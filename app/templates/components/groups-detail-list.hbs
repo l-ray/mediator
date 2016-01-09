@@ -1,0 +1,87 @@
+    <div class="details">{{selectedPosition}}
+
+      <nav class="detail_navigation">
+          <ul>
+            {{#if isNotFirst}}
+                <li {{action 'lastPosition'}}>previous</li>
+            {{/if}}
+
+            {{#if isNotLast}}
+                <li {{action 'nextPosition'}}>next</li>
+            {{/if}}
+          </ul>
+      </nav>
+        <!-- start details -->
+        <section class="event">
+
+            <ul class="administration">
+
+              {{#if group.recycled }}
+                  <li {{action 'markRestored' group}} class="derecycle_item" ><span>w</span></li>
+              {{else}}
+                  <li {{action 'markRecycled' group}} class="recycle_item" ><span>x</span></li>
+              {{/if}}
+            </ul>
+
+          {{pictures-array pictures=group.pictures classNames="pictures"}}
+
+          {{#if group.categories}}
+              <ul title="categories" class="categories">
+                {{#each group.categories as |category|}}
+                    <li>{{ category }}</li>
+                {{/each}}
+              </ul>
+          {{/if}}
+
+          <h1 class="title">{{ group.title }}</h1>
+
+          {{#if group.subtitle}}
+              <h2 class="subtitle">{{ group.subtitle }}</h2>
+          {{/if}}
+
+          {{#if group.description}}
+              <div class="description">{{ group.description }}</div>
+          {{/if}}
+            <time class="date">
+              {{#if group.startDate}}
+                {{ format-date group.startDate "DD.MM.YYYY" }}
+              {{else}}
+                  no start date
+              {{/if}}
+            </time>
+            <span class="location">{{#if group.location}} {{group.location}} {{else}}no location{{/if}}</span>
+            <span class="price">{{#if group.price }}{{ group.price }}{{else}}-{{/if}}</span>
+
+            <ul class="links">
+              {{#each group.links as |link| }}
+                  <li title="Link">
+                      <a href={{link.url}} target="_blank">
+                          <img class="event_info_source_icon" title={{link.name}} src={{link.result.connection.source.icon}} />
+                      </a>{{link.result.connection.source.id}}
+                  </li>
+              {{/each}}
+            </ul>
+
+            <ul class="sources">
+              {{#each group.enabledResults as |result|}}
+                  <li title="Source">
+                      <a href={{result.resultUrl}} target="_blank">
+                          <img class="event_info_source_icon" title={{result.name}} src={{result.connection.source.icon}} />
+                          {{result.title}} at {{result.location}}
+                      </a><span class="debug"> S:{{result.connection.source.id}} Prio:{{result.connection.priority}} {{result.connection.ignorePriority}} r:{{result.id}}</span>
+                  </li>
+              {{/each}}
+            </ul>
+
+            <div class="debug">
+                <span class="priorityRuleset">RS-prio{{ group.priorityByRuleSet }}</span>
+                <span class="priority">sum-prio{{ group.priority }}</span>
+                <span>{{#link-to 'group' group}}{{group.id}}{{/link-to}}</span>
+            </div>
+        </section>
+
+      <!-- finish details -->
+
+    </div>
+
+{{yield}}
