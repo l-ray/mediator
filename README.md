@@ -1,12 +1,20 @@
-README
+Event Mediator
 ======
 
 [![Build Status](https://travis-ci.org/l-ray/mediator.svg?branch=master)]
 
 [travis-ci](https://travis-ci.org/l-ray/mediator)
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Retrieve independent information for calendar events from multiple independent sources, recognize/harmonize identical events on client side and orders them on a user given rule set.
+
+By today, the project provides the following functionality
+
+* overview over sources
+* calendar-view
+* list of events
+* detail view of a single event
+* recycle bin
+* tag cloud of categories of all calendar events
 
 ## Prerequisites
 
@@ -30,10 +38,6 @@ You will need the following things properly installed on your computer.
 * `ember server`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
 ### Running Tests
 
 * `ember test`
@@ -55,7 +59,3 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
-
-
-
